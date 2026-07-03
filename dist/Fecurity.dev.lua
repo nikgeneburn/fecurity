@@ -1244,15 +1244,15 @@ do
     do
         local function __modImpl()
             local Tokens = {
-                WindowSize = Vector2.new(980, 520),
-                SidebarWidth = 67,
-                PanelTop = 17,
-                PanelHeight = 485,
-                PanelWidth = 281,
-                PanelGap = 18,
-                PanelLeft = 85,
+                WindowSize = Vector2.new(720, 840),
+                SidebarWidth = 62,
+                PanelTop = 30,
+                PanelHeight = 779,
+                PanelWidth = 197,
+                PanelGap = 17,
+                PanelLeft = 79,
                 PanelRight = 16,
-                PanelBottom = 18,
+                PanelBottom = 31,
                 Radius = 0,
             }
 
@@ -1890,8 +1890,8 @@ do
                 local Logo = (Elements.New('ImageLabel', {
                     Name = 'Logo',
                     BackgroundTransparency = 1,
-                    Position = UDim2.fromOffset(6, 13),
-                    Size = UDim2.fromOffset(50, 48),
+                    Position = UDim2.fromOffset(6, 12),
+                    Size = UDim2.fromOffset(47, 45),
                     ImageColor3 = Window.Theme.Accent,
                     ZIndex = 24,
                 }, Root))
@@ -1905,8 +1905,8 @@ do
                     local Fallback = (Elements.New('TextLabel', {
                         Name = 'LogoFallback',
                         BackgroundTransparency = 1,
-                        Position = UDim2.fromOffset(6, 13),
-                        Size = UDim2.fromOffset(50, 48),
+                        Position = UDim2.fromOffset(6, 12),
+                        Size = UDim2.fromOffset(47, 45),
                         Text = 'F',
                         ZIndex = 25,
                     }, Root))
@@ -2391,7 +2391,7 @@ do
             function Toggle.New(Section, Options)
                 Options.Default = Options.Default == true
 
-                local self = BaseWidget.New(Section, Options, 40)
+                local self = BaseWidget.New(Section, Options, 70)
 
                 setmetatable(self, Toggle)
 
@@ -2544,7 +2544,7 @@ do
                 Options.Step = Options.Step or 1
                 Options.Default = Options.Default or Options.Value or Options.Min
 
-                local self = BaseWidget.New(Section, Options, 40)
+                local self = BaseWidget.New(Section, Options, 70)
 
                 setmetatable(self, Slider)
 
@@ -2768,7 +2768,7 @@ do
                     }
                 end
 
-                local self = BaseWidget.New(Section, Options, 72)
+                local self = BaseWidget.New(Section, Options, 126)
 
                 setmetatable(self, Dropdown)
 
@@ -3162,7 +3162,7 @@ do
             setmetatable(Button, {__index = BaseWidget})
 
             function Button.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 40)
+                local self = BaseWidget.New(Section, Options, Options.Height or 70)
 
                 setmetatable(self, Button)
 
@@ -3247,7 +3247,7 @@ do
             function Textbox.New(Section, Options)
                 Options.Default = Options.Default or ''
 
-                local self = BaseWidget.New(Section, Options, 52)
+                local self = BaseWidget.New(Section, Options, 91)
 
                 setmetatable(self, Textbox)
 
@@ -3335,7 +3335,7 @@ do
 
                 Options.Callback = Options.Changed or Options.OnChanged
 
-                local self = BaseWidget.New(Section, Options, 40)
+                local self = BaseWidget.New(Section, Options, 70)
 
                 setmetatable(self, Keybind)
 
@@ -3571,7 +3571,7 @@ do
             function ColorPicker.New(Section, Options)
                 Options.Default = Options.Default or Options.Value or Color3.new(1, 1, 1)
 
-                local self = BaseWidget.New(Section, Options, 40)
+                local self = BaseWidget.New(Section, Options, 70)
 
                 setmetatable(self, ColorPicker)
 
@@ -4270,7 +4270,7 @@ do
             function HitboxPreview.New(Section, Options)
                 Options.Default = Options.Default or {}
 
-                local self = BaseWidget.New(Section, Options, 390)
+                local self = BaseWidget.New(Section, Options, 681)
 
                 setmetatable(self, HitboxPreview)
 
@@ -4333,9 +4333,34 @@ do
                         self:Refresh()
                     end)
                 end
+
+                local LegendLayout = {
+                    [1] = {
+                        Row = 0,
+                        Col = 0,
+                    },
+                    [2] = {
+                        Row = 1,
+                        Col = 0,
+                    },
+                    [3] = {
+                        Row = 2,
+                        Col = 0,
+                    },
+                    [4] = {
+                        Row = 0,
+                        Col = 1,
+                    },
+                    [5] = {
+                        Row = 1,
+                        Col = 1,
+                    },
+                }
+
                 for Index, Priority in ipairs(Priorities)do
-                    local Row = math.floor((Index - 1) / 2)
-                    local Col = (Index - 1) % 2
+                    local Slot = LegendLayout[Index]
+                    local Row = Slot.Row
+                    local Col = Slot.Col
                     local Dot = (Elements.New('Frame', {
                         Name = Priority.Id .. 'Dot',
                         BackgroundColor3 = Priority.Color,
@@ -4468,7 +4493,7 @@ do
             function Countdown.New(Section, Options)
                 Options.Default = Options.Seconds or 0
 
-                local self = BaseWidget.New(Section, Options, Options.Height or 28)
+                local self = BaseWidget.New(Section, Options, Options.Height or 49)
 
                 setmetatable(self, Countdown)
 
@@ -4609,7 +4634,7 @@ do
             end
 
             function Label.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 28)
+                local self = BaseWidget.New(Section, Options, Options.Height or 49)
 
                 setmetatable(self, Label)
 
@@ -5220,6 +5245,291 @@ do
     end
     do
         local function __modImpl()
+            local RunService = game:GetService('RunService')
+            local UserInputService = game:GetService('UserInputService')
+            local Elements = __DARKLUA_BUNDLE_MODULES.n()
+            local FOVCircle = {}
+
+            FOVCircle.__index = FOVCircle
+
+            local function NewStroke(Parent, Thickness)
+                local Stroke = Instance.new('UIStroke')
+
+                Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                Stroke.LineJoinMode = Enum.LineJoinMode.Round
+                Stroke.Thickness = Thickness
+                Stroke.Transparency = 1
+                Stroke.Color = Color3.new(1, 1, 1)
+                Stroke.Enabled = false
+                Stroke.Parent = Parent
+
+                local Gradient = Instance.new('UIGradient')
+
+                Gradient.Parent = Stroke
+
+                return Stroke, Gradient
+            end
+
+            function FOVCircle.New(Parent)
+                local self = setmetatable({
+                    Radius = 200,
+                    Thickness = 2,
+                    GlowSize = 18,
+                    GlowLayers = 8,
+                    GlowTransparency = 0.75,
+                    RotateSpeed = 1.2,
+                    RainbowSpeed = 0.2,
+                    Rotation = 0,
+                    Color1 = Color3.fromRGB(255, 20, 147),
+                    Color2 = Color3.fromRGB(255, 255, 255),
+                    GlowEnabled = false,
+                    SpinEnabled = false,
+                    FillEnabled = false,
+                    RainbowEnabled = false,
+                    FillTransparency = 0.85,
+                    SmoothPosition = Vector2.new(0, 0),
+                    HasExternalPosition = false,
+                    ExternalPosition = nil,
+                }, FOVCircle)
+
+                self.Holder = (Elements.New('Frame', {
+                    Name = 'FOVCircle',
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    BackgroundTransparency = 1,
+                    Position = UDim2.fromScale(0.5, 0.5),
+                    Size = UDim2.fromOffset(self.Radius * 2, self.Radius * 2),
+                    Visible = false,
+                }, Parent))
+                self.GlowHolder = (Elements.New('Frame', {
+                    Name = 'Glow',
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    Position = UDim2.fromScale(0.5, 0.5),
+                    Size = UDim2.fromScale(1, 1),
+                    BackgroundTransparency = 1,
+                    ZIndex = 1,
+                }, self.Holder))
+
+                Elements.Corner(self.GlowHolder, 1000)
+
+                self.Circle = (Elements.New('Frame', {
+                    Name = 'Ring',
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    Position = UDim2.fromScale(0.5, 0.5),
+                    Size = UDim2.fromScale(1, 1),
+                    BackgroundTransparency = 1,
+                    ZIndex = 5,
+                }, self.Holder))
+
+                Elements.Corner(self.Circle, 1000)
+
+                self.Fill = (Elements.New('Frame', {
+                    Name = 'Fill',
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    Position = UDim2.fromScale(0.5, 0.5),
+                    Size = UDim2.fromScale(1, 1),
+                    BackgroundColor3 = Color3.new(1, 1, 1),
+                    BackgroundTransparency = self.FillTransparency,
+                    ZIndex = 2,
+                    Visible = false,
+                }, self.Holder))
+
+                Elements.Corner(self.Fill, 1000)
+
+                self.FillGradient = Instance.new('UIGradient')
+                self.FillGradient.Parent = self.Fill
+                self.OuterGlow = {}
+
+                for Index = 1, self.GlowLayers do
+                    local Stroke, Gradient = NewStroke(self.GlowHolder, 1)
+
+                    self.OuterGlow[Index] = {
+                        Stroke = Stroke,
+                        Gradient = Gradient,
+                    }
+                end
+
+                self.InnerGlow = {}
+
+                for Index = 1, self.GlowLayers do
+                    local Frame = (Elements.New('Frame', {
+                        Name = 'Inner' .. tostring(Index),
+                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        Position = UDim2.fromScale(0.5, 0.5),
+                        Size = UDim2.fromScale(1, 1),
+                        BackgroundTransparency = 1,
+                    }, self.GlowHolder))
+
+                    Elements.Corner(Frame, 1000)
+
+                    local Stroke, Gradient = NewStroke(Frame, 1)
+
+                    self.InnerGlow[Index] = {
+                        Frame = Frame,
+                        Stroke = Stroke,
+                        Gradient = Gradient,
+                    }
+                end
+
+                self.RingStroke, self.RingGradient = NewStroke(self.Circle, self.Thickness)
+                self.RingStroke.Enabled = true
+                self.RingStroke.Transparency = 0
+
+                self:SetRadius(self.Radius)
+                self:SetColors(self.Color1, self.Color2)
+
+                self.Connection = RunService.RenderStepped:Connect(function(DeltaTime)
+                    self:Step(DeltaTime)
+                end)
+
+                return self
+            end
+            function FOVCircle:BuildSequence()
+                return ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, self.Color1),
+                    ColorSequenceKeypoint.new(1, self.Color2),
+                })
+            end
+            function FOVCircle:ApplyGradients(Sequence, Rotation)
+                self.RingGradient.Color = Sequence
+                self.RingGradient.Rotation = Rotation
+                self.FillGradient.Color = Sequence
+                self.FillGradient.Rotation = Rotation
+
+                for _, Layer in ipairs(self.OuterGlow)do
+                    Layer.Gradient.Color = Sequence
+                    Layer.Gradient.Rotation = Rotation
+                end
+                for _, Layer in ipairs(self.InnerGlow)do
+                    Layer.Gradient.Color = Sequence
+                    Layer.Gradient.Rotation = Rotation
+                end
+            end
+            function FOVCircle:SetPosition(Position)
+                self.HasExternalPosition = true
+
+                if typeof(Position) == 'Vector2' then
+                    self.ExternalPosition = Position
+                    self.Holder.Position = UDim2.fromOffset(Position.X, Position.Y)
+                elseif typeof(Position) == 'UDim2' then
+                    self.ExternalPosition = nil
+                    self.Holder.Position = Position
+                end
+            end
+            function FOVCircle:SetRadius(Radius)
+                self.Radius = tonumber(Radius) or self.Radius
+
+                local Diameter = self.Radius * 2
+
+                self.Holder.Size = UDim2.fromOffset(Diameter, Diameter)
+            end
+            function FOVCircle:SetColors(Color1, Color2)
+                self.Color1 = Color1 or self.Color1
+                self.Color2 = Color2 or self.Color1
+            end
+            function FOVCircle:SetFill(State, Transparency)
+                self.FillEnabled = State == true
+                self.FillTransparency = tonumber(Transparency) or self.FillTransparency
+                self.Fill.Visible = self.FillEnabled
+                self.Fill.BackgroundTransparency = self.FillTransparency
+            end
+            function FOVCircle:SetGlow(State)
+                self.GlowEnabled = State == true
+            end
+            function FOVCircle:SetSpin(State)
+                self.SpinEnabled = State == true
+
+                if not self.SpinEnabled then
+                    self.Rotation = 0
+                end
+            end
+            function FOVCircle:SetRainbow(State, Speed)
+                self.RainbowEnabled = State == true
+                self.RainbowSpeed = tonumber(Speed) or self.RainbowSpeed
+            end
+            function FOVCircle:SetVisible(State)
+                self.Holder.Visible = State == true
+            end
+            function FOVCircle:Step(DeltaTime)
+                if not self.Holder.Visible then
+                    return
+                end
+                if not self.HasExternalPosition then
+                    local Mouse = UserInputService:GetMouseLocation()
+
+                    self.SmoothPosition = self.SmoothPosition:Lerp(Vector2.new(Mouse.X, Mouse.Y), math.clamp(DeltaTime * 12, 0, 1))
+                    self.Holder.Position = UDim2.fromOffset(self.SmoothPosition.X, self.SmoothPosition.Y)
+                elseif self.ExternalPosition then
+                    self.SmoothPosition = self.ExternalPosition
+                end
+
+                self.HasExternalPosition = false
+
+                if self.SpinEnabled then
+                    self.Rotation = (self.Rotation + self.RotateSpeed * DeltaTime * 60) % 360
+                end
+                if self.RainbowEnabled then
+                    local Time = tick() * self.RainbowSpeed
+
+                    self.Color1 = Color3.fromHSV(Time % 1, 0.78, 1)
+                    self.Color2 = Color3.fromHSV((Time + 0.35) % 1, 0.78, 1)
+                end
+
+                local Sequence = self:BuildSequence()
+
+                self:ApplyGradients(Sequence, self.Rotation)
+
+                local GlowOn = self.GlowEnabled
+                local Layers = self.GlowLayers
+                local Spread = self.GlowSize
+                local BaseTransparency = self.GlowTransparency
+
+                for Index = 1, Layers do
+                    local Fraction = Index / Layers
+                    local Transparency = BaseTransparency + (1 - BaseTransparency) * Fraction
+                    local Outer = self.OuterGlow[Index]
+
+                    Outer.Stroke.Enabled = GlowOn
+                    Outer.Stroke.Thickness = GlowOn and (self.Thickness + Spread * Fraction) or 0
+                    Outer.Stroke.Transparency = GlowOn and Transparency or 1
+
+                    local Inner = self.InnerGlow[Index]
+                    local Inset = Spread * Fraction
+
+                    Inner.Frame.Size = UDim2.fromScale(1, 1) - UDim2.fromOffset(Inset * 2, Inset * 2)
+                    Inner.Stroke.Enabled = GlowOn
+                    Inner.Stroke.Thickness = GlowOn and Spread * Fraction or 0
+                    Inner.Stroke.Transparency = GlowOn and Transparency or 1
+                end
+            end
+            function FOVCircle:Destroy()
+                if self.Connection then
+                    self.Connection:Disconnect()
+
+                    self.Connection = nil
+                end
+                if self.Holder then
+                    self.Holder:Destroy()
+                end
+            end
+
+            return FOVCircle
+        end
+
+        function __DARKLUA_BUNDLE_MODULES.W()
+            local v = __DARKLUA_BUNDLE_MODULES.cache.W
+
+            if not v then
+                v = {
+                    c = __modImpl(),
+                }
+                __DARKLUA_BUNDLE_MODULES.cache.W = v
+            end
+
+            return v.c
+        end
+    end
+    do
+        local function __modImpl()
             local UserInputService = game:GetService('UserInputService')
             local Tween = __DARKLUA_BUNDLE_MODULES.j()
             local Runtime = __DARKLUA_BUNDLE_MODULES.d()
@@ -5235,6 +5545,7 @@ do
             local TabContainer = __DARKLUA_BUNDLE_MODULES.S()
             local Notification = __DARKLUA_BUNDLE_MODULES.T()
             local Warning = __DARKLUA_BUNDLE_MODULES.V()
+            local FOVCircle = __DARKLUA_BUNDLE_MODULES.W()
             local Window = {}
 
             Window.__index = Window
@@ -5255,6 +5566,7 @@ do
                     MenuKey = KeybindManager.Normalize(Options.MenuKey or Options.ToggleKey or Enum.KeyCode.Insert),
                     Dropdown = nil,
                     ThemeBindings = {},
+                    FOVCircles = {},
                 }, Window)
                 local Gui = Instance.new('ScreenGui')
 
@@ -5483,6 +5795,13 @@ do
             function Window:AddWarning(Options)
                 return Warning.New(self, Options)
             end
+            function Window:CreateFOVCircle()
+                local Circle = FOVCircle.New(self.Canvas)
+
+                table.insert(self.FOVCircles, Circle)
+
+                return Circle
+            end
             function Window:Destroy()
                 if self.Destroyed then
                     return
@@ -5512,6 +5831,15 @@ do
 
                     self.SnowLayer = nil
                 end
+
+                for _, Circle in ipairs(self.FOVCircles)do
+                    pcall(function()
+                        Circle:Destroy()
+                    end)
+                end
+
+                table.clear(self.FOVCircles)
+
                 if self.Gui then
                     self.Gui:Destroy()
 
@@ -5534,14 +5862,14 @@ do
             return Window
         end
 
-        function __DARKLUA_BUNDLE_MODULES.W()
-            local v = __DARKLUA_BUNDLE_MODULES.cache.W
+        function __DARKLUA_BUNDLE_MODULES.X()
+            local v = __DARKLUA_BUNDLE_MODULES.cache.X
 
             if not v then
                 v = {
                     c = __modImpl(),
                 }
-                __DARKLUA_BUNDLE_MODULES.cache.W = v
+                __DARKLUA_BUNDLE_MODULES.cache.X = v
             end
 
             return v.c
@@ -5555,7 +5883,7 @@ do
             local AssetRegistry = __DARKLUA_BUNDLE_MODULES.e()
             local FlagManager = __DARKLUA_BUNDLE_MODULES.g()
             local ConfigManager = __DARKLUA_BUNDLE_MODULES.i()
-            local Window = __DARKLUA_BUNDLE_MODULES.W()
+            local Window = __DARKLUA_BUNDLE_MODULES.X()
             local Library = {}
 
             Library.__index = Library
@@ -5689,14 +6017,14 @@ do
             return Library
         end
 
-        function __DARKLUA_BUNDLE_MODULES.X()
-            local v = __DARKLUA_BUNDLE_MODULES.cache.X
+        function __DARKLUA_BUNDLE_MODULES.Y()
+            local v = __DARKLUA_BUNDLE_MODULES.cache.Y
 
             if not v then
                 v = {
                     c = __modImpl(),
                 }
-                __DARKLUA_BUNDLE_MODULES.cache.X = v
+                __DARKLUA_BUNDLE_MODULES.cache.Y = v
             end
 
             return v.c
@@ -5704,6 +6032,6 @@ do
     end
 end
 
-local Library = __DARKLUA_BUNDLE_MODULES.X()
+local Library = __DARKLUA_BUNDLE_MODULES.Y()
 
 return Library.New()
