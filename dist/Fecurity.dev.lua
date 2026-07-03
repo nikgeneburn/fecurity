@@ -1244,15 +1244,15 @@ do
     do
         local function __modImpl()
             local Tokens = {
-                WindowSize = Vector2.new(840, 720),
+                WindowSize = Vector2.new(840, 480),
                 SidebarWidth = 73,
-                PanelTop = 25,
-                PanelHeight = 668,
+                PanelTop = 17,
+                PanelHeight = 445,
                 PanelWidth = 230,
                 PanelGap = 20,
                 PanelLeft = 93,
                 PanelRight = 17,
-                PanelBottom = 27,
+                PanelBottom = 18,
                 Radius = 0,
             }
 
