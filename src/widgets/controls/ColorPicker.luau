@@ -15,7 +15,7 @@ setmetatable(ColorPicker, { __index = BaseWidget })
 
 function ColorPicker.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Default or Options.Value or Color3.new(1, 1, 1)
-    local self = BaseWidget.New(Section, Options, 40)
+    local self = BaseWidget.New(Section, Options, 70)
     setmetatable(self, ColorPicker)
     local Theme = self.Window.Theme
     self.PopupConnections = {}
