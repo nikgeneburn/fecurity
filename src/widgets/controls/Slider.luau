@@ -32,7 +32,7 @@ function Slider.New(Section: any, Options: { [string]: any })
     Options.Max = Options.Max or 100
     Options.Step = Options.Step or 1
     Options.Default = Options.Default or Options.Value or Options.Min
-    local self = BaseWidget.New(Section, Options, 52)
+    local self = BaseWidget.New(Section, Options, 40)
     setmetatable(self, Slider)
     self.Connections = {}
     local Theme = self.Window.Theme
@@ -43,7 +43,7 @@ function Slider.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Slider",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 10, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
     self.Title = Title
 
@@ -55,7 +55,7 @@ function Slider.New(Section: any, Options: { [string]: any })
         Text = "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(ValueLabel, Theme, 12, Theme.Text)
+    Styling.ApplyText(ValueLabel, Theme, 10, Theme.Text)
     FontLoader.Apply(ValueLabel, self.Library.AssetCache)
     ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel = ValueLabel
