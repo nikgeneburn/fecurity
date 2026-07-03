@@ -28,7 +28,7 @@ function Label.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Text, Theme, 10, ToneColor(Theme, Options.Tone))
+    Styling.ApplyText(Text, Theme, 14, ToneColor(Theme, Options.Tone))
     FontLoader.Apply(Text, self.Library.AssetCache)
     self.Text = Text
     self:BindTheme(function(NewTheme)
