@@ -40,7 +40,7 @@ function ColorPicker.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Color",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 10, Theme.Text)
+    Styling.ApplyText(Title, Theme, 14, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Hint = Elements.New("TextLabel", {
@@ -50,7 +50,7 @@ function ColorPicker.New(Section: any, Options: { [string]: any })
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
 
     local Swatch = Elements.New("TextButton", {
@@ -313,7 +313,7 @@ function ColorPicker:OpenPicker()
         Text = Palette.ToRgba(self.Value, self.Alpha),
         ZIndex = 221,
     }, Popup) :: TextBox
-    Styling.ApplyText(Hex, Theme, 10, Theme.Text)
+    Styling.ApplyText(Hex, Theme, 14, Theme.Text)
     FontLoader.Apply(Hex, self.Library.AssetCache)
     local HexStroke = Elements.Stroke(Hex, Theme.Border, 0, 1)
     self.Hex = Hex
@@ -329,7 +329,7 @@ function ColorPicker:OpenPicker()
         Text = "APPLY",
         ZIndex = 221,
     }, Popup) :: TextButton
-    Styling.ApplyText(Apply, Theme, 10, Theme.Text)
+    Styling.ApplyText(Apply, Theme, 14, Theme.Text)
     FontLoader.Apply(Apply, self.Library.AssetCache)
     Apply.TextXAlignment = Enum.TextXAlignment.Center
     self.Apply = Apply
