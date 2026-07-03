@@ -67,7 +67,7 @@ local CallbackCount = 0
 local Window = Fecurity:CreateWindow({
     Title = "Fecurity",
     Subtitle = "Hosted Smoke",
-    Size = UDim2.fromOffset(980, 520),
+    Size = UDim2.fromOffset(720, 840),
     Accent = Color3.fromRGB(106, 98, 198),
     Theme = "Dark",
 })
