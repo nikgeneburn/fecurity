@@ -5,7 +5,7 @@ local Fecurity = require(script.Parent.Parent.src)
 local Window = Fecurity:CreateWindow({
     Title = "Fecurity",
     Subtitle = "Private UI Library",
-    Size = UDim2.fromOffset(840, 720),
+    Size = UDim2.fromOffset(840, 480),
     Accent = Color3.fromRGB(106, 98, 198),
     Theme = "Dark",
 })
