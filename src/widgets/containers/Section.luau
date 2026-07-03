@@ -40,7 +40,7 @@ function Section.New(Column: any, Name: string, Options: { [string]: any }?)
             Text = string.upper(Name),
             ZIndex = 24,
         }, Root) :: TextLabel
-        Styling.ApplyText(Header, Column.Window.Theme, 10, Column.Window.Theme.Muted)
+        Styling.ApplyText(Header, Column.Window.Theme, 14, Column.Window.Theme.Muted)
         FontLoader.Apply(Header, Column.Window.Library.AssetCache)
         self.Header = Header
     end
