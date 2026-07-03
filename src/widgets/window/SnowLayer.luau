@@ -33,25 +33,22 @@ function SnowLayer.New(Window: any, Parent: Instance)
         local Depth = ((Index * 53) % 100) / 100
         local Near = Depth ^ 1.8
         local LeftPercent = (Index * 23 + math.floor(Index / 3) * 11) % 100
-        local Size = 2.4 + Near * 13 + (Index % 5) * 0.18
+        local Size = 4 + Near * 12 + (Index % 5) * 0.18
         local Duration = 18 - Near * 11 + (Index * 7 % 5)
         local Delay = (Index * 0.47) % Duration
         local Drift = math.round((((Index * 29) % 120) - 60) * (0.35 + Near * 1.25))
-        local Opacity = 0.1 + Near * 0.56
+        local Opacity = 0.35 + Near * 0.5
         local Spin = Index % 2 == 0 and 180 or -180
 
-        local Label = Elements.New("TextLabel", {
+        local Label = Elements.New("Frame", {
             Name = "Flake" .. tostring(Index),
-            BackgroundTransparency = 1,
+            BackgroundColor3 = Color3.new(1, 1, 1),
+            BackgroundTransparency = 1 - Opacity,
             BorderSizePixel = 0,
             Size = UDim2.fromOffset(Size, Size),
-            Text = "*",
-            TextColor3 = Color3.new(1, 1, 1),
-            TextTransparency = 1 - Opacity,
-            TextSize = Size,
-            Font = Enum.Font.GothamBold,
             ZIndex = 2,
-        }, Root) :: TextLabel
+        }, Root) :: Frame
+        Elements.Corner(Label, math.ceil(Size / 2))
         table.insert(self.Flakes, {
             Node = Label,
             LeftPercent = LeftPercent,
