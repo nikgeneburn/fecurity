@@ -11,10 +11,20 @@ setmetatable(Countdown, { __index = BaseWidget })
 
 local function Format(Seconds: number): string
     Seconds = math.max(0, math.floor(Seconds))
-    local Hours = math.floor(Seconds / 3600)
+    local Days = math.floor(Seconds / 86400)
+    local Hours = math.floor((Seconds % 86400) / 3600)
     local Minutes = math.floor((Seconds % 3600) / 60)
     local Left = Seconds % 60
-    return string.format("%02d:%02d:%02d", Hours, Minutes, Left)
+    return string.format("%d DAYS %d HOURS %d MINS %d SECS", Days, Hours, Minutes, Left)
+end
+
+local function ToneColor(Theme: { [string]: any }, Tone: string?): Color3
+    if Tone == "muted" then
+        return Theme.Muted
+    elseif Tone == "success" then
+        return Theme.Success
+    end
+    return Theme.Text
 end
 
 function Countdown.New(Section: any, Options: { [string]: any })
@@ -31,11 +41,11 @@ function Countdown.New(Section: any, Options: { [string]: any })
         Text = Options.Text or Format(Options.Seconds or 0),
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Label, Theme, 12, Theme.Accent)
+    Styling.ApplyText(Label, Theme, 10, ToneColor(Theme, Options.Tone))
     FontLoader.Apply(Label, self.Library.AssetCache)
     self.Label = Label
     self:BindTheme(function(NewTheme)
-        Label.TextColor3 = NewTheme.Accent
+        Label.TextColor3 = ToneColor(NewTheme, Options.Tone)
     end)
 
     task.spawn(function()
