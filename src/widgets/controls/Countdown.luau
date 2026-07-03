@@ -41,7 +41,7 @@ function Countdown.New(Section: any, Options: { [string]: any })
         Text = Options.Text or Format(Options.Seconds or 0),
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Label, Theme, 10, ToneColor(Theme, Options.Tone))
+    Styling.ApplyText(Label, Theme, 14, ToneColor(Theme, Options.Tone))
     FontLoader.Apply(Label, self.Library.AssetCache)
     self.Label = Label
     self:BindTheme(function(NewTheme)
