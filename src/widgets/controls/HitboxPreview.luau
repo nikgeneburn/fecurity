@@ -72,7 +72,7 @@ end
 
 function HitboxPreview.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Default or {}
-    local self = BaseWidget.New(Section, Options, 681)
+    local self = BaseWidget.New(Section, Options, 584)
     setmetatable(self, HitboxPreview)
     local Theme = self.Window.Theme
     self.RegionState = table.clone(self.Value)
