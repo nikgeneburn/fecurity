@@ -2075,10 +2075,11 @@ do
     end
     do
         local function __modImpl()
+            local Elements = __DARKLUA_BUNDLE_MODULES.n()
             local Topbar = {}
 
             Topbar.__index = Topbar
-            Topbar.Height = 0
+            Topbar.Height = 16
 
             function Topbar.New(Window, Root, Options)
                 local self = setmetatable({
@@ -2087,6 +2088,16 @@ do
                     Title = Options.Title or 'Fecurity',
                     Subtitle = Options.Subtitle or '',
                 }, Topbar)
+
+                self.Handle = (Elements.New('Frame', {
+                    Name = 'DragHandle',
+                    BackgroundTransparency = 1,
+                    BorderSizePixel = 0,
+                    Active = true,
+                    Position = UDim2.fromOffset(0, 0),
+                    Size = UDim2.new(1, 0, 0, Topbar.Height),
+                    ZIndex = 15,
+                }, Root))
 
                 self:Apply()
 
@@ -5296,7 +5307,7 @@ do
                 Elements.List(self.Notifications, Enum.FillDirection.Vertical, 8)
 
                 self.Sidebar = Sidebar.New(self)
-                self.UnbindDrag = DragController.Attach(Root, Root)
+                self.UnbindDrag = DragController.Attach(self.Topbar.Handle, Root)
                 self.InsertConnection = UserInputService.InputBegan:Connect(function(Input, Processed)
                     if Processed then
                         return
