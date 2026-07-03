@@ -1244,21 +1244,16 @@ do
     do
         local function __modImpl()
             local Tokens = {
-                WindowSize = Vector2.new(774, 481),
+                WindowSize = Vector2.new(980, 520),
                 SidebarWidth = 67,
                 PanelTop = 17,
-                PanelHeight = 446,
-                PanelWidth = 212,
+                PanelHeight = 485,
+                PanelWidth = 281,
                 PanelGap = 18,
                 PanelLeft = 85,
                 PanelRight = 16,
                 PanelBottom = 18,
                 Radius = 0,
-                FontSize = 12,
-                HeaderSize = 11,
-                RowHeight = 40,
-                SliderHeight = 52,
-                DropdownHeight = 72,
             }
 
             function Tokens.PanelX(Index)
@@ -1277,7 +1272,7 @@ do
                 local WidthTarget = WindowWidth or Tokens.WindowSize.X
 
                 if Count == 3 and WidthTarget == Tokens.WindowSize.X then
-                    return Tokens.PanelX(Index), Index == 3 and 213 or Tokens.PanelWidth
+                    return Tokens.PanelX(Index), Tokens.PanelWidth
                 end
 
                 local AreaWidth = math.max(1, WidthTarget - Tokens.PanelLeft - Tokens.PanelRight)
@@ -1873,7 +1868,7 @@ do
                     BackgroundColor3 = Window.Theme.Surface,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 0),
-                    Size = UDim2.fromOffset(Tokens.SidebarWidth, 479),
+                    Size = UDim2.fromOffset(Tokens.SidebarWidth, Tokens.WindowSize.Y - 2),
                     ZIndex = 22,
                 }, Window.Root))
 
@@ -2547,7 +2542,7 @@ do
                 local Theme = self.Window.Theme
                 local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
-                    Size = UDim2.new(0.68, 0, 0, 16),
+                    Size = UDim2.new(0.78, 0, 0, 16),
                     Text = Options.Text or 'Slider',
                     ZIndex = 31,
                 }, self.Root))
@@ -2561,7 +2556,7 @@ do
                     Name = 'Value',
                     AnchorPoint = Vector2.new(1, 0),
                     Position = UDim2.new(1, 0, 0, 0),
-                    Size = UDim2.new(0.35, 0, 0, 16),
+                    Size = UDim2.new(0.25, 0, 0, 16),
                     Text = '',
                     ZIndex = 31,
                 }, self.Root))
