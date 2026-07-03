@@ -53,7 +53,7 @@ function TabButton.New(Window: any, TabObject: any, Index: number)
         Text = string.upper(TabObject.Name),
         ZIndex = 26,
     }, Content) :: TextLabel
-    Styling.ApplyText(Label, Window.Theme, 10, Window.Theme.Muted)
+    Styling.ApplyText(Label, Window.Theme, 14, Window.Theme.Muted)
     FontLoader.Apply(Label, Window.Library.AssetCache)
     Label.TextXAlignment = Enum.TextXAlignment.Center
     self.Label = Label
