@@ -52,7 +52,7 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Dropdown",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 10, Theme.Text)
+    Styling.ApplyText(Title, Theme, 14, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Hint = Elements.New("TextLabel", {
@@ -62,7 +62,7 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
 
     local Box = Elements.New("TextButton", {
@@ -85,9 +85,9 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         Text = "",
         ZIndex = 33,
     }, Box) :: TextLabel
-    Styling.ApplyText(Value, Theme, 10, Theme.Text)
+    Styling.ApplyText(Value, Theme, 14, Theme.Text)
     FontLoader.Apply(Value, self.Library.AssetCache)
-    Styling.FitText(Value, 10, 8)
+    Styling.FitText(Value, 14, 11)
     self.ValueLabel = Value
 
     local Arrow = Elements.New("TextLabel", {
@@ -98,7 +98,7 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         Text = "v",
         ZIndex = 33,
     }, Box) :: TextLabel
-    Styling.ApplyText(Arrow, Theme, 8, Theme.Muted)
+    Styling.ApplyText(Arrow, Theme, 10, Theme.Muted)
     FontLoader.Apply(Arrow, self.Library.AssetCache)
     Arrow.TextXAlignment = Enum.TextXAlignment.Center
     self.Arrow = Arrow
@@ -248,7 +248,7 @@ function Dropdown:OpenMenu()
             Text = tostring(Option),
             ZIndex = 212,
         }, Row) :: TextLabel
-        Styling.ApplyText(Label, Theme, 10, Theme.Muted)
+        Styling.ApplyText(Label, Theme, 14, Theme.Muted)
         FontLoader.Apply(Label, self.Library.AssetCache)
         self.OptionRows[Index] = {
             Option = Option,
