@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 48">
+  <defs>
+    <linearGradient id="logo-fill-gradient" x1="0" y1="10" x2="0" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8f88e5"/>
+      <stop offset="1" stop-color="#3c377f"/>
+    </linearGradient>
+    <mask id="logo-shape-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="50" height="48">
+      <rect width="50" height="48" fill="#000000"/>
+      <g transform="translate(9.464583 10.263334)">
+        <path d="M21.39 7.77L14.47 6.4L15.1 0L7.07 7.72L3.11 10.49L0 18.81L2.25 17.25L0 25.58L11.03 19.59L22.6 25.58L19.72 18.98L29.82 17.71L33.46 12.08L22.93 9.88L21.39 7.77ZM18.27 10.8L14.52 8.61L20.57 9.87L18.27 10.8Z" fill="#ffffff"/>
+      </g>
+      <g transform="translate(12.175695 31.315332)">
+        <path d="M8.34 0L0 4.52L17.08 4.52L8.34 0Z" fill="#ffffff"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="50" height="48" fill="url(#logo-fill-gradient)" mask="url(#logo-shape-mask)"/>
+</svg>
