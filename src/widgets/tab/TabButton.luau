@@ -21,11 +21,10 @@ function TabButton.New(Window: any, TabObject: any, Index: number)
     local Button = Elements.New("TextButton", {
         Name = TabObject.Name .. "Tab",
         AutoButtonColor = false,
-        BackgroundColor3 = Window.Theme.Surface,
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
         Position = UDim2.fromOffset(0, SlotY[Index] or (72 + (Index - 1) * 67)),
-        Size = UDim2.fromOffset(67, 67),
+        Size = UDim2.fromOffset(67, 64),
         Text = "",
         ZIndex = 25,
     }, Window.Sidebar.Root) :: TextButton
@@ -36,7 +35,7 @@ function TabButton.New(Window: any, TabObject: any, Index: number)
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
         Position = UDim2.fromOffset(0, 14),
-        Size = UDim2.fromOffset(67, 38),
+        Size = UDim2.fromOffset(67, 34),
         ZIndex = 26,
     }, Button) :: Frame
     self.Content = Content
@@ -50,11 +49,11 @@ function TabButton.New(Window: any, TabObject: any, Index: number)
     local Label = Elements.New("TextLabel", {
         Name = "Label",
         Position = UDim2.fromOffset(0, 22),
-        Size = UDim2.fromOffset(67, 16),
+        Size = UDim2.fromOffset(67, 12),
         Text = string.upper(TabObject.Name),
         ZIndex = 26,
     }, Content) :: TextLabel
-    Styling.ApplyText(Label, Window.Theme, 12, Window.Theme.Muted)
+    Styling.ApplyText(Label, Window.Theme, 10, Window.Theme.Muted)
     FontLoader.Apply(Label, Window.Library.AssetCache)
     Label.TextXAlignment = Enum.TextXAlignment.Center
     self.Label = Label
@@ -69,13 +68,18 @@ end
 function TabButton:SetActive(Value: boolean)
     self.Active = Value
     self:RefreshTheme()
+    if Value then
+        local SelectedTab = self.Window.Sidebar.SelectedTab
+        SelectedTab.BackgroundTransparency = 0
+        Tween.Play(SelectedTab, 0.16, {
+            Position = UDim2.fromOffset(0, self.Root.Position.Y.Offset),
+        })
+    end
 end
 
 function TabButton:RefreshTheme()
     local Theme = self.Window.Theme
     local ActiveColor = self.Active and Theme.Accent or Theme.Muted
-    self.Root.BackgroundTransparency = self.Active and 0 or 1
-    Tween.Play(self.Root, 0.14, { BackgroundColor3 = self.Active and Theme.Selected or Theme.Surface })
     if self.Icon:IsA("ImageLabel") then
         self.Icon.ImageColor3 = ActiveColor
     elseif self.Icon:IsA("TextLabel") then
