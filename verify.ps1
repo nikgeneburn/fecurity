@@ -263,7 +263,7 @@ if ($KeybindSource -notmatch "ActivationConnection" -or $KeybindSource -notmatch
 }
 
 $SliderSource = Get-Content -LiteralPath (Join-Path $Root "src\widgets\controls\Slider.luau") -Raw
-if ($SliderSource -notmatch "DisconnectInputs" -or $SliderSource -notmatch "Destroying" -or $SliderSource -notmatch "self:Track\(UserInputService.InputChanged") {
+if ($SliderSource -notmatch "DisconnectInputs" -or $SliderSource -notmatch "Destroying" -or $SliderSource -notmatch "self:TrackConnection\(UserInputService.InputChanged") {
     Add-Failure "Slider.luau must track and disconnect drag input connections on destroy"
 }
 
