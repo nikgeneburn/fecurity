@@ -100,23 +100,23 @@ function Slider.New(Section: any, Options: { [string]: any })
         self:SetValue(math.clamp(Stepped, Options.Min, Options.Max))
     end
 
-    self:Track(Track.InputBegan:Connect(function(Input)
+    self:TrackConnection(Track.InputBegan:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
             Dragging = true
             SetFromMouse()
         end
     end))
-    self:Track(Knob.InputBegan:Connect(function(Input)
+    self:TrackConnection(Knob.InputBegan:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
             Dragging = true
         end
     end))
-    self:Track(UserInputService.InputEnded:Connect(function(Input)
+    self:TrackConnection(UserInputService.InputEnded:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
             Dragging = false
         end
     end))
-    self:Track(UserInputService.InputChanged:Connect(function(Input)
+    self:TrackConnection(UserInputService.InputChanged:Connect(function(Input)
         if Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
             SetFromMouse()
         end
@@ -136,7 +136,7 @@ function Slider.New(Section: any, Options: { [string]: any })
     return self
 end
 
-function Slider:Track(Connection: RBXScriptConnection)
+function Slider:TrackConnection(Connection: RBXScriptConnection)
     table.insert(self.Connections, Connection)
     return Connection
 end
