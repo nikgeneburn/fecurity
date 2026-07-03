@@ -4333,34 +4333,9 @@ do
                         self:Refresh()
                     end)
                 end
-
-                local LegendLayout = {
-                    [1] = {
-                        Row = 0,
-                        Col = 0,
-                    },
-                    [2] = {
-                        Row = 1,
-                        Col = 0,
-                    },
-                    [3] = {
-                        Row = 2,
-                        Col = 0,
-                    },
-                    [4] = {
-                        Row = 0,
-                        Col = 1,
-                    },
-                    [5] = {
-                        Row = 1,
-                        Col = 1,
-                    },
-                }
-
                 for Index, Priority in ipairs(Priorities)do
-                    local Slot = LegendLayout[Index]
-                    local Row = Slot.Row
-                    local Col = Slot.Col
+                    local Row = math.floor((Index - 1) / 2)
+                    local Col = (Index - 1) % 2
                     local Dot = (Elements.New('Frame', {
                         Name = Priority.Id .. 'Dot',
                         BackgroundColor3 = Priority.Color,
