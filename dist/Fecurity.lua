@@ -163,7 +163,7 @@ function c.Commit(d,e,f)d.Value=e d.Library.FlagManager:Set(d.Flag,e)if f~=false
 f)end function c.Destroy(d)d:UnregisterFlag()d:UnbindTheme()if d.Root then d.Root:Destroy()end end function c.BindTheme(d,e)if d.Window and d.Window.RegisterThemeBinding then local f=d.Window:
 RegisterThemeBinding(e)if f then table.insert(d.ThemeUnbinds,f)end end end function c.AddColor(d,e)return d.Section:AddColor(e)end function c.AddBind(d,e)return d.Section:AddBind(e)end return c end
 function a.B()local b=a.cache.B if not b then b={c=__modImpl()}a.cache.B=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f=a.j()local g=
-{}g.__index=g setmetatable(g,{__index=b})function g.New(h,i)i.Default=i.Default==true local j=b.New(h,i,60)setmetatable(j,g)local k=j.Window.Theme local l=(c.New('TextLabel',{Name='Title',Position=
+{}g.__index=g setmetatable(g,{__index=b})function g.New(h,i)i.Default=i.Default==true local j=b.New(h,i,40)setmetatable(j,g)local k=j.Window.Theme local l=(c.New('TextLabel',{Name='Title',Position=
 UDim2.fromOffset(0,0),Size=UDim2.new(1,-44,0,16),Text=i.Text or'Toggle',ZIndex=31},j.Root))d.ApplyText(l,k,14,k.Text)e.Apply(l,j.Library.AssetCache)j.Title=l local m=(c.New('TextLabel',{Name='Hint',
 Position=UDim2.fromOffset(0,15),Size=UDim2.new(1,-44,0,14),Text=i.Hint or'',ZIndex=31},j.Root))d.ApplyText(m,k,13,k.Hint)e.Apply(m,j.Library.AssetCache)j.Hint=m local n=(c.New('Frame',{Name='Track',
 AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-1,0,5),Size=UDim2.fromOffset(26,16),BackgroundColor3=k.ToggleOff,BorderSizePixel=0,ZIndex=32},j.Root))c.Corner(n,8)j.Track=n local o=(c.New('Frame',{
@@ -176,7 +176,7 @@ end end do local __modImpl=function()local b=game:GetService('UserInputService')
 function(h,i)if h.Suffix then local j=h.Decimals and string.format('%.'..tostring(h.Decimals)..'f',i)or tostring(math.floor(i+0.5))return j..(h.SuffixSpacing==false and''or' ')..h.Suffix end if h.
 Format=='percent'then return tostring(math.floor(i+0.5))..'%'elseif h.Format=='ms'then return tostring(math.floor(i+0.5))..' MS'elseif h.Format=='coefficient'then return'x'..string.format('%.2f',i)
 elseif h.Format=='fixed2'then return string.format('%.2f',i)end return tostring(math.floor(i+0.5))end function g.New(h,i)i.Min=i.Min or 0 i.Max=i.Max or 100 i.Step=i.Step or 1 i.Default=i.Default or i
-.Value or i.Min local j=c.New(h,i,60)setmetatable(j,g)j.Connections={}local k=j.Window.Theme local l=(d.New('TextLabel',{Name='Title',Size=UDim2.new(0.78,0,0,16),Text=i.Text or'Slider',ZIndex=31},j.
+.Value or i.Min local j=c.New(h,i,40)setmetatable(j,g)j.Connections={}local k=j.Window.Theme local l=(d.New('TextLabel',{Name='Title',Size=UDim2.new(0.78,0,0,16),Text=i.Text or'Slider',ZIndex=31},j.
 Root))e.ApplyText(l,k,14,k.Text)f.Apply(l,j.Library.AssetCache)j.Title=l local m=(d.New('TextLabel',{Name='Value',AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,0,0,0),Size=UDim2.new(0.25,0,0,16),
 Text='',ZIndex=31},j.Root))e.ApplyText(m,k,14,k.Text)f.Apply(m,j.Library.AssetCache)m.TextXAlignment=Enum.TextXAlignment.Right j.ValueLabel=m local n=(d.New('Frame',{Name='Track',Position=UDim2.
 fromOffset(0,30),Size=UDim2.new(1,0,0,2),BackgroundColor3=k.SliderTrack,BorderSizePixel=0,ZIndex=31},j.Root))j.Track=n local o=(d.New('Frame',{Name='Fill',Size=UDim2.fromOffset(0,2),BackgroundColor3=k
@@ -194,59 +194,59 @@ D()local b=a.cache.D if not b then b={c=__modImpl()}a.cache.D=b end return b.c e
 =g setmetatable(g,{__index=b})local Contains=function(h,i)for j,k in ipairs(h)do if k==i then return true end end return false end local Display=function(h)if type(h)=='table'then return#h>0 and table
 .concat(h,', ')or'None'end return tostring(h or'None')end function g.New(h,i)i.Values=i.Values or i.Options or{}local j=if i.Default~=nil then i.Default else i.Value if i.Multi then i.Default=j if i.
 Default==nil then i.Default={}elseif type(i.Default)~='table'then i.Default={i.Default}end else i.Default=j or i.Values[1]or'None'end if i.Multi and type(i.Default)~='table'then i.Default={i.Default}
-end local k=b.New(h,i,108)setmetatable(k,g)local l=k.Window.Theme local m=(c.New('TextLabel',{Name='Title',Size=UDim2.new(1,0,0,16),Text=i.Text or'Dropdown',ZIndex=31},k.Root))d.ApplyText(m,l,14,l.
-Text)e.Apply(m,k.Library.AssetCache)local n=(c.New('TextLabel',{Name='Hint',Position=UDim2.fromOffset(0,15),Size=UDim2.new(1,0,0,14),Text=i.Hint or'',ZIndex=31},k.Root))d.ApplyText(n,l,13,l.Hint)e.
-Apply(n,k.Library.AssetCache)local o=(c.New('TextButton',{Name='Box',AutoButtonColor=false,BackgroundColor3=l.Control,BorderSizePixel=0,Position=UDim2.fromOffset(0,31),Size=UDim2.new(1,0,0,24),Text=''
-,ZIndex=32},k.Root))k.Box=o c.Stroke(o,l.Border,0.45,1)local p=(c.New('TextLabel',{Name='Value',Position=UDim2.fromOffset(16,7),Size=UDim2.new(1,-50,0,12),Text='',ZIndex=33},o))d.ApplyText(p,l,14,l.
-Text)e.Apply(p,k.Library.AssetCache)d.FitText(p,14,11)k.ValueLabel=p local q=(c.New('TextLabel',{Name='Arrow',AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-18,0,10),Size=UDim2.fromOffset(8,5),
-Text='v',ZIndex=33},o))d.ApplyText(q,l,10,l.Muted)e.Apply(q,k.Library.AssetCache)q.TextXAlignment=Enum.TextXAlignment.Center k.Arrow=q o.MouseButton1Click:Connect(function()k:ToggleMenu()end)o.
-MouseEnter:Connect(function()f.Play(o,0.12,{BackgroundColor3=k.Window.Theme.ControlHover})end)o.MouseLeave:Connect(function()f.Play(o,0.12,{BackgroundColor3=k.Window.Theme.Control})end)k.
-DestroyConnection=k.Root.Destroying:Connect(function()k:CloseMenu(true)end)k:BindTheme(function(r)m.TextColor3=r.Text n.TextColor3=r.Hint o.BackgroundColor3=r.Control p.TextColor3=r.Text q.TextColor3=
-r.Muted k:RefreshRows()end)k:SetValue(k.Value,false)return k end function g.CloseMenu(h,i)local j=h.Menu if j then h.Menu=nil h.OptionRows=nil if i then j:Destroy()else local k=f.Play(j,0.12,{Size=
-UDim2.fromOffset(j.AbsoluteSize.X,0),BackgroundTransparency=0.15},Enum.EasingStyle.Quad,Enum.EasingDirection.In)k.Completed:Connect(function()if j and j.Parent then j:Destroy()end end)end end if h.
-Window.Dropdown==h then h.Window.Dropdown=nil end if h.Arrow and h.Arrow.Parent then if i then h.Arrow.Rotation=0 else f.Play(h.Arrow,0.12,{Rotation=0})end end end function g.ToggleMenu(h)if h.Menu
-then h:CloseMenu()else h:OpenMenu()end end function g.OpenMenu(h)if h.Window.Dropdown and h.Window.Dropdown~=h then h.Window.Dropdown:CloseMenu()end if h.Options.GetValues then local i,j=pcall(h.
-Options.GetValues)if i and type(j)=='table'then h.Options.Values=j end end h.Window.Dropdown=h local i=h.Window.Theme local j=h.Window.Root.AbsolutePosition local k=h.Box.AbsolutePosition local l=22
-local m=math.max(l,math.min(#h.Options.Values,7)*l)local n=(c.New('Frame',{Name='DropdownMenu',BackgroundColor3=i.Control,BackgroundTransparency=0.15,BorderSizePixel=0,ClipsDescendants=true,Position=
-UDim2.fromOffset(k.X-j.X,k.Y-j.Y+h.Box.AbsoluteSize.Y+1),Size=UDim2.fromOffset(h.Box.AbsoluteSize.X,0),ZIndex=210},h.Window.Overlay))c.Stroke(n,i.Border,0,1)h.Menu=n h.OptionRows={}f.Play(n,0.14,{Size
-=UDim2.fromOffset(h.Box.AbsoluteSize.X,m),BackgroundTransparency=0})f.Play(h.Arrow,0.14,{Rotation=180})local o=(c.New('ScrollingFrame',{Name='Options',Active=true,BackgroundTransparency=1,
-BorderSizePixel=0,CanvasSize=UDim2.fromOffset(0,#h.Options.Values*l),ScrollBarImageColor3=i.Accent,ScrollBarThickness=#h.Options.Values>7 and 2 or 0,ScrollingDirection=Enum.ScrollingDirection.Y,Size=
-UDim2.fromScale(1,1),ZIndex=211},n))for p,q in ipairs(h.Options.Values)do local r=(c.New('TextButton',{Name='Option'..tostring(p),AutoButtonColor=false,BackgroundColor3=i.Control,
-BackgroundTransparency=0,BorderSizePixel=0,Position=UDim2.fromOffset(0,(p-1)*l),Size=UDim2.new(1,-2,0,l),Text='',ZIndex=211},o))local s=nil local t=nil if h.Options.Multi then s=(c.New('Frame',{Name=
-'Indicator',BackgroundColor3=i.Accent,BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(13,7),Size=UDim2.fromOffset(7,7),ZIndex=212},r))t=c.Stroke(s,i.Muted,0,1)end local u=(c.New(
-'TextLabel',{Name='Label',Position=UDim2.fromOffset(h.Options.Multi and 30 or 16,0),Size=UDim2.new(1,h.Options.Multi and-46 or-32,1,0),Text=tostring(q),ZIndex=212},r))d.ApplyText(u,i,14,i.Muted)e.
-Apply(u,h.Library.AssetCache)h.OptionRows[p]={Option=q,Row=r,Label=u,Indicator=s,IndicatorStroke=t}r.MouseEnter:Connect(function()f.Play(r,0.1,{BackgroundColor3=i.ControlHover})end)r.MouseLeave:
-Connect(function()local v=if h.Options.Multi then Contains(h.Value,q)else h.Value==q if not v then f.Play(r,0.12,{BackgroundColor3=h.Window.Theme.Control})end end)r.MouseButton1Click:Connect(function(
-)f.Press(r,i.Control,i.ControlHover)if h.Options.Multi then local v=table.clone(h.Value)if Contains(v,q)then for w=#v,1,-1 do if v[w]==q then table.remove(v,w)end end else table.insert(v,q)end h:
-SetValue(v)h:RefreshRows()else h:SetValue(q)h:CloseMenu()end end)end h:RefreshRows()end function g.SetValue(h,i,j)if h.Options.Multi and type(i)~='table'then i={i}end h:Commit(i,j)h.ValueLabel.Text=
-Display(i)end function g.SetValues(h,i,j)h.Options.Values=i or{}local k=j or h.Value if h.Options.Multi then local l=if type(k)=='table'then k else{k}local m={}for n,o in ipairs(l)do if Contains(h.
-Options.Values,o)then table.insert(m,o)end end h:SetValue(m,false)elseif not Contains(h.Options.Values,k)then h:SetValue(h.Options.Values[1]or'None',false)else h:SetValue(k,false)end if h.Menu then
-local l=h.Menu h.Menu=nil h.OptionRows=nil l:Destroy()h:OpenMenu()else h:RefreshRows()end end function g.RefreshRows(h)if not h.OptionRows then return end local i=h.Window.Theme for j,k in ipairs(h.
-OptionRows)do local l=if h.Options.Multi then Contains(h.Value,k.Option)else h.Value==k.Option if k.Indicator then k.Indicator.BackgroundColor3=i.Accent k.Indicator.BackgroundTransparency=l and 0 or 1
-end if k.IndicatorStroke then k.IndicatorStroke.Color=l and i.Accent or i.Muted end k.Label.TextColor3=l and i.Accent or i.Muted k.Row.BackgroundColor3=l and i.ControlHover or i.Control end if h.Menu
-then h.Menu.BackgroundColor3=i.Control end end function g.Destroy(h)h:CloseMenu(true)if h.DestroyConnection then h.DestroyConnection:Disconnect()h.DestroyConnection=nil end b.Destroy(h)end return g
-end function a.E()local b=a.cache.E if not b then b={c=__modImpl()}a.cache.E=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f=a.k()
-local g=a.j()local h={}h.__index=h setmetatable(h,{__index=b})function h.New(i,j)local k=b.New(i,j,j.Height or 60)setmetatable(k,h)local l=k.Window.Theme local m=l.Accent local n=(c.New('TextButton',{
-Name='Button',AutoButtonColor=false,BackgroundColor3=m,BorderSizePixel=0,Position=UDim2.fromOffset(0,6),Size=UDim2.new(1,0,0,26),Text=j.Text or'BUTTON',ZIndex=31},k.Root))d.ApplyText(n,l,14,l.Text)e.
-Apply(n,k.Library.AssetCache)n.TextXAlignment=Enum.TextXAlignment.Center d.FitText(n,14,12)k.Control=n k.BaseColor=m n.MouseButton1Down:Connect(function()g.Play(n,0.08,{BackgroundColor3=f.Lighten(k.
-BaseColor,0.16)})end)n.MouseButton1Up:Connect(function()g.Play(n,0.12,{BackgroundColor3=k.BaseColor})end)n.MouseLeave:Connect(function()g.Play(n,0.12,{BackgroundColor3=k.BaseColor})end)n.
-MouseButton1Click:Connect(function()k.Library:RunCallback(j.Text or'Button',k.Callback)end)k:BindTheme(function(o)k.BaseColor=o.Accent n.BackgroundColor3=k.BaseColor n.TextColor3=o.Text end)return k
-end return h end function a.F()local b=a.cache.F if not b then b={c=__modImpl()}a.cache.F=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()
-local f={}f.__index=f setmetatable(f,{__index=b})function f.New(g,h)h.Default=h.Default or''local i=b.New(g,h,78)setmetatable(i,f)local j=i.Window.Theme local k=(c.New('TextLabel',{Name='Title',Size=
-UDim2.new(1,0,0,16),Text=h.Text or'Textbox',ZIndex=31},i.Root))d.ApplyText(k,j,14,j.Text)e.Apply(k,i.Library.AssetCache)local l=(c.New('TextBox',{Name='Box',BackgroundColor3=j.Control,BorderSizePixel=
-0,ClearTextOnFocus=false,Position=UDim2.fromOffset(0,22),Size=UDim2.new(1,0,0,24),Text=tostring(i.Value),ZIndex=32},i.Root))d.ApplyText(l,j,14,j.Text)e.Apply(l,i.Library.AssetCache)l.TextXAlignment=
-Enum.TextXAlignment.Left i.Box=l l.FocusLost:Connect(function()i:SetValue(l.Text)end)i:BindTheme(function(m)k.TextColor3=m.Text l.BackgroundColor3=m.Control l.TextColor3=m.Text end)return i end
-function f.SetValue(g,h,i)g:Commit(tostring(h or''),i)if g.Box.Text~=g.Value then g.Box.Text=g.Value end end return f end function a.G()local b=a.cache.G if not b then b={c=__modImpl()}a.cache.G=b end
-return b.c end end do local __modImpl=function()local b=game:GetService('UserInputService')local c=a.B()local d=a.n()local e=a.s()local f=a.t()local g=a.p()local h={}h.__index=h setmetatable(h,{
-__index=c})function h.New(i,j)j.Default=j.Default or j.Value or'None'local k=j.Callback or j.OnPressed j.Callback=j.Changed or j.OnChanged local l=c.New(i,j,60)setmetatable(l,h)l.ActivationCallback=k
-local m=l.Window.Theme local n=(d.New('TextLabel',{Name='Title',Size=UDim2.new(1,-92,0,16),Text=j.Text or'Keybind',ZIndex=31},l.Root))e.ApplyText(n,m,14,m.Text)f.Apply(n,l.Library.AssetCache)local o=(
-d.New('TextLabel',{Name='Hint',Position=UDim2.fromOffset(0,15),Size=UDim2.new(1,-92,0,14),Text=j.Hint or'',ZIndex=31},l.Root))e.ApplyText(o,m,13,m.Hint)f.Apply(o,l.Library.AssetCache)local p=(d.New(
-'TextButton',{Name='Box',AutoButtonColor=false,AnchorPoint=Vector2.new(1,0),BackgroundColor3=m.Control,BorderSizePixel=0,Position=UDim2.new(1,0,0,1),Size=UDim2.fromOffset(90,20),Text=tostring(l.Value)
-,ZIndex=32},l.Root))e.ApplyText(p,m,14,m.Text)f.Apply(p,l.Library.AssetCache)p.TextXAlignment=Enum.TextXAlignment.Center e.FitText(p,14,11)l.Box=p p.MouseButton1Click:Connect(function()l:Listen()end)l
-.ActivationConnection=b.InputBegan:Connect(function(q,r)if r or l.Listening then return end if g.IsActivation(q,l.Value)then l.Library:RunCallback(j.Text or'Keybind',l.ActivationCallback,l.Value,q)end
-end)l.DestroyConnection=l.Root.Destroying:Connect(function()l:DisconnectInputs()end)l:BindTheme(function(q)n.TextColor3=q.Text o.TextColor3=q.Hint p.BackgroundColor3=q.Control p.TextColor3=q.Text end)
-l:SetValue(l.Value,false)return l end function h.Listen(i)if i.Listening then return end i.Listening=true i.Box.Text='...'i.Box.BackgroundColor3=i.Window.Theme.ControlHover if i.ListenConnection then
-i.ListenConnection:Disconnect()end i.ListenConnection=b.InputBegan:Connect(function(j,k)if k then return end i.ListenConnection:Disconnect()i.ListenConnection=nil i.Listening=false i.Box.
+end local k=b.New(h,i,72)setmetatable(k,g)local l=k.Window.Theme local m=(c.New('TextLabel',{Name='Title',Size=UDim2.new(1,0,0,16),Text=i.Text or'Dropdown',ZIndex=31},k.Root))d.ApplyText(m,l,14,l.Text
+)e.Apply(m,k.Library.AssetCache)local n=(c.New('TextLabel',{Name='Hint',Position=UDim2.fromOffset(0,15),Size=UDim2.new(1,0,0,14),Text=i.Hint or'',ZIndex=31},k.Root))d.ApplyText(n,l,13,l.Hint)e.Apply(n
+,k.Library.AssetCache)local o=(c.New('TextButton',{Name='Box',AutoButtonColor=false,BackgroundColor3=l.Control,BorderSizePixel=0,Position=UDim2.fromOffset(0,31),Size=UDim2.new(1,0,0,24),Text='',ZIndex
+=32},k.Root))k.Box=o c.Stroke(o,l.Border,0.45,1)local p=(c.New('TextLabel',{Name='Value',Position=UDim2.fromOffset(16,7),Size=UDim2.new(1,-50,0,12),Text='',ZIndex=33},o))d.ApplyText(p,l,14,l.Text)e.
+Apply(p,k.Library.AssetCache)d.FitText(p,14,11)k.ValueLabel=p local q=(c.New('TextLabel',{Name='Arrow',AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-18,0,10),Size=UDim2.fromOffset(8,5),Text='v',
+ZIndex=33},o))d.ApplyText(q,l,10,l.Muted)e.Apply(q,k.Library.AssetCache)q.TextXAlignment=Enum.TextXAlignment.Center k.Arrow=q o.MouseButton1Click:Connect(function()k:ToggleMenu()end)o.MouseEnter:
+Connect(function()f.Play(o,0.12,{BackgroundColor3=k.Window.Theme.ControlHover})end)o.MouseLeave:Connect(function()f.Play(o,0.12,{BackgroundColor3=k.Window.Theme.Control})end)k.DestroyConnection=k.Root
+.Destroying:Connect(function()k:CloseMenu(true)end)k:BindTheme(function(r)m.TextColor3=r.Text n.TextColor3=r.Hint o.BackgroundColor3=r.Control p.TextColor3=r.Text q.TextColor3=r.Muted k:RefreshRows()
+end)k:SetValue(k.Value,false)return k end function g.CloseMenu(h,i)local j=h.Menu if j then h.Menu=nil h.OptionRows=nil if i then j:Destroy()else local k=f.Play(j,0.12,{Size=UDim2.fromOffset(j.
+AbsoluteSize.X,0),BackgroundTransparency=0.15},Enum.EasingStyle.Quad,Enum.EasingDirection.In)k.Completed:Connect(function()if j and j.Parent then j:Destroy()end end)end end if h.Window.Dropdown==h
+then h.Window.Dropdown=nil end if h.Arrow and h.Arrow.Parent then if i then h.Arrow.Rotation=0 else f.Play(h.Arrow,0.12,{Rotation=0})end end end function g.ToggleMenu(h)if h.Menu then h:CloseMenu()
+else h:OpenMenu()end end function g.OpenMenu(h)if h.Window.Dropdown and h.Window.Dropdown~=h then h.Window.Dropdown:CloseMenu()end if h.Options.GetValues then local i,j=pcall(h.Options.GetValues)if i
+and type(j)=='table'then h.Options.Values=j end end h.Window.Dropdown=h local i=h.Window.Theme local j=h.Window.Root.AbsolutePosition local k=h.Box.AbsolutePosition local l=22 local m=math.max(l,math.
+min(#h.Options.Values,7)*l)local n=(c.New('Frame',{Name='DropdownMenu',BackgroundColor3=i.Control,BackgroundTransparency=0.15,BorderSizePixel=0,ClipsDescendants=true,Position=UDim2.fromOffset(k.X-j.X,
+k.Y-j.Y+h.Box.AbsoluteSize.Y+1),Size=UDim2.fromOffset(h.Box.AbsoluteSize.X,0),ZIndex=210},h.Window.Overlay))c.Stroke(n,i.Border,0,1)h.Menu=n h.OptionRows={}f.Play(n,0.14,{Size=UDim2.fromOffset(h.Box.
+AbsoluteSize.X,m),BackgroundTransparency=0})f.Play(h.Arrow,0.14,{Rotation=180})local o=(c.New('ScrollingFrame',{Name='Options',Active=true,BackgroundTransparency=1,BorderSizePixel=0,CanvasSize=UDim2.
+fromOffset(0,#h.Options.Values*l),ScrollBarImageColor3=i.Accent,ScrollBarThickness=#h.Options.Values>7 and 2 or 0,ScrollingDirection=Enum.ScrollingDirection.Y,Size=UDim2.fromScale(1,1),ZIndex=211},n))
+for p,q in ipairs(h.Options.Values)do local r=(c.New('TextButton',{Name='Option'..tostring(p),AutoButtonColor=false,BackgroundColor3=i.Control,BackgroundTransparency=0,BorderSizePixel=0,Position=UDim2
+.fromOffset(0,(p-1)*l),Size=UDim2.new(1,-2,0,l),Text='',ZIndex=211},o))local s=nil local t=nil if h.Options.Multi then s=(c.New('Frame',{Name='Indicator',BackgroundColor3=i.Accent,
+BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(13,7),Size=UDim2.fromOffset(7,7),ZIndex=212},r))t=c.Stroke(s,i.Muted,0,1)end local u=(c.New('TextLabel',{Name='Label',Position=
+UDim2.fromOffset(h.Options.Multi and 30 or 16,0),Size=UDim2.new(1,h.Options.Multi and-46 or-32,1,0),Text=tostring(q),ZIndex=212},r))d.ApplyText(u,i,14,i.Muted)e.Apply(u,h.Library.AssetCache)h.
+OptionRows[p]={Option=q,Row=r,Label=u,Indicator=s,IndicatorStroke=t}r.MouseEnter:Connect(function()f.Play(r,0.1,{BackgroundColor3=i.ControlHover})end)r.MouseLeave:Connect(function()local v=if h.
+Options.Multi then Contains(h.Value,q)else h.Value==q if not v then f.Play(r,0.12,{BackgroundColor3=h.Window.Theme.Control})end end)r.MouseButton1Click:Connect(function()f.Press(r,i.Control,i.
+ControlHover)if h.Options.Multi then local v=table.clone(h.Value)if Contains(v,q)then for w=#v,1,-1 do if v[w]==q then table.remove(v,w)end end else table.insert(v,q)end h:SetValue(v)h:RefreshRows()
+else h:SetValue(q)h:CloseMenu()end end)end h:RefreshRows()end function g.SetValue(h,i,j)if h.Options.Multi and type(i)~='table'then i={i}end h:Commit(i,j)h.ValueLabel.Text=Display(i)end function g.
+SetValues(h,i,j)h.Options.Values=i or{}local k=j or h.Value if h.Options.Multi then local l=if type(k)=='table'then k else{k}local m={}for n,o in ipairs(l)do if Contains(h.Options.Values,o)then table.
+insert(m,o)end end h:SetValue(m,false)elseif not Contains(h.Options.Values,k)then h:SetValue(h.Options.Values[1]or'None',false)else h:SetValue(k,false)end if h.Menu then local l=h.Menu h.Menu=nil h.
+OptionRows=nil l:Destroy()h:OpenMenu()else h:RefreshRows()end end function g.RefreshRows(h)if not h.OptionRows then return end local i=h.Window.Theme for j,k in ipairs(h.OptionRows)do local l=if h.
+Options.Multi then Contains(h.Value,k.Option)else h.Value==k.Option if k.Indicator then k.Indicator.BackgroundColor3=i.Accent k.Indicator.BackgroundTransparency=l and 0 or 1 end if k.IndicatorStroke
+then k.IndicatorStroke.Color=l and i.Accent or i.Muted end k.Label.TextColor3=l and i.Accent or i.Muted k.Row.BackgroundColor3=l and i.ControlHover or i.Control end if h.Menu then h.Menu.
+BackgroundColor3=i.Control end end function g.Destroy(h)h:CloseMenu(true)if h.DestroyConnection then h.DestroyConnection:Disconnect()h.DestroyConnection=nil end b.Destroy(h)end return g end function a
+.E()local b=a.cache.E if not b then b={c=__modImpl()}a.cache.E=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f=a.k()local g=a.j()local
+h={}h.__index=h setmetatable(h,{__index=b})function h.New(i,j)local k=b.New(i,j,j.Height or 40)setmetatable(k,h)local l=k.Window.Theme local m=l.Accent local n=(c.New('TextButton',{Name='Button',
+AutoButtonColor=false,BackgroundColor3=m,BorderSizePixel=0,Position=UDim2.fromOffset(0,6),Size=UDim2.new(1,0,0,26),Text=j.Text or'BUTTON',ZIndex=31},k.Root))d.ApplyText(n,l,14,l.Text)e.Apply(n,k.
+Library.AssetCache)n.TextXAlignment=Enum.TextXAlignment.Center d.FitText(n,14,12)k.Control=n k.BaseColor=m n.MouseButton1Down:Connect(function()g.Play(n,0.08,{BackgroundColor3=f.Lighten(k.BaseColor,
+0.16)})end)n.MouseButton1Up:Connect(function()g.Play(n,0.12,{BackgroundColor3=k.BaseColor})end)n.MouseLeave:Connect(function()g.Play(n,0.12,{BackgroundColor3=k.BaseColor})end)n.MouseButton1Click:
+Connect(function()k.Library:RunCallback(j.Text or'Button',k.Callback)end)k:BindTheme(function(o)k.BaseColor=o.Accent n.BackgroundColor3=k.BaseColor n.TextColor3=o.Text end)return k end return h end
+function a.F()local b=a.cache.F if not b then b={c=__modImpl()}a.cache.F=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f={}f.__index=f
+setmetatable(f,{__index=b})function f.New(g,h)h.Default=h.Default or''local i=b.New(g,h,52)setmetatable(i,f)local j=i.Window.Theme local k=(c.New('TextLabel',{Name='Title',Size=UDim2.new(1,0,0,16),
+Text=h.Text or'Textbox',ZIndex=31},i.Root))d.ApplyText(k,j,14,j.Text)e.Apply(k,i.Library.AssetCache)local l=(c.New('TextBox',{Name='Box',BackgroundColor3=j.Control,BorderSizePixel=0,ClearTextOnFocus=
+false,Position=UDim2.fromOffset(0,22),Size=UDim2.new(1,0,0,24),Text=tostring(i.Value),ZIndex=32},i.Root))d.ApplyText(l,j,14,j.Text)e.Apply(l,i.Library.AssetCache)l.TextXAlignment=Enum.TextXAlignment.
+Left i.Box=l l.FocusLost:Connect(function()i:SetValue(l.Text)end)i:BindTheme(function(m)k.TextColor3=m.Text l.BackgroundColor3=m.Control l.TextColor3=m.Text end)return i end function f.SetValue(g,h,i)
+g:Commit(tostring(h or''),i)if g.Box.Text~=g.Value then g.Box.Text=g.Value end end return f end function a.G()local b=a.cache.G if not b then b={c=__modImpl()}a.cache.G=b end return b.c end end do
+local __modImpl=function()local b=game:GetService('UserInputService')local c=a.B()local d=a.n()local e=a.s()local f=a.t()local g=a.p()local h={}h.__index=h setmetatable(h,{__index=c})function h.New(i,
+j)j.Default=j.Default or j.Value or'None'local k=j.Callback or j.OnPressed j.Callback=j.Changed or j.OnChanged local l=c.New(i,j,40)setmetatable(l,h)l.ActivationCallback=k local m=l.Window.Theme local
+n=(d.New('TextLabel',{Name='Title',Size=UDim2.new(1,-92,0,16),Text=j.Text or'Keybind',ZIndex=31},l.Root))e.ApplyText(n,m,14,m.Text)f.Apply(n,l.Library.AssetCache)local o=(d.New('TextLabel',{Name=
+'Hint',Position=UDim2.fromOffset(0,15),Size=UDim2.new(1,-92,0,14),Text=j.Hint or'',ZIndex=31},l.Root))e.ApplyText(o,m,13,m.Hint)f.Apply(o,l.Library.AssetCache)local p=(d.New('TextButton',{Name='Box',
+AutoButtonColor=false,AnchorPoint=Vector2.new(1,0),BackgroundColor3=m.Control,BorderSizePixel=0,Position=UDim2.new(1,0,0,1),Size=UDim2.fromOffset(90,20),Text=tostring(l.Value),ZIndex=32},l.Root))e.
+ApplyText(p,m,14,m.Text)f.Apply(p,l.Library.AssetCache)p.TextXAlignment=Enum.TextXAlignment.Center e.FitText(p,14,11)l.Box=p p.MouseButton1Click:Connect(function()l:Listen()end)l.ActivationConnection=
+b.InputBegan:Connect(function(q,r)if r or l.Listening then return end if g.IsActivation(q,l.Value)then l.Library:RunCallback(j.Text or'Keybind',l.ActivationCallback,l.Value,q)end end)l.
+DestroyConnection=l.Root.Destroying:Connect(function()l:DisconnectInputs()end)l:BindTheme(function(q)n.TextColor3=q.Text o.TextColor3=q.Hint p.BackgroundColor3=q.Control p.TextColor3=q.Text end)l:
+SetValue(l.Value,false)return l end function h.Listen(i)if i.Listening then return end i.Listening=true i.Box.Text='...'i.Box.BackgroundColor3=i.Window.Theme.ControlHover if i.ListenConnection then i.
+ListenConnection:Disconnect()end i.ListenConnection=b.InputBegan:Connect(function(j,k)if k then return end i.ListenConnection:Disconnect()i.ListenConnection=nil i.Listening=false i.Box.
 BackgroundColor3=i.Window.Theme.Control i:SetValue(g.Normalize(j))end)end function h.SetValue(i,j,k)i:Commit(g.Normalize(j or'None'),k)i.Box.Text=i.Value end function h.DisconnectInputs(i)if i.
 ListenConnection then i.ListenConnection:Disconnect()i.ListenConnection=nil end if i.ActivationConnection then i.ActivationConnection:Disconnect()i.ActivationConnection=nil end if i.DestroyConnection
 then i.DestroyConnection:Disconnect()i.DestroyConnection=nil end end function h.Destroy(i)i:DisconnectInputs()c.Destroy(i)end return h end function a.H()local b=a.cache.H if not b then b={c=__modImpl(
@@ -257,7 +257,7 @@ Color3.fromRGB(255,0,0))})function c.ToColorAlpha(d)if typeof(d)=='Color3'then r
 if type(d)=='string'then local e,f=b.ParseWithAlpha(d)return e or b.Hex(d),f end return Color3.new(1,1,1),nil end function c.AddGradient(d,e,f,g)local h=Instance.new('UIGradient')h.Color=e if f then h
 .Transparency=f end h.Rotation=g or 0 h.Parent=d return h end return c end function a.I()local b=a.cache.I if not b then b={c=__modImpl()}a.cache.I=b end return b.c end end do local __modImpl=function
 ()local b=game:GetService('UserInputService')local c=a.B()local d=a.n()local e=a.s()local f=a.t()local g=a.k()local h=a.I()local i={}i.__index=i setmetatable(i,{__index=c})function i.New(j,k)k.Default
-=k.Default or k.Value or Color3.new(1,1,1)local l=c.New(j,k,60)setmetatable(l,i)local m=l.Window.Theme l.PopupConnections={}l.Alpha=math.clamp(tonumber(k.Alpha or k.DefaultAlpha)or 1,0,1)if l.Flag
+=k.Default or k.Value or Color3.new(1,1,1)local l=c.New(j,k,40)setmetatable(l,i)local m=l.Window.Theme l.PopupConnections={}l.Alpha=math.clamp(tonumber(k.Alpha or k.DefaultAlpha)or 1,0,1)if l.Flag
 then local n=l.Flag..'.Alpha'l.AlphaFlag=n local o=l.Library.FlagManager:Get(n,nil)if o~=nil then l.Alpha=math.clamp(tonumber(o)or l.Alpha,0,1)end l.Library.FlagManager:Register(n,{SetValue=function(p
 ,q,r)l:SetAlpha(q,r)end},l.Alpha,l.SkipFlag)end local n=(d.New('TextLabel',{Name='Title',Size=UDim2.new(1,-44,0,16),Text=k.Text or'Color',ZIndex=31},l.Root))e.ApplyText(n,m,14,m.Text)f.Apply(n,l.
 Library.AssetCache)local o=(d.New('TextLabel',{Name='Hint',Position=UDim2.fromOffset(0,15),Size=UDim2.new(1,-44,0,14),Text=k.Hint or'',ZIndex=31},l.Root))e.ApplyText(o,m,13,m.Hint)f.Apply(o,l.Library.
@@ -312,130 +312,129 @@ fromRGB(69,71,77)}}local j={{Id='Head',X=73,Y=12,W=34,H=48},{Id='Body',X=52,Y=60
 CreateImageFallback(l,m)local n=(c.New('Frame',{Name='PreviewFallback',BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(17,8),Size=UDim2.fromOffset(178,274),ZIndex=30},l.Root))l.
 FallbackParts={}for o,p in ipairs(k)do local q=(c.New('Frame',{Name=p.Name,BackgroundColor3=m.Muted,BackgroundTransparency=0.52,BorderSizePixel=0,Position=UDim2.fromOffset(p.X,p.Y),Size=UDim2.
 fromOffset(p.W,p.H),ZIndex=30},n))c.Corner(q,p.Round)table.insert(l.FallbackParts,q)end l:BindTheme(function(o)for p,q in ipairs(l.FallbackParts)do q.BackgroundColor3=o.Muted end end)end function h.
-New(l,m)m.Default=m.Default or{}local n=b.New(l,m,584)setmetatable(n,h)local o=n.Window.Theme n.RegionState=table.clone(n.Value)n.Overlays={}local p=(c.New('ImageLabel',{Name='PreviewImage',
+New(l,m)m.Default=m.Default or{}local n=b.New(l,m,390)setmetatable(n,h)local o=n.Window.Theme n.RegionState=table.clone(n.Value)n.Overlays={}local p=(c.New('ImageLabel',{Name='PreviewImage',
 BackgroundTransparency=1,Position=UDim2.fromOffset(17,8),Size=UDim2.fromOffset(178,274),ScaleType=Enum.ScaleType.Fit,ZIndex=31},n.Root))if not f.Apply(p,n.Library.AssetCache,'HitboxPreview')then p.
 Visible=false n:CreateImageFallback(o)end n.Image=p for q,r in ipairs(j)do local s=(c.New('TextButton',{Name=r.Id,AutoButtonColor=false,BackgroundColor3=o.Accent,BackgroundTransparency=1,
 BorderSizePixel=0,Position=UDim2.fromOffset(17+r.X,8+r.Y),Size=UDim2.fromOffset(r.W,r.H),Text='',ZIndex=34},n.Root))n.Overlays[r.Id]=s s.MouseButton1Click:Connect(function()n:Cycle(r.Id)end)s.
 MouseEnter:Connect(function()local t=n:PriorityFor(r.Id)if t then g.Play(s,0.12,{BackgroundColor3=t.Color,BackgroundTransparency=0.32})else g.Play(s,0.12,{BackgroundColor3=n.Window.Theme.Accent,
-BackgroundTransparency=0.84})end end)s.MouseLeave:Connect(function()n:Refresh()end)end local q={[1]={Row=0,Col=0},[2]={Row=1,Col=0},[3]={Row=2,Col=0},[4]={Row=0,Col=1},[5]={Row=1,Col=1}}for r,s in
-ipairs(i)do local t=q[r]local u=t.Row local v=t.Col local w=(c.New('Frame',{Name=s.Id..'Dot',BackgroundColor3=s.Color,BorderSizePixel=0,Position=UDim2.fromOffset(2+v*94,304+u*22),Size=UDim2.
-fromOffset(10,10),ZIndex=31},n.Root))c.Corner(w,5)c.Stroke(w,s.Stroke,0,1)local x=(c.New('TextLabel',{Name=s.Id,Position=UDim2.fromOffset(19+v*94,300+u*22),Size=UDim2.fromOffset(70,20),Text=s.Id,
-ZIndex=31},n.Root))d.ApplyText(x,o,14,o.Muted)e.Apply(x,n.Library.AssetCache)end local r=(c.New('TextLabel',{Name='Help',Position=UDim2.fromOffset(2,358),Size=UDim2.new(1,0,0,18),Text=
-'Edit hitboxes by clicking on a body part.',ZIndex=31},n.Root))d.ApplyText(r,o,15,o.Hint)e.Apply(r,n.Library.AssetCache)n:Refresh()return n end function h.PriorityFor(l,m)local n=l.RegionState[m]if
-not n then return nil end return i[n]end function h.Cycle(l,m)local n=(l.RegionState[m]or 0)+1 if n>#i then n=nil end l.RegionState[m]=n l:SetValue(l.RegionState)end function h.Refresh(l)for m,n in
-pairs(l.Overlays)do local o=l:PriorityFor(m)if o then n.BackgroundColor3=o.Color n.BackgroundTransparency=0.46 else n.BackgroundTransparency=1 end end end function h.SetValue(l,m,n)if type(m)~='table'
-then m={}end l.RegionState=table.clone(m)l:Commit(l.RegionState,n)l:Refresh()end return h end function a.K()local b=a.cache.K if not b then b={c=__modImpl()}a.cache.K=b end return b.c end end do local
-__modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f={}f.__index=f setmetatable(f,{__index=b})local Format=function(g)g=math.max(0,math.floor(g))local h=math.floor(g/86400)
-local i=math.floor((g%86400)/3600)local j=math.floor((g%3600)/60)local k=g%60 return string.format('%d DAYS %d HOURS %d MINS %d SECS',h,i,j,k)end local ToneColor=function(g,h)if h=='muted'then return
-g.Muted elseif h=='success'then return g.Success end return g.Text end function f.New(g,h)h.Default=h.Seconds or 0 local i=b.New(g,h,h.Height or 42)setmetatable(i,f)local j=i.Window.Theme i.EndsAt=os.
-clock()+(h.Seconds or 0)i.Running=true local k=(c.New('TextLabel',{Name='Countdown',Size=UDim2.fromScale(1,1),Text=h.Text or Format(h.Seconds or 0),ZIndex=31},i.Root))d.ApplyText(k,j,14,ToneColor(j,h.
-Tone))e.Apply(k,i.Library.AssetCache)i.Label=k i:BindTheme(function(l)k.TextColor3=ToneColor(l,h.Tone)end)task.spawn(function()while i.Running and i.Root and i.Root.Parent do i:SetValue(math.max(0,i.
-EndsAt-os.clock()),false)task.wait(1)end end)return i end function f.SetValue(g,h,i)local j=tonumber(h)or 0 g:Commit(j,i)g.Label.Text=Format(j)end function f.Destroy(g)g.Running=false b.Destroy(g)end
-return f end function a.L()local b=a.cache.L if not b then b={c=__modImpl()}a.cache.L=b end return b.c end end do local __modImpl=function()local b=a.E()local c={}function c.New(d,e)local f=d.Window.
-Library local ReadValues=function()local g=f:GetConfigs()if#g==0 then return{'None'}end return g end e.Text=e.Text or'Config'e.Hint=e.Hint or'Select saved config'e.Flag=e.Flag or'config.selected'e.
-Values=ReadValues()e.Default=e.Default or e.Values[1]or'None'e.GetValues=ReadValues local g=b.New(d,e)function g.RefreshConfigs(h,i)local j=ReadValues()h:SetValues(j,i or h.Value)end f:
-RegisterConfigList(g)return g end return c end function a.M()local b=a.cache.M if not b then b={c=__modImpl()}a.cache.M=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()
-local d=a.s()local e=a.t()local f={}f.__index=f setmetatable(f,{__index=b})local ToneColor=function(g,h)if h=='muted'then return g.Muted elseif h=='success'then return g.Success end return g.Text end
-function f.New(g,h)local i=b.New(g,h,h.Height or 42)setmetatable(i,f)local j=i.Window.Theme local k=(c.New('TextLabel',{Name='Text',Size=UDim2.fromScale(1,1),Text=h.Text or'',ZIndex=31},i.Root))d.
-ApplyText(k,j,14,ToneColor(j,h.Tone))e.Apply(k,i.Library.AssetCache)i.Text=k i:BindTheme(function(l)k.TextColor3=ToneColor(l,h.Tone)end)return i end return f end function a.N()local b=a.cache.N if not
-b then b={c=__modImpl()}a.cache.N=b end return b.c end end do local __modImpl=function()local b={}b.Controls={Toggle=a.C(),Slider=a.D(),Dropdown=a.E(),Button=a.F(),Textbox=a.G(),Keybind=a.H(),
-ColorPicker=a.J(),HitboxPreview=a.K(),Countdown=a.L(),ConfigList=a.M(),Label=a.N()}function b.Create(c,d,e)local f=b.Controls[c]assert(f,'Unknown Fecurity widget: '..tostring(c))return f.New(d,e)end
-return b end function a.O()local b=a.cache.O if not b then b={c=__modImpl()}a.cache.O=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a.s()local d=a.t()local e=a.A()local f=
-a.O()local g={}g.__index=g function g.New(h,i,j)j=j or{}local k=j.NoHeader==true local l=k and 0 or 28 local m=setmetatable({Column=h,Window=h.Window,Name=i,Order=0},g)local n=(b.New('Frame',{Name=i,
-BackgroundTransparency=1,BorderSizePixel=0,Size=UDim2.new(1,-30,0,24),LayoutOrder=#h.Sections+1,AutomaticSize=Enum.AutomaticSize.Y,ZIndex=23},h.Scroll))m.Root=n if not k then local o=(b.New(
-'TextLabel',{Name='Header',BackgroundTransparency=1,BorderSizePixel=0,Size=UDim2.new(1,0,0,l),Text=string.upper(i),ZIndex=24},n))c.ApplyText(o,h.Window.Theme,14,h.Window.Theme.Muted)d.Apply(o,h.Window
-.Library.AssetCache)m.Header=o end local o=(b.New('Frame',{Name='Body',BackgroundTransparency=1,BorderSizePixel=0,Size=UDim2.new(1,0,0,0),AutomaticSize=Enum.AutomaticSize.Y,ZIndex=24},n))o.Position=
-UDim2.fromOffset(0,l)m.Body=o local p=e.Vertical(n,0)m.RootLayout=p m.BodyLayout=e.Vertical(o,0)e.ResizeToContent(n,p,0)return m end function g.NextOrder(h)h.Order+=1 return h.Order end function g.
-AddDivider(h,i)return f.Create('Label',h,{Text=string.upper(i),Tone='muted',Height=28,SkipFlag=true})end function g.AddLabel(h,i)return f.Create('Label',h,i)end function g.AddToggle(h,i)return f.
-Create('Toggle',h,i)end function g.AddSlider(h,i)return f.Create('Slider',h,i)end function g.AddDropdown(h,i)return f.Create('Dropdown',h,i)end function g.AddList(h,i)return h:AddDropdown(i)end
-function g.AddButton(h,i)return f.Create('Button',h,i)end function g.AddTextbox(h,i)return f.Create('Textbox',h,i)end function g.AddBox(h,i)return h:AddTextbox(i)end function g.AddKeybind(h,i)return f
-.Create('Keybind',h,i)end function g.AddBind(h,i)return h:AddKeybind(i)end function g.AddColor(h,i)return f.Create('ColorPicker',h,i)end function g.AddHitboxPreview(h,i)return f.Create('HitboxPreview'
-,h,i)end function g.AddCountdown(h,i)return f.Create('Countdown',h,i)end function g.AddConfigList(h,i)return f.Create('ConfigList',h,i)end return g end function a.P()local b=a.cache.P if not b then b=
-{c=__modImpl()}a.cache.P=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a.A()local d=a.m()local e=a.P()local f={}f.__index=f function f.New(g,h)local i=g.Window local j=
-setmetatable({Tab=g,Window=i,Index=h,Sections={}},f)local k=(b.New('Frame',{Name='Column'..tostring(h),BackgroundColor3=i.Theme.Surface,BorderSizePixel=0,Position=UDim2.fromOffset(0,d.PanelTop),Size=
-UDim2.fromOffset(d.PanelWidth,d.PanelHeight),ZIndex=21},i.Content))j.Stroke=b.Stroke(k,i.Theme.Border,0,1)j.Root=k local l=(b.New('ScrollingFrame',{Name='Scroll',Active=true,BackgroundTransparency=1,
-BorderSizePixel=0,Position=UDim2.fromOffset(0,0),Size=UDim2.fromScale(1,1),ScrollBarThickness=4,ScrollBarImageColor3=i.Theme.Accent,CanvasSize=UDim2.fromOffset(0,0),AutomaticCanvasSize=Enum.
-AutomaticSize.Y,ZIndex=22},k))b.Padding(l,15,16,15,16)local m=c.Vertical(l,0)j.Scroll=l j.Layout=m j:ApplyLayout(h,1)i:RegisterThemeBinding(function(n)k.BackgroundColor3=n.Surface j.Stroke.Color=n.
-Border l.ScrollBarImageColor3=n.Accent end)return j end function f.ApplyLayout(g,h,i)g.Index=h local j=g.Window.TargetSize or UDim2.fromOffset(d.WindowSize.X,d.WindowSize.Y)local k=j.X.Offset>0 and j.
-X.Offset or d.WindowSize.X local l=j.Y.Offset>0 and j.Y.Offset or d.WindowSize.Y local m,n=d.PanelLayout(h,i,k)g.Root.Position=UDim2.fromOffset(m,d.PanelTop)g.Root.Size=UDim2.fromOffset(n,d.
-PanelHeightFor(l))end function f.AddSection(g,h,i)local j=e.New(g,h,i)table.insert(g.Sections,j)return j end return f end function a.Q()local b=a.cache.Q if not b then b={c=__modImpl()}a.cache.Q=b end
-return b.c end end do local __modImpl=function()local b=a.z()local c=a.Q()local d={}d.__index=d function d.New(e,f,g,h)local i=setmetatable({Window=e,Name=f,Icon=g.Icon or string.lower(f),Index=h,
-Columns={},Active=false},d)i.Button=e.Sidebar:AddButton(i)return i end function d.AddColumn(e)local f=c.New(e,#e.Columns+1)table.insert(e.Columns,f)e:RelayoutColumns()f.Root.Visible=e.Active return f
-end function d.RelayoutColumns(e)local f=#e.Columns for g,h in ipairs(e.Columns)do h:ApplyLayout(g,f)end end function d.SetActive(e,f)e.Active=f if e.Button then e.Button:SetActive(f)end for g,h in
-ipairs(e.Columns)do if f then b.PanelIn(h.Root,(g-1)*0.025)else b.PanelOut(h.Root,(g-1)*0.012)end end end function d.RefreshTheme(e)if e.Button then e.Button:RefreshTheme()end end return d end
-function a.R()local b=a.cache.R if not b then b={c=__modImpl()}a.cache.R=b end return b.c end end do local __modImpl=function()local b=a.n()local c={}c.__index=c function c.New(d)local e=setmetatable(
-{},c)e.Content=(b.New('Frame',{Name='Content',BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(0,0),Size=UDim2.fromScale(1,1),ZIndex=20},d))e.Overlay=(b.New('Frame',{Name='Overlay'
-,BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(0,0),Size=UDim2.fromScale(1,1),ZIndex=200},d))return e end return c end function a.S()local b=a.cache.S if not b then b={c=
-__modImpl()}a.cache.S=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a.s()local d=a.t()local e=a.j()local f={}function f.New(g,h)local i=g.Theme local j=(b.New('Frame',{
-Name='Notification',BackgroundColor3=i.Surface,BorderSizePixel=0,Size=UDim2.fromOffset(250,62),ZIndex=401},g.Notifications))b.Stroke(j,i.Border,0,1)b.Padding(j,12,8,12,8)local k=(b.New('TextLabel',{
-Name='Title',Size=UDim2.new(1,0,0,18),Text=h.Title or'Fecurity',ZIndex=402},j))c.ApplyText(k,i,16,i.Text)d.Apply(k,g.Library.AssetCache)local l=(b.New('TextLabel',{Name='Body',Position=UDim2.
-fromOffset(0,20),Size=UDim2.new(1,0,0,28),Text=h.Text or h.Message or'',TextWrapped=true,ZIndex=402},j))c.ApplyText(l,i,15,i.Hint)d.Apply(l,g.Library.AssetCache)j.BackgroundTransparency=1 e.Play(j,
-0.16,{BackgroundTransparency=0})task.delay(h.Duration or 3,function()if j and j.Parent then local m=e.Play(j,0.16,{BackgroundTransparency=1})m.Completed:Once(function()if j and j.Parent then j:
-Destroy()end end)end end)return j end return f end function a.T()local b=a.cache.T if not b then b={c=__modImpl()}a.cache.T=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a
-.s()local d=a.t()local e={}function e.New(f,g)local h=f.Theme local i=(b.New('Frame',{Name='Modal',AnchorPoint=Vector2.new(0.5,0.5),BackgroundColor3=h.Surface,BorderSizePixel=0,Position=UDim2.
-fromScale(0.5,0.5),Size=UDim2.fromOffset(260,130),ZIndex=300},f.Overlay))b.Stroke(i,h.Border,0,1)b.Padding(i,14,14,14,14)local j=(b.New('TextLabel',{Name='Title',Size=UDim2.new(1,0,0,22),Text=g.Title
-or'Fecurity',ZIndex=301},i))c.ApplyText(j,h,17,h.Text)d.Apply(j,f.Library.AssetCache)local k=(b.New('TextLabel',{Name='Body',Position=UDim2.fromOffset(0,30),Size=UDim2.new(1,0,0,54),Text=g.Text or g.
-Message or'',TextWrapped=true,ZIndex=301},i))c.ApplyText(k,h,15,h.Hint)d.Apply(k,f.Library.AssetCache)return i end return e end function a.U()local b=a.cache.U if not b then b={c=__modImpl()}a.cache.U
-=b end return b.c end end do local __modImpl=function()local b=a.U()local c={}function c.New(d,e)e.Title=e.Title or'Warning'return b.New(d,e)end return c end function a.V()local b=a.cache.V if not b
-then b={c=__modImpl()}a.cache.V=b end return b.c end end do local __modImpl=function()local b=game:GetService('RunService')local c=game:GetService('UserInputService')local d=a.n()local e={}e.__index=e
-local NewStroke=function(f,g)local h=Instance.new('UIStroke')h.ApplyStrokeMode=Enum.ApplyStrokeMode.Border h.LineJoinMode=Enum.LineJoinMode.Round h.Thickness=g h.Transparency=1 h.Color=Color3.new(1,1,
-1)h.Enabled=false h.Parent=f local i=Instance.new('UIGradient')i.Parent=h return h,i end function e.New(f)local g=setmetatable({Radius=200,Thickness=2,GlowSize=18,GlowLayers=8,GlowTransparency=0.75,
-RotateSpeed=1.2,RainbowSpeed=0.2,Rotation=0,Color1=Color3.fromRGB(255,20,147),Color2=Color3.fromRGB(255,255,255),GlowEnabled=false,SpinEnabled=false,FillEnabled=false,RainbowEnabled=false,
-FillTransparency=0.85,SmoothPosition=Vector2.new(0,0),HasExternalPosition=false,ExternalPosition=nil},e)g.Holder=(d.New('Frame',{Name='FOVCircle',AnchorPoint=Vector2.new(0.5,0.5),
-BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(g.Radius*2,g.Radius*2),Visible=false},f))g.GlowHolder=(d.New('Frame',{Name='Glow',AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundTransparency=1,ZIndex=1},g.Holder))d.Corner(g.GlowHolder,1000)g.Circle=(d.New('Frame',{Name='Ring',AnchorPoint=Vector2.new(0.5,0.5
-),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundTransparency=1,ZIndex=5},g.Holder))d.Corner(g.Circle,1000)g.Fill=(d.New('Frame',{Name='Fill',AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=g.FillTransparency,ZIndex=2,Visible=false},g.Holder))d.Corner(g.Fill,1000)g.
-FillGradient=Instance.new('UIGradient')g.FillGradient.Parent=g.Fill g.OuterGlow={}for h=1,g.GlowLayers do local i,j=NewStroke(g.GlowHolder,1)g.OuterGlow[h]={Stroke=i,Gradient=j}end g.InnerGlow={}for h
-=1,g.GlowLayers do local i=(d.New('Frame',{Name='Inner'..tostring(h),AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundTransparency=1},g.GlowHolder
-))d.Corner(i,1000)local j,k=NewStroke(i,1)g.InnerGlow[h]={Frame=i,Stroke=j,Gradient=k}end g.RingStroke,g.RingGradient=NewStroke(g.Circle,g.Thickness)g.RingStroke.Enabled=true g.RingStroke.Transparency
-=0 g:SetRadius(g.Radius)g:SetColors(g.Color1,g.Color2)g.Connection=b.RenderStepped:Connect(function(h)g:Step(h)end)return g end function e.BuildSequence(f)return ColorSequence.new({
-ColorSequenceKeypoint.new(0,f.Color1),ColorSequenceKeypoint.new(1,f.Color2)})end function e.ApplyGradients(f,g,h)f.RingGradient.Color=g f.RingGradient.Rotation=h f.FillGradient.Color=g f.FillGradient.
-Rotation=h for i,j in ipairs(f.OuterGlow)do j.Gradient.Color=g j.Gradient.Rotation=h end for i,j in ipairs(f.InnerGlow)do j.Gradient.Color=g j.Gradient.Rotation=h end end function e.SetPosition(f,g)f.
-HasExternalPosition=true if typeof(g)=='Vector2'then f.ExternalPosition=g f.Holder.Position=UDim2.fromOffset(g.X,g.Y)elseif typeof(g)=='UDim2'then f.ExternalPosition=nil f.Holder.Position=g end end
-function e.SetRadius(f,g)f.Radius=tonumber(g)or f.Radius local h=f.Radius*2 f.Holder.Size=UDim2.fromOffset(h,h)end function e.SetColors(f,g,h)f.Color1=g or f.Color1 f.Color2=h or f.Color1 end function
-e.SetFill(f,g,h)f.FillEnabled=g==true f.FillTransparency=tonumber(h)or f.FillTransparency f.Fill.Visible=f.FillEnabled f.Fill.BackgroundTransparency=f.FillTransparency end function e.SetGlow(f,g)f.
-GlowEnabled=g==true end function e.SetSpin(f,g)f.SpinEnabled=g==true if not f.SpinEnabled then f.Rotation=0 end end function e.SetRainbow(f,g,h)f.RainbowEnabled=g==true f.RainbowSpeed=tonumber(h)or f.
-RainbowSpeed end function e.SetVisible(f,g)f.Holder.Visible=g==true end function e.Step(f,g)if not f.Holder.Visible then return end if not f.HasExternalPosition then local h=c:GetMouseLocation()f.
-SmoothPosition=f.SmoothPosition:Lerp(Vector2.new(h.X,h.Y),math.clamp(g*12,0,1))f.Holder.Position=UDim2.fromOffset(f.SmoothPosition.X,f.SmoothPosition.Y)elseif f.ExternalPosition then f.SmoothPosition=
-f.ExternalPosition end f.HasExternalPosition=false if f.SpinEnabled then f.Rotation=(f.Rotation+f.RotateSpeed*g*60)%360 end if f.RainbowEnabled then local h=tick()*f.RainbowSpeed f.Color1=Color3.
-fromHSV(h%1,0.78,1)f.Color2=Color3.fromHSV((h+0.35)%1,0.78,1)end local h=f:BuildSequence()f:ApplyGradients(h,f.Rotation)local i=f.GlowEnabled local j=f.GlowLayers local k=f.GlowSize local l=f.
-GlowTransparency for m=1,j do local n=m/j local o=l+(1-l)*n local p=f.OuterGlow[m]p.Stroke.Enabled=i p.Stroke.Thickness=i and(f.Thickness+k*n)or 0 p.Stroke.Transparency=i and o or 1 local q=f.
-InnerGlow[m]local r=k*n q.Frame.Size=UDim2.fromScale(1,1)-UDim2.fromOffset(r*2,r*2)q.Stroke.Enabled=i q.Stroke.Thickness=i and k*n or 0 q.Stroke.Transparency=i and o or 1 end end function e.Destroy(f)
-if f.Connection then f.Connection:Disconnect()f.Connection=nil end if f.Holder then f.Holder:Destroy()end end return e end function a.W()local b=a.cache.W if not b then b={c=__modImpl()}a.cache.W=b
-end return b.c end end do local __modImpl=function()local b=game:GetService('UserInputService')local c=a.j()local d=a.d()local e=a.l()local f=a.m()local g=a.n()local h=a.o()local i=a.p()local j=a.w()
-local k=a.x()local l=a.y()local m=a.R()local n=a.S()local o=a.T()local p=a.V()local q=a.W()local r={}r.__index=r local ScaleSize=function(s,t)return UDim2.new(s.X.Scale*t,math.floor(s.X.Offset*t),s.Y.
-Scale*t,math.floor(s.Y.Offset*t))end function r.New(s,t)local u=setmetatable({Library=s,Options=t,TargetSize=t.Size or UDim2.fromOffset(f.WindowSize.X,f.WindowSize.Y),Theme=e.Resolve(t.Theme or'Dark',
-t.Accent),Tabs={},ActiveTab=nil,Visible=true,MenuKey=i.Normalize(t.MenuKey or t.ToggleKey or Enum.KeyCode.Insert),Dropdown=nil,ThemeBindings={},FOVCircles={}},r)local v=Instance.new('ScreenGui')v.Name
-='Fecurity'v.IgnoreGuiInset=true v.ResetOnSpawn=false v.ZIndexBehavior=Enum.ZIndexBehavior.Sibling d.AttachGui(v)u.Gui=v local w=(g.New('Frame',{Name='Canvas',BackgroundTransparency=1,BorderSizePixel=
-0,Size=UDim2.fromScale(1,1),ZIndex=1},v))u.Canvas=w u.SnowLayer=k.New(u,w)local x=(g.New('Frame',{Name='Window',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=u.TargetSize,
-BackgroundColor3=u.Theme.Surface,BorderSizePixel=0,ZIndex=10},w))u.RootStroke=g.Stroke(x,u.Theme.Border,0,1)u.Root=x u.Topbar=l.New(u,x,t)u.TabContainer=n.New(x)u.Content=u.TabContainer.Content u.
-Overlay=u.TabContainer.Overlay u.Notifications=(g.New('Frame',{Name='Notifications',BackgroundTransparency=1,BorderSizePixel=0,AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-16,0,16),Size=UDim2.
-fromOffset(250,400),ZIndex=400},w))g.List(u.Notifications,Enum.FillDirection.Vertical,8)u.Sidebar=j.New(u)u.UnbindDrag=h.Attach(u.Topbar.Handle,x)u.InsertConnection=b.InputBegan:Connect(function(y,z)
-if z then return end if i.IsActivation(y,u.MenuKey)then u:Toggle()end end)u:RegisterThemeBinding(function(y)x.BackgroundColor3=y.Surface u.RootStroke.Color=y.Border end)return u end function r.AddTab(
-s,t,u)local v=m.New(s,t,u or{},#s.Tabs+1)table.insert(s.Tabs,v)if not s.ActiveTab then s:SetActiveTab(v)else v:SetActive(false)end return v end function r.SetActiveTab(s,t)if s.Destroyed then return
-end if s.ActiveTab==t then return end if s.ActiveTab then s.ActiveTab:SetActive(false)end s.ActiveTab=t s.ActiveTab:SetActive(true)end function r.SetAccent(s,t)if s.Destroyed then return false end s.
-Theme.Accent=t s:RefreshTheme()return true end function r.SetTheme(s,t)if s.Destroyed then return false end local u=s.Theme.Accent if type(t)=='table'and t.Accent then u=t.Accent end local v=e.
-Resolve(t,u)e.Apply(s.Theme,v)s:RefreshTheme()return true end function r.RefreshTheme(s)if s.Destroyed then return end if s.Sidebar then s.Sidebar:RefreshTheme()end for t,u in ipairs(s.Tabs)do u:
-RefreshTheme()end for t,u in ipairs(s.ThemeBindings)do pcall(u,s.Theme)end end function r.RegisterThemeBinding(s,t)table.insert(s.ThemeBindings,t)t(s.Theme)local u=true return function()if not u then
-return end u=false for v=#s.ThemeBindings,1,-1 do if s.ThemeBindings[v]==t then table.remove(s.ThemeBindings,v)return end end end end function r.SetMenuKey(s,t)if s.Destroyed then return s end s.
-MenuKey=i.Normalize(t or Enum.KeyCode.Insert)return s end function r.Open(s)if s.Destroyed or not s.Root then return false end s.Visible=true if s.SnowLayer then s.SnowLayer:SetVisible(true)end s.Root
-.Visible=true s.Root.Size=ScaleSize(s.TargetSize,0.94)c.Play(s.Root,0.18,{Size=s.TargetSize})return true end function r.Close(s)if s.Destroyed or not s.Root then return false end s.Visible=false if s.
-SnowLayer then s.SnowLayer:SetVisible(false)end local t=c.Play(s.Root,0.18,{Size=ScaleSize(s.TargetSize,0.94)})t.Completed:Once(function()if not s.Visible and s.Root then s.Root.Visible=false end end)
-return true end function r.Toggle(s)if s.Visible then return s:Close()else return s:Open()end end function r.Notify(s,t)return o.New(s,t)end function r.AddWarning(s,t)return p.New(s,t)end function r.
-CreateFOVCircle(s)local t=q.New(s.Canvas)table.insert(s.FOVCircles,t)return t end function r.Destroy(s)if s.Destroyed then return end s.Destroyed=true if s.Dropdown and s.Dropdown.CloseMenu then
-pcall(function()s.Dropdown:CloseMenu(true)end)s.Dropdown=nil end if s.InsertConnection then s.InsertConnection:Disconnect()s.InsertConnection=nil end if s.UnbindDrag then pcall(s.UnbindDrag)s.
-UnbindDrag=nil end if s.SnowLayer then s.SnowLayer:Destroy()s.SnowLayer=nil end for t,u in ipairs(s.FOVCircles)do pcall(function()u:Destroy()end)end table.clear(s.FOVCircles)if s.Gui then s.Gui:
-Destroy()s.Gui=nil end table.clear(s.ThemeBindings)table.clear(s.Tabs)s.ActiveTab=nil s.Sidebar=nil s.Root=nil s.Canvas=nil s.Content=nil s.Overlay=nil s.Notifications=nil s.Topbar=nil end return r
-end function a.X()local b=a.cache.X if not b then b={c=__modImpl()}a.cache.X=b end return b.c end end do local __modImpl=function()local b=a.b()local c=a.c()local d=a.f()local e=a.e()local f=a.g()
-local g=a.i()local h=a.X()local i={}i.__index=i function i.New()local j=setmetatable({Version='0.1.0',Windows={},ConfigWidgets={},AssetCache=d.New(),AssetRegistry=e,FlagManager=f.New()},i)j.Flags=j.
-FlagManager.Values j.ConfigManager=g.New(j.FlagManager)j.AssetCache:EnsureAll()j.RegistryEntry=b.Claim(j.Version,function()j:Unload()end)return j end function i.RunCallback(j,k,l,...)c.Callback(k,l,
-...)end function i.CreateWindow(j,k)local l=h.New(j,k or{})table.insert(j.Windows,l)return l end function i.Notify(j,k)local l=j.Windows[1]if l then return l:Notify(k)end return nil end function i.
-AddWarning(j,k)local l=j.Windows[1]if l then return l:AddWarning(k)end return nil end function i.SaveConfig(j,k)local l=j.ConfigManager:Save(k)if l then j:RefreshConfigLists(k)end return l end
-function i.LoadConfig(j,k,l)local m=j.ConfigManager:Load(k,l)if m then j:RefreshConfigLists(k)end return m end function i.GetConfigs(j)return j.ConfigManager:GetConfigs()end function i.
-RegisterConfigList(j,k)table.insert(j.ConfigWidgets,k)end function i.RefreshConfigLists(j,k)for l=#j.ConfigWidgets,1,-1 do local m=j.ConfigWidgets[l]if not m.Root or not m.Root.Parent then table.
-remove(j.ConfigWidgets,l)elseif m.RefreshConfigs then m:RefreshConfigs(k)end end end function i.SetAccent(j,k)for l,m in ipairs(j.Windows)do m:SetAccent(k)end end function i.SetAssetBaseUrl(j,k)j.
-AssetRegistry.SetBaseUrl(k)return j.AssetCache:EnsureAll()end function i.SetTheme(j,k)for l,m in ipairs(j.Windows)do m:SetTheme(k)end return true end function i.Toggle(j)for k,l in ipairs(j.Windows)do
-l:Toggle()end end function i.Open(j)for k,l in ipairs(j.Windows)do l:Open()end end function i.Close(j)for k,l in ipairs(j.Windows)do l:Close()end end function i.Unload(j)for k,l in ipairs(j.Windows)do
-l:Destroy()end table.clear(j.Windows)table.clear(j.ConfigWidgets)b.Clear(j.RegistryEntry)end return i end function a.Y()local b=a.cache.Y if not b then b={c=__modImpl()}a.cache.Y=b end return b.c end
-end end local b=a.Y()return b.New()
+BackgroundTransparency=0.84})end end)s.MouseLeave:Connect(function()n:Refresh()end)end for q,r in ipairs(i)do local s=math.floor((q-1)/2)local t=(q-1)%2 local u=(c.New('Frame',{Name=r.Id..'Dot',
+BackgroundColor3=r.Color,BorderSizePixel=0,Position=UDim2.fromOffset(2+t*94,304+s*22),Size=UDim2.fromOffset(10,10),ZIndex=31},n.Root))c.Corner(u,5)c.Stroke(u,r.Stroke,0,1)local v=(c.New('TextLabel',{
+Name=r.Id,Position=UDim2.fromOffset(19+t*94,300+s*22),Size=UDim2.fromOffset(70,20),Text=r.Id,ZIndex=31},n.Root))d.ApplyText(v,o,14,o.Muted)e.Apply(v,n.Library.AssetCache)end local q=(c.New('TextLabel'
+,{Name='Help',Position=UDim2.fromOffset(2,358),Size=UDim2.new(1,0,0,18),Text='Edit hitboxes by clicking on a body part.',ZIndex=31},n.Root))d.ApplyText(q,o,15,o.Hint)e.Apply(q,n.Library.AssetCache)n:
+Refresh()return n end function h.PriorityFor(l,m)local n=l.RegionState[m]if not n then return nil end return i[n]end function h.Cycle(l,m)local n=(l.RegionState[m]or 0)+1 if n>#i then n=nil end l.
+RegionState[m]=n l:SetValue(l.RegionState)end function h.Refresh(l)for m,n in pairs(l.Overlays)do local o=l:PriorityFor(m)if o then n.BackgroundColor3=o.Color n.BackgroundTransparency=0.46 else n.
+BackgroundTransparency=1 end end end function h.SetValue(l,m,n)if type(m)~='table'then m={}end l.RegionState=table.clone(m)l:Commit(l.RegionState,n)l:Refresh()end return h end function a.K()local b=a.
+cache.K if not b then b={c=__modImpl()}a.cache.K=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f={}f.__index=f setmetatable(f,{__index
+=b})local Format=function(g)g=math.max(0,math.floor(g))local h=math.floor(g/86400)local i=math.floor((g%86400)/3600)local j=math.floor((g%3600)/60)local k=g%60 return string.format(
+'%d DAYS %d HOURS %d MINS %d SECS',h,i,j,k)end local ToneColor=function(g,h)if h=='muted'then return g.Muted elseif h=='success'then return g.Success end return g.Text end function f.New(g,h)h.Default
+=h.Seconds or 0 local i=b.New(g,h,h.Height or 28)setmetatable(i,f)local j=i.Window.Theme i.EndsAt=os.clock()+(h.Seconds or 0)i.Running=true local k=(c.New('TextLabel',{Name='Countdown',Size=UDim2.
+fromScale(1,1),Text=h.Text or Format(h.Seconds or 0),ZIndex=31},i.Root))d.ApplyText(k,j,14,ToneColor(j,h.Tone))e.Apply(k,i.Library.AssetCache)i.Label=k i:BindTheme(function(l)k.TextColor3=ToneColor(l,
+h.Tone)end)task.spawn(function()while i.Running and i.Root and i.Root.Parent do i:SetValue(math.max(0,i.EndsAt-os.clock()),false)task.wait(1)end end)return i end function f.SetValue(g,h,i)local j=
+tonumber(h)or 0 g:Commit(j,i)g.Label.Text=Format(j)end function f.Destroy(g)g.Running=false b.Destroy(g)end return f end function a.L()local b=a.cache.L if not b then b={c=__modImpl()}a.cache.L=b end
+return b.c end end do local __modImpl=function()local b=a.E()local c={}function c.New(d,e)local f=d.Window.Library local ReadValues=function()local g=f:GetConfigs()if#g==0 then return{'None'}end
+return g end e.Text=e.Text or'Config'e.Hint=e.Hint or'Select saved config'e.Flag=e.Flag or'config.selected'e.Values=ReadValues()e.Default=e.Default or e.Values[1]or'None'e.GetValues=ReadValues local g
+=b.New(d,e)function g.RefreshConfigs(h,i)local j=ReadValues()h:SetValues(j,i or h.Value)end f:RegisterConfigList(g)return g end return c end function a.M()local b=a.cache.M if not b then b={c=
+__modImpl()}a.cache.M=b end return b.c end end do local __modImpl=function()local b=a.B()local c=a.n()local d=a.s()local e=a.t()local f={}f.__index=f setmetatable(f,{__index=b})local ToneColor=
+function(g,h)if h=='muted'then return g.Muted elseif h=='success'then return g.Success end return g.Text end function f.New(g,h)local i=b.New(g,h,h.Height or 28)setmetatable(i,f)local j=i.Window.Theme
+local k=(c.New('TextLabel',{Name='Text',Size=UDim2.fromScale(1,1),Text=h.Text or'',ZIndex=31},i.Root))d.ApplyText(k,j,14,ToneColor(j,h.Tone))e.Apply(k,i.Library.AssetCache)i.Text=k i:BindTheme(
+function(l)k.TextColor3=ToneColor(l,h.Tone)end)return i end return f end function a.N()local b=a.cache.N if not b then b={c=__modImpl()}a.cache.N=b end return b.c end end do local __modImpl=function()
+local b={}b.Controls={Toggle=a.C(),Slider=a.D(),Dropdown=a.E(),Button=a.F(),Textbox=a.G(),Keybind=a.H(),ColorPicker=a.J(),HitboxPreview=a.K(),Countdown=a.L(),ConfigList=a.M(),Label=a.N()}function b.
+Create(c,d,e)local f=b.Controls[c]assert(f,'Unknown Fecurity widget: '..tostring(c))return f.New(d,e)end return b end function a.O()local b=a.cache.O if not b then b={c=__modImpl()}a.cache.O=b end
+return b.c end end do local __modImpl=function()local b=a.n()local c=a.s()local d=a.t()local e=a.A()local f=a.O()local g={}g.__index=g function g.New(h,i,j)j=j or{}local k=j.NoHeader==true local l=k
+and 0 or 28 local m=setmetatable({Column=h,Window=h.Window,Name=i,Order=0},g)local n=(b.New('Frame',{Name=i,BackgroundTransparency=1,BorderSizePixel=0,Size=UDim2.new(1,-30,0,24),LayoutOrder=#h.
+Sections+1,AutomaticSize=Enum.AutomaticSize.Y,ZIndex=23},h.Scroll))m.Root=n if not k then local o=(b.New('TextLabel',{Name='Header',BackgroundTransparency=1,BorderSizePixel=0,Size=UDim2.new(1,0,0,l),
+Text=string.upper(i),ZIndex=24},n))c.ApplyText(o,h.Window.Theme,14,h.Window.Theme.Muted)d.Apply(o,h.Window.Library.AssetCache)m.Header=o end local o=(b.New('Frame',{Name='Body',BackgroundTransparency=
+1,BorderSizePixel=0,Size=UDim2.new(1,0,0,0),AutomaticSize=Enum.AutomaticSize.Y,ZIndex=24},n))o.Position=UDim2.fromOffset(0,l)m.Body=o local p=e.Vertical(n,0)m.RootLayout=p m.BodyLayout=e.Vertical(o,0)
+e.ResizeToContent(n,p,0)return m end function g.NextOrder(h)h.Order+=1 return h.Order end function g.AddDivider(h,i)return f.Create('Label',h,{Text=string.upper(i),Tone='muted',Height=28,SkipFlag=true
+})end function g.AddLabel(h,i)return f.Create('Label',h,i)end function g.AddToggle(h,i)return f.Create('Toggle',h,i)end function g.AddSlider(h,i)return f.Create('Slider',h,i)end function g.AddDropdown
+(h,i)return f.Create('Dropdown',h,i)end function g.AddList(h,i)return h:AddDropdown(i)end function g.AddButton(h,i)return f.Create('Button',h,i)end function g.AddTextbox(h,i)return f.Create('Textbox',
+h,i)end function g.AddBox(h,i)return h:AddTextbox(i)end function g.AddKeybind(h,i)return f.Create('Keybind',h,i)end function g.AddBind(h,i)return h:AddKeybind(i)end function g.AddColor(h,i)return f.
+Create('ColorPicker',h,i)end function g.AddHitboxPreview(h,i)return f.Create('HitboxPreview',h,i)end function g.AddCountdown(h,i)return f.Create('Countdown',h,i)end function g.AddConfigList(h,i)return
+f.Create('ConfigList',h,i)end return g end function a.P()local b=a.cache.P if not b then b={c=__modImpl()}a.cache.P=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a.A()
+local d=a.m()local e=a.P()local f={}f.__index=f function f.New(g,h)local i=g.Window local j=setmetatable({Tab=g,Window=i,Index=h,Sections={}},f)local k=(b.New('Frame',{Name='Column'..tostring(h),
+BackgroundColor3=i.Theme.Surface,BorderSizePixel=0,Position=UDim2.fromOffset(0,d.PanelTop),Size=UDim2.fromOffset(d.PanelWidth,d.PanelHeight),ZIndex=21},i.Content))j.Stroke=b.Stroke(k,i.Theme.Border,0,
+1)j.Root=k local l=(b.New('ScrollingFrame',{Name='Scroll',Active=true,BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(0,0),Size=UDim2.fromScale(1,1),ScrollBarThickness=4,
+ScrollBarImageColor3=i.Theme.Accent,CanvasSize=UDim2.fromOffset(0,0),AutomaticCanvasSize=Enum.AutomaticSize.Y,ZIndex=22},k))b.Padding(l,15,16,15,16)local m=c.Vertical(l,0)j.Scroll=l j.Layout=m j:
+ApplyLayout(h,1)i:RegisterThemeBinding(function(n)k.BackgroundColor3=n.Surface j.Stroke.Color=n.Border l.ScrollBarImageColor3=n.Accent end)return j end function f.ApplyLayout(g,h,i)g.Index=h local j=g
+.Window.TargetSize or UDim2.fromOffset(d.WindowSize.X,d.WindowSize.Y)local k=j.X.Offset>0 and j.X.Offset or d.WindowSize.X local l=j.Y.Offset>0 and j.Y.Offset or d.WindowSize.Y local m,n=d.
+PanelLayout(h,i,k)g.Root.Position=UDim2.fromOffset(m,d.PanelTop)g.Root.Size=UDim2.fromOffset(n,d.PanelHeightFor(l))end function f.AddSection(g,h,i)local j=e.New(g,h,i)table.insert(g.Sections,j)return
+j end return f end function a.Q()local b=a.cache.Q if not b then b={c=__modImpl()}a.cache.Q=b end return b.c end end do local __modImpl=function()local b=a.z()local c=a.Q()local d={}d.__index=d
+function d.New(e,f,g,h)local i=setmetatable({Window=e,Name=f,Icon=g.Icon or string.lower(f),Index=h,Columns={},Active=false},d)i.Button=e.Sidebar:AddButton(i)return i end function d.AddColumn(e)local
+f=c.New(e,#e.Columns+1)table.insert(e.Columns,f)e:RelayoutColumns()f.Root.Visible=e.Active return f end function d.RelayoutColumns(e)local f=#e.Columns for g,h in ipairs(e.Columns)do h:ApplyLayout(g,f
+)end end function d.SetActive(e,f)e.Active=f if e.Button then e.Button:SetActive(f)end for g,h in ipairs(e.Columns)do if f then b.PanelIn(h.Root,(g-1)*0.025)else b.PanelOut(h.Root,(g-1)*0.012)end end
+end function d.RefreshTheme(e)if e.Button then e.Button:RefreshTheme()end end return d end function a.R()local b=a.cache.R if not b then b={c=__modImpl()}a.cache.R=b end return b.c end end do local
+__modImpl=function()local b=a.n()local c={}c.__index=c function c.New(d)local e=setmetatable({},c)e.Content=(b.New('Frame',{Name='Content',BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.
+fromOffset(0,0),Size=UDim2.fromScale(1,1),ZIndex=20},d))e.Overlay=(b.New('Frame',{Name='Overlay',BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.fromOffset(0,0),Size=UDim2.fromScale(1,1),
+ZIndex=200},d))return e end return c end function a.S()local b=a.cache.S if not b then b={c=__modImpl()}a.cache.S=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a.s()local
+d=a.t()local e=a.j()local f={}function f.New(g,h)local i=g.Theme local j=(b.New('Frame',{Name='Notification',BackgroundColor3=i.Surface,BorderSizePixel=0,Size=UDim2.fromOffset(250,62),ZIndex=401},g.
+Notifications))b.Stroke(j,i.Border,0,1)b.Padding(j,12,8,12,8)local k=(b.New('TextLabel',{Name='Title',Size=UDim2.new(1,0,0,18),Text=h.Title or'Fecurity',ZIndex=402},j))c.ApplyText(k,i,16,i.Text)d.
+Apply(k,g.Library.AssetCache)local l=(b.New('TextLabel',{Name='Body',Position=UDim2.fromOffset(0,20),Size=UDim2.new(1,0,0,28),Text=h.Text or h.Message or'',TextWrapped=true,ZIndex=402},j))c.ApplyText(
+l,i,15,i.Hint)d.Apply(l,g.Library.AssetCache)j.BackgroundTransparency=1 e.Play(j,0.16,{BackgroundTransparency=0})task.delay(h.Duration or 3,function()if j and j.Parent then local m=e.Play(j,0.16,{
+BackgroundTransparency=1})m.Completed:Once(function()if j and j.Parent then j:Destroy()end end)end end)return j end return f end function a.T()local b=a.cache.T if not b then b={c=__modImpl()}a.cache.
+T=b end return b.c end end do local __modImpl=function()local b=a.n()local c=a.s()local d=a.t()local e={}function e.New(f,g)local h=f.Theme local i=(b.New('Frame',{Name='Modal',AnchorPoint=Vector2.
+new(0.5,0.5),BackgroundColor3=h.Surface,BorderSizePixel=0,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(260,130),ZIndex=300},f.Overlay))b.Stroke(i,h.Border,0,1)b.Padding(i,14,14,14,14)local
+j=(b.New('TextLabel',{Name='Title',Size=UDim2.new(1,0,0,22),Text=g.Title or'Fecurity',ZIndex=301},i))c.ApplyText(j,h,17,h.Text)d.Apply(j,f.Library.AssetCache)local k=(b.New('TextLabel',{Name='Body',
+Position=UDim2.fromOffset(0,30),Size=UDim2.new(1,0,0,54),Text=g.Text or g.Message or'',TextWrapped=true,ZIndex=301},i))c.ApplyText(k,h,15,h.Hint)d.Apply(k,f.Library.AssetCache)return i end return e
+end function a.U()local b=a.cache.U if not b then b={c=__modImpl()}a.cache.U=b end return b.c end end do local __modImpl=function()local b=a.U()local c={}function c.New(d,e)e.Title=e.Title or'Warning'
+return b.New(d,e)end return c end function a.V()local b=a.cache.V if not b then b={c=__modImpl()}a.cache.V=b end return b.c end end do local __modImpl=function()local b=game:GetService('RunService')
+local c=game:GetService('UserInputService')local d=a.n()local e={}e.__index=e local NewStroke=function(f,g)local h=Instance.new('UIStroke')h.ApplyStrokeMode=Enum.ApplyStrokeMode.Border h.LineJoinMode=
+Enum.LineJoinMode.Round h.Thickness=g h.Transparency=1 h.Color=Color3.new(1,1,1)h.Enabled=false h.Parent=f local i=Instance.new('UIGradient')i.Parent=h return h,i end function e.New(f)local g=
+setmetatable({Radius=200,Thickness=2,GlowSize=18,GlowLayers=8,GlowTransparency=0.75,RotateSpeed=1.2,RainbowSpeed=0.2,Rotation=0,Color1=Color3.fromRGB(255,20,147),Color2=Color3.fromRGB(255,255,255),
+GlowEnabled=false,SpinEnabled=false,FillEnabled=false,RainbowEnabled=false,FillTransparency=0.85,SmoothPosition=Vector2.new(0,0),HasExternalPosition=false,ExternalPosition=nil},e)g.Holder=(d.New(
+'Frame',{Name='FOVCircle',AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(g.Radius*2,g.Radius*2),Visible=false},f))g.GlowHolder=(d.
+New('Frame',{Name='Glow',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundTransparency=1,ZIndex=1},g.Holder))d.Corner(g.GlowHolder,1000)g.Circle=(
+d.New('Frame',{Name='Ring',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundTransparency=1,ZIndex=5},g.Holder))d.Corner(g.Circle,1000)g.Fill=(d.
+New('Frame',{Name='Fill',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=g.FillTransparency,
+ZIndex=2,Visible=false},g.Holder))d.Corner(g.Fill,1000)g.FillGradient=Instance.new('UIGradient')g.FillGradient.Parent=g.Fill g.OuterGlow={}for h=1,g.GlowLayers do local i,j=NewStroke(g.GlowHolder,1)g.
+OuterGlow[h]={Stroke=i,Gradient=j}end g.InnerGlow={}for h=1,g.GlowLayers do local i=(d.New('Frame',{Name='Inner'..tostring(h),AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=
+UDim2.fromScale(1,1),BackgroundTransparency=1},g.GlowHolder))d.Corner(i,1000)local j,k=NewStroke(i,1)g.InnerGlow[h]={Frame=i,Stroke=j,Gradient=k}end g.RingStroke,g.RingGradient=NewStroke(g.Circle,g.
+Thickness)g.RingStroke.Enabled=true g.RingStroke.Transparency=0 g:SetRadius(g.Radius)g:SetColors(g.Color1,g.Color2)g.Connection=b.RenderStepped:Connect(function(h)g:Step(h)end)return g end function e.
+BuildSequence(f)return ColorSequence.new({ColorSequenceKeypoint.new(0,f.Color1),ColorSequenceKeypoint.new(1,f.Color2)})end function e.ApplyGradients(f,g,h)f.RingGradient.Color=g f.RingGradient.
+Rotation=h f.FillGradient.Color=g f.FillGradient.Rotation=h for i,j in ipairs(f.OuterGlow)do j.Gradient.Color=g j.Gradient.Rotation=h end for i,j in ipairs(f.InnerGlow)do j.Gradient.Color=g j.Gradient
+.Rotation=h end end function e.SetPosition(f,g)f.HasExternalPosition=true if typeof(g)=='Vector2'then f.ExternalPosition=g f.Holder.Position=UDim2.fromOffset(g.X,g.Y)elseif typeof(g)=='UDim2'then f.
+ExternalPosition=nil f.Holder.Position=g end end function e.SetRadius(f,g)f.Radius=tonumber(g)or f.Radius local h=f.Radius*2 f.Holder.Size=UDim2.fromOffset(h,h)end function e.SetColors(f,g,h)f.Color1=
+g or f.Color1 f.Color2=h or f.Color1 end function e.SetFill(f,g,h)f.FillEnabled=g==true f.FillTransparency=tonumber(h)or f.FillTransparency f.Fill.Visible=f.FillEnabled f.Fill.BackgroundTransparency=f
+.FillTransparency end function e.SetGlow(f,g)f.GlowEnabled=g==true end function e.SetSpin(f,g)f.SpinEnabled=g==true if not f.SpinEnabled then f.Rotation=0 end end function e.SetRainbow(f,g,h)f.
+RainbowEnabled=g==true f.RainbowSpeed=tonumber(h)or f.RainbowSpeed end function e.SetVisible(f,g)f.Holder.Visible=g==true end function e.Step(f,g)if not f.Holder.Visible then return end if not f.
+HasExternalPosition then local h=c:GetMouseLocation()f.SmoothPosition=f.SmoothPosition:Lerp(Vector2.new(h.X,h.Y),math.clamp(g*12,0,1))f.Holder.Position=UDim2.fromOffset(f.SmoothPosition.X,f.
+SmoothPosition.Y)elseif f.ExternalPosition then f.SmoothPosition=f.ExternalPosition end f.HasExternalPosition=false if f.SpinEnabled then f.Rotation=(f.Rotation+f.RotateSpeed*g*60)%360 end if f.
+RainbowEnabled then local h=tick()*f.RainbowSpeed f.Color1=Color3.fromHSV(h%1,0.78,1)f.Color2=Color3.fromHSV((h+0.35)%1,0.78,1)end local h=f:BuildSequence()f:ApplyGradients(h,f.Rotation)local i=f.
+GlowEnabled local j=f.GlowLayers local k=f.GlowSize local l=f.GlowTransparency for m=1,j do local n=m/j local o=l+(1-l)*n local p=f.OuterGlow[m]p.Stroke.Enabled=i p.Stroke.Thickness=i and(f.Thickness+
+k*n)or 0 p.Stroke.Transparency=i and o or 1 local q=f.InnerGlow[m]local r=k*n q.Frame.Size=UDim2.fromScale(1,1)-UDim2.fromOffset(r*2,r*2)q.Stroke.Enabled=i q.Stroke.Thickness=i and k*n or 0 q.Stroke.
+Transparency=i and o or 1 end end function e.Destroy(f)if f.Connection then f.Connection:Disconnect()f.Connection=nil end if f.Holder then f.Holder:Destroy()end end return e end function a.W()local b=
+a.cache.W if not b then b={c=__modImpl()}a.cache.W=b end return b.c end end do local __modImpl=function()local b=game:GetService('UserInputService')local c=a.j()local d=a.d()local e=a.l()local f=a.m()
+local g=a.n()local h=a.o()local i=a.p()local j=a.w()local k=a.x()local l=a.y()local m=a.R()local n=a.S()local o=a.T()local p=a.V()local q=a.W()local r={}r.__index=r local ScaleSize=function(s,t)return
+UDim2.new(s.X.Scale*t,math.floor(s.X.Offset*t),s.Y.Scale*t,math.floor(s.Y.Offset*t))end function r.New(s,t)local u=setmetatable({Library=s,Options=t,TargetSize=t.Size or UDim2.fromOffset(f.WindowSize.
+X,f.WindowSize.Y),Theme=e.Resolve(t.Theme or'Dark',t.Accent),Tabs={},ActiveTab=nil,Visible=true,MenuKey=i.Normalize(t.MenuKey or t.ToggleKey or Enum.KeyCode.Insert),Dropdown=nil,ThemeBindings={},
+FOVCircles={}},r)local v=Instance.new('ScreenGui')v.Name='Fecurity'v.IgnoreGuiInset=true v.ResetOnSpawn=false v.ZIndexBehavior=Enum.ZIndexBehavior.Sibling d.AttachGui(v)u.Gui=v local w=(g.New('Frame',
+{Name='Canvas',BackgroundTransparency=1,BorderSizePixel=0,Size=UDim2.fromScale(1,1),ZIndex=1},v))u.Canvas=w u.SnowLayer=k.New(u,w)local x=(g.New('Frame',{Name='Window',AnchorPoint=Vector2.new(0.5,0.5)
+,Position=UDim2.fromScale(0.5,0.5),Size=u.TargetSize,BackgroundColor3=u.Theme.Surface,BorderSizePixel=0,ZIndex=10},w))u.RootStroke=g.Stroke(x,u.Theme.Border,0,1)u.Root=x u.Topbar=l.New(u,x,t)u.
+TabContainer=n.New(x)u.Content=u.TabContainer.Content u.Overlay=u.TabContainer.Overlay u.Notifications=(g.New('Frame',{Name='Notifications',BackgroundTransparency=1,BorderSizePixel=0,AnchorPoint=
+Vector2.new(1,0),Position=UDim2.new(1,-16,0,16),Size=UDim2.fromOffset(250,400),ZIndex=400},w))g.List(u.Notifications,Enum.FillDirection.Vertical,8)u.Sidebar=j.New(u)u.UnbindDrag=h.Attach(u.Topbar.
+Handle,x)u.InsertConnection=b.InputBegan:Connect(function(y,z)if z then return end if i.IsActivation(y,u.MenuKey)then u:Toggle()end end)u:RegisterThemeBinding(function(y)x.BackgroundColor3=y.Surface u
+.RootStroke.Color=y.Border end)return u end function r.AddTab(s,t,u)local v=m.New(s,t,u or{},#s.Tabs+1)table.insert(s.Tabs,v)if not s.ActiveTab then s:SetActiveTab(v)else v:SetActive(false)end return
+v end function r.SetActiveTab(s,t)if s.Destroyed then return end if s.ActiveTab==t then return end if s.ActiveTab then s.ActiveTab:SetActive(false)end s.ActiveTab=t s.ActiveTab:SetActive(true)end
+function r.SetAccent(s,t)if s.Destroyed then return false end s.Theme.Accent=t s:RefreshTheme()return true end function r.SetTheme(s,t)if s.Destroyed then return false end local u=s.Theme.Accent if
+type(t)=='table'and t.Accent then u=t.Accent end local v=e.Resolve(t,u)e.Apply(s.Theme,v)s:RefreshTheme()return true end function r.RefreshTheme(s)if s.Destroyed then return end if s.Sidebar then s.
+Sidebar:RefreshTheme()end for t,u in ipairs(s.Tabs)do u:RefreshTheme()end for t,u in ipairs(s.ThemeBindings)do pcall(u,s.Theme)end end function r.RegisterThemeBinding(s,t)table.insert(s.ThemeBindings,
+t)t(s.Theme)local u=true return function()if not u then return end u=false for v=#s.ThemeBindings,1,-1 do if s.ThemeBindings[v]==t then table.remove(s.ThemeBindings,v)return end end end end function r
+.SetMenuKey(s,t)if s.Destroyed then return s end s.MenuKey=i.Normalize(t or Enum.KeyCode.Insert)return s end function r.Open(s)if s.Destroyed or not s.Root then return false end s.Visible=true if s.
+SnowLayer then s.SnowLayer:SetVisible(true)end s.Root.Visible=true s.Root.Size=ScaleSize(s.TargetSize,0.94)c.Play(s.Root,0.18,{Size=s.TargetSize})return true end function r.Close(s)if s.Destroyed or
+not s.Root then return false end s.Visible=false if s.SnowLayer then s.SnowLayer:SetVisible(false)end local t=c.Play(s.Root,0.18,{Size=ScaleSize(s.TargetSize,0.94)})t.Completed:Once(function()if not s
+.Visible and s.Root then s.Root.Visible=false end end)return true end function r.Toggle(s)if s.Visible then return s:Close()else return s:Open()end end function r.Notify(s,t)return o.New(s,t)end
+function r.AddWarning(s,t)return p.New(s,t)end function r.CreateFOVCircle(s)local t=q.New(s.Canvas)table.insert(s.FOVCircles,t)return t end function r.Destroy(s)if s.Destroyed then return end s.
+Destroyed=true if s.Dropdown and s.Dropdown.CloseMenu then pcall(function()s.Dropdown:CloseMenu(true)end)s.Dropdown=nil end if s.InsertConnection then s.InsertConnection:Disconnect()s.InsertConnection
+=nil end if s.UnbindDrag then pcall(s.UnbindDrag)s.UnbindDrag=nil end if s.SnowLayer then s.SnowLayer:Destroy()s.SnowLayer=nil end for t,u in ipairs(s.FOVCircles)do pcall(function()u:Destroy()end)end
+table.clear(s.FOVCircles)if s.Gui then s.Gui:Destroy()s.Gui=nil end table.clear(s.ThemeBindings)table.clear(s.Tabs)s.ActiveTab=nil s.Sidebar=nil s.Root=nil s.Canvas=nil s.Content=nil s.Overlay=nil s.
+Notifications=nil s.Topbar=nil end return r end function a.X()local b=a.cache.X if not b then b={c=__modImpl()}a.cache.X=b end return b.c end end do local __modImpl=function()local b=a.b()local c=a.c(
+)local d=a.f()local e=a.e()local f=a.g()local g=a.i()local h=a.X()local i={}i.__index=i function i.New()local j=setmetatable({Version='0.1.0',Windows={},ConfigWidgets={},AssetCache=d.New(),
+AssetRegistry=e,FlagManager=f.New()},i)j.Flags=j.FlagManager.Values j.ConfigManager=g.New(j.FlagManager)j.AssetCache:EnsureAll()j.RegistryEntry=b.Claim(j.Version,function()j:Unload()end)return j end
+function i.RunCallback(j,k,l,...)c.Callback(k,l,...)end function i.CreateWindow(j,k)local l=h.New(j,k or{})table.insert(j.Windows,l)return l end function i.Notify(j,k)local l=j.Windows[1]if l then
+return l:Notify(k)end return nil end function i.AddWarning(j,k)local l=j.Windows[1]if l then return l:AddWarning(k)end return nil end function i.SaveConfig(j,k)local l=j.ConfigManager:Save(k)if l then
+j:RefreshConfigLists(k)end return l end function i.LoadConfig(j,k,l)local m=j.ConfigManager:Load(k,l)if m then j:RefreshConfigLists(k)end return m end function i.GetConfigs(j)return j.ConfigManager:
+GetConfigs()end function i.RegisterConfigList(j,k)table.insert(j.ConfigWidgets,k)end function i.RefreshConfigLists(j,k)for l=#j.ConfigWidgets,1,-1 do local m=j.ConfigWidgets[l]if not m.Root or not m.
+Root.Parent then table.remove(j.ConfigWidgets,l)elseif m.RefreshConfigs then m:RefreshConfigs(k)end end end function i.SetAccent(j,k)for l,m in ipairs(j.Windows)do m:SetAccent(k)end end function i.
+SetAssetBaseUrl(j,k)j.AssetRegistry.SetBaseUrl(k)return j.AssetCache:EnsureAll()end function i.SetTheme(j,k)for l,m in ipairs(j.Windows)do m:SetTheme(k)end return true end function i.Toggle(j)for k,l
+in ipairs(j.Windows)do l:Toggle()end end function i.Open(j)for k,l in ipairs(j.Windows)do l:Open()end end function i.Close(j)for k,l in ipairs(j.Windows)do l:Close()end end function i.Unload(j)for k,l
+in ipairs(j.Windows)do l:Destroy()end table.clear(j.Windows)table.clear(j.ConfigWidgets)b.Clear(j.RegistryEntry)end return i end function a.Y()local b=a.cache.Y if not b then b={c=__modImpl()}a.cache.
+Y=b end return b.c end end end local b=a.Y()return b.New()
