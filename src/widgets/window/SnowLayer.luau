@@ -7,11 +7,15 @@ local Elements = require("@fec/render/Elements")
 local SnowLayer = {}
 SnowLayer.__index = SnowLayer
 
+local FlakeCount = 180
+local TopY = -0.08
+local BottomY = 1.08
+
 function SnowLayer.New(Window: any, Parent: Instance)
     local self = setmetatable({
         Window = Window,
         Flakes = {},
-        Random = Random.new(6206),
+        Elapsed = 0,
         Visible = true,
     }, SnowLayer)
 
@@ -25,8 +29,17 @@ function SnowLayer.New(Window: any, Parent: Instance)
     }, Parent) :: Frame
     self.Root = Root
 
-    for Index = 1, 70 do
-        local Size = self.Random:NextInteger(5, 14)
+    for Index = 0, FlakeCount - 1 do
+        local Depth = ((Index * 53) % 100) / 100
+        local Near = Depth ^ 1.8
+        local LeftPercent = (Index * 23 + math.floor(Index / 3) * 11) % 100
+        local Size = 2.4 + Near * 13 + (Index % 5) * 0.18
+        local Duration = 18 - Near * 11 + (Index * 7 % 5)
+        local Delay = (Index * 0.47) % Duration
+        local Drift = math.round((((Index * 29) % 120) - 60) * (0.35 + Near * 1.25))
+        local Opacity = 0.1 + Near * 0.56
+        local Spin = Index % 2 == 0 and 180 or -180
+
         local Label = Elements.New("TextLabel", {
             Name = "Flake" .. tostring(Index),
             BackgroundTransparency = 1,
@@ -34,19 +47,18 @@ function SnowLayer.New(Window: any, Parent: Instance)
             Size = UDim2.fromOffset(Size, Size),
             Text = "*",
             TextColor3 = Color3.new(1, 1, 1),
-            TextTransparency = self.Random:NextNumber(0.1, 0.62),
+            TextTransparency = 1 - Opacity,
             TextSize = Size,
             Font = Enum.Font.GothamBold,
             ZIndex = 2,
         }, Root) :: TextLabel
         table.insert(self.Flakes, {
             Node = Label,
-            X = self.Random:NextNumber(0, 1),
-            Y = self.Random:NextNumber(-0.2, 1),
-            Speed = self.Random:NextNumber(0.025, 0.105),
-            Drift = self.Random:NextNumber(-22, 22),
-            Spin = self.Random:NextNumber(-35, 35),
-            Phase = self.Random:NextNumber(0, 6.28),
+            LeftPercent = LeftPercent,
+            Duration = Duration,
+            Delay = Delay,
+            Drift = Drift,
+            Spin = Spin,
         })
     end
 
@@ -65,17 +77,13 @@ function SnowLayer:Step(Delta: number)
     if Size.X <= 0 or Size.Y <= 0 then
         return
     end
-    local Now = os.clock()
+    self.Elapsed += Delta
     for _, Flake in ipairs(self.Flakes) do
-        Flake.Y += Flake.Speed * Delta * 60
-        if Flake.Y > 1.08 then
-            Flake.Y = -0.08
-            Flake.X = self.Random:NextNumber(0, 1)
-        end
-        local X = Flake.X * Size.X + math.sin(Now + Flake.Phase) * Flake.Drift
-        local Y = Flake.Y * Size.Y
+        local Phase = ((self.Elapsed + Flake.Delay) % Flake.Duration) / Flake.Duration
+        local X = (Flake.LeftPercent / 100) * Size.X + Phase * Flake.Drift
+        local Y = (TopY + Phase * (BottomY - TopY)) * Size.Y
         Flake.Node.Position = UDim2.fromOffset(X, Y)
-        Flake.Node.Rotation += Flake.Spin * Delta
+        Flake.Node.Rotation = Phase * Flake.Spin
     end
 end
 
