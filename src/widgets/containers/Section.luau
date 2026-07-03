@@ -9,7 +9,10 @@ local WidgetFactory = require("@fec/widgets/WidgetFactory")
 local Section = {}
 Section.__index = Section
 
-function Section.New(Column: any, Name: string)
+function Section.New(Column: any, Name: string, Options: { [string]: any }?)
+    Options = Options or {}
+    local NoHeader = Options.NoHeader == true
+    local HeaderHeight = NoHeader and 0 or 28
     local self = setmetatable({
         Column = Column,
         Window = Column.Window,
@@ -28,17 +31,19 @@ function Section.New(Column: any, Name: string)
     }, Column.Scroll) :: Frame
     self.Root = Root
 
-    local Header = Elements.New("TextLabel", {
-        Name = "Header",
-        BackgroundTransparency = 1,
-        BorderSizePixel = 0,
-        Size = UDim2.new(1, 0, 0, 28),
-        Text = string.upper(Name),
-        ZIndex = 24,
-    }, Root) :: TextLabel
-    Styling.ApplyText(Header, Column.Window.Theme, 11, Column.Window.Theme.Muted)
-    FontLoader.Apply(Header, Column.Window.Library.AssetCache)
-    self.Header = Header
+    if not NoHeader then
+        local Header = Elements.New("TextLabel", {
+            Name = "Header",
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            Size = UDim2.new(1, 0, 0, HeaderHeight),
+            Text = string.upper(Name),
+            ZIndex = 24,
+        }, Root) :: TextLabel
+        Styling.ApplyText(Header, Column.Window.Theme, 10, Column.Window.Theme.Muted)
+        FontLoader.Apply(Header, Column.Window.Library.AssetCache)
+        self.Header = Header
+    end
 
     local Body = Elements.New("Frame", {
         Name = "Body",
@@ -48,7 +53,7 @@ function Section.New(Column: any, Name: string)
         AutomaticSize = Enum.AutomaticSize.Y,
         ZIndex = 24,
     }, Root) :: Frame
-    Body.Position = UDim2.fromOffset(0, 28)
+    Body.Position = UDim2.fromOffset(0, HeaderHeight)
     self.Body = Body
 
     local RootLayout = AutoLayout.Vertical(Root, 0)
