@@ -18,6 +18,7 @@ Theme.Default = {
     ToggleOff = Palette.Hex("#1d1d1d"),
     ToggleKnobOff = Palette.Hex("#696969"),
     SliderTrack = Palette.Hex("#232323"),
+    Success = Palette.Hex("#2fb636"),
 }
 
 Theme.Presets = {
