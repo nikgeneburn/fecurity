@@ -1,0 +1,32 @@
+{
+    "generator": {
+        "name": "dense",
+        "column_span": 200
+    },
+    "bundle": {
+        "require_mode": {
+            "name": "path",
+            "module_folder_name": "init",
+            "sources": {
+                "@fec": "src",
+                "@include": "include"
+            }
+        },
+        "excludes": []
+    },
+    "rules": [
+        "remove_types",
+        "remove_spaces",
+        "remove_comments",
+        "remove_empty_do",
+        "remove_unused_variable",
+        "remove_unused_while",
+        "remove_unused_if_branch",
+        "remove_method_definition",
+        "compute_expression",
+        "filter_after_early_return",
+        "rename_variables",
+        "convert_index_to_field",
+        "convert_local_function_to_assign"
+    ]
+}
