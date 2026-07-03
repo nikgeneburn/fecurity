@@ -1158,6 +1158,7 @@ do
                 ToggleOff = Palette.Hex('#1d1d1d'),
                 ToggleKnobOff = Palette.Hex('#696969'),
                 SliderTrack = Palette.Hex('#232323'),
+                Success = Palette.Hex('#2fb636'),
             }
             Theme.Presets = {
                 Dark = Theme.Default,
@@ -1596,9 +1597,14 @@ do
                 local function Resize()
                     local Width = math.max(Object.AbsoluteSize.X - 6, 4)
                     local Best = BottomSize
+                    local MeasureFont = Object.Font
+
+                    if MeasureFont == Enum.Font.Unknown then
+                        MeasureFont = Enum.Font.GothamBold
+                    end
 
                     for Size = TopSize, BottomSize, -1 do
-                        local Bounds = TextService:GetTextSize(Object.Text, Size, Object.Font, Vector2.new(math.huge, math.huge))
+                        local Bounds = TextService:GetTextSize(Object.Text, Size, MeasureFont, Vector2.new(math.huge, math.huge))
 
                         if Bounds.X <= Width then
                             Best = Size
@@ -1753,11 +1759,10 @@ do
                 local Button = (Elements.New('TextButton', {
                     Name = TabObject.Name .. 'Tab',
                     AutoButtonColor = false,
-                    BackgroundColor3 = Window.Theme.Surface,
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, SlotY[Index] or (72 + (Index - 1) * 67)),
-                    Size = UDim2.fromOffset(67, 67),
+                    Size = UDim2.fromOffset(67, 64),
                     Text = '',
                     ZIndex = 25,
                 }, Window.Sidebar.Root))
@@ -1769,7 +1774,7 @@ do
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 14),
-                    Size = UDim2.fromOffset(67, 38),
+                    Size = UDim2.fromOffset(67, 34),
                     ZIndex = 26,
                 }, Button))
 
@@ -1785,12 +1790,12 @@ do
                 local Label = (Elements.New('TextLabel', {
                     Name = 'Label',
                     Position = UDim2.fromOffset(0, 22),
-                    Size = UDim2.fromOffset(67, 16),
+                    Size = UDim2.fromOffset(67, 12),
                     Text = string.upper(TabObject.Name),
                     ZIndex = 26,
                 }, Content))
 
-                Styling.ApplyText(Label, Window.Theme, 12, Window.Theme.Muted)
+                Styling.ApplyText(Label, Window.Theme, 10, Window.Theme.Muted)
                 FontLoader.Apply(Label, Window.Library.AssetCache)
 
                 Label.TextXAlignment = Enum.TextXAlignment.Center
@@ -1806,16 +1811,20 @@ do
                 self.Active = Value
 
                 self:RefreshTheme()
+
+                if Value then
+                    local SelectedTab = self.Window.Sidebar.SelectedTab
+
+                    SelectedTab.BackgroundTransparency = 0
+
+                    Tween.Play(SelectedTab, 0.16, {
+                        Position = UDim2.fromOffset(0, self.Root.Position.Y.Offset),
+                    })
+                end
             end
             function TabButton:RefreshTheme()
                 local Theme = self.Window.Theme
                 local ActiveColor = self.Active and Theme.Accent or Theme.Muted
-
-                self.Root.BackgroundTransparency = self.Active and 0 or 1
-
-                Tween.Play(self.Root, 0.14, {
-                    BackgroundColor3 = self.Active and Theme.Selected or Theme.Surface,
-                })
 
                 if self.Icon:IsA('ImageLabel') then
                     self.Icon.ImageColor3 = ActiveColor
@@ -1864,17 +1873,29 @@ do
                     BackgroundColor3 = Window.Theme.Surface,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 0),
-                    Size = UDim2.fromOffset(Tokens.SidebarWidth, Tokens.WindowSize.Y),
+                    Size = UDim2.fromOffset(Tokens.SidebarWidth, 479),
                     ZIndex = 22,
                 }, Window.Root))
 
                 self.Stroke = Elements.Stroke(Root, Window.Theme.Border, 0, 1)
                 self.Root = Root
 
+                local SelectedTab = (Elements.New('Frame', {
+                    Name = 'SelectedTab',
+                    BackgroundColor3 = Window.Theme.Selected,
+                    BackgroundTransparency = 1,
+                    BorderSizePixel = 0,
+                    Position = UDim2.fromOffset(0, 72),
+                    Size = UDim2.fromOffset(Tokens.SidebarWidth, 64),
+                    ZIndex = 23,
+                }, Root))
+
+                self.SelectedTab = SelectedTab
+
                 local Logo = (Elements.New('ImageLabel', {
                     Name = 'Logo',
                     BackgroundTransparency = 1,
-                    Position = UDim2.fromOffset(8, 18),
+                    Position = UDim2.fromOffset(6, 13),
                     Size = UDim2.fromOffset(50, 48),
                     ImageColor3 = Window.Theme.Accent,
                     ZIndex = 24,
@@ -1889,7 +1910,7 @@ do
                     local Fallback = (Elements.New('TextLabel', {
                         Name = 'LogoFallback',
                         BackgroundTransparency = 1,
-                        Position = UDim2.fromOffset(8, 18),
+                        Position = UDim2.fromOffset(6, 13),
                         Size = UDim2.fromOffset(50, 48),
                         Text = 'F',
                         ZIndex = 25,
@@ -1914,6 +1935,7 @@ do
             function Sidebar:RefreshTheme()
                 self.Root.BackgroundColor3 = self.Window.Theme.Surface
                 self.Stroke.Color = self.Window.Theme.Border
+                self.SelectedTab.BackgroundColor3 = self.Window.Theme.Selected
                 self.Logo.ImageColor3 = self.Window.Theme.Accent
 
                 Gradients.SetAccent(self.LogoGradient, self.Window.Theme.Accent)
@@ -1947,11 +1969,15 @@ do
 
             SnowLayer.__index = SnowLayer
 
+            local FlakeCount = 180
+            local TopY = -0.08
+            local BottomY = 1.08
+
             function SnowLayer.New(Window, Parent)
                 local self = setmetatable({
                     Window = Window,
                     Flakes = {},
-                    Random = Random.new(6206),
+                    Elapsed = 0,
                     Visible = true,
                 }, SnowLayer)
                 local Root = (Elements.New('Frame', {
@@ -1965,8 +1991,16 @@ do
 
                 self.Root = Root
 
-                for Index = 1, 70 do
-                    local Size = self.Random:NextInteger(5, 14)
+                for Index = 0, FlakeCount - 1 do
+                    local Depth = ((Index * 53) % 100) / 100
+                    local Near = Depth ^ 1.8
+                    local LeftPercent = (Index * 23 + math.floor(Index / 3) * 11) % 100
+                    local Size = 2.4 + Near * 13 + (Index % 5) * 0.18
+                    local Duration = 18 - Near * 11 + (Index * 7 % 5)
+                    local Delay = (Index * 0.47) % Duration
+                    local Drift = math.round((((Index * 29) % 120) - 60) * (0.35 + Near * 1.25))
+                    local Opacity = 0.1 + Near * 0.56
+                    local Spin = Index % 2 == 0 and 180 or -180
                     local Label = (Elements.New('TextLabel', {
                         Name = 'Flake' .. tostring(Index),
                         BackgroundTransparency = 1,
@@ -1974,7 +2008,7 @@ do
                         Size = UDim2.fromOffset(Size, Size),
                         Text = '*',
                         TextColor3 = Color3.new(1, 1, 1),
-                        TextTransparency = self.Random:NextNumber(0.1, 0.62),
+                        TextTransparency = 1 - Opacity,
                         TextSize = Size,
                         Font = Enum.Font.GothamBold,
                         ZIndex = 2,
@@ -1982,12 +2016,11 @@ do
 
                     table.insert(self.Flakes, {
                         Node = Label,
-                        X = self.Random:NextNumber(0, 1),
-                        Y = self.Random:NextNumber(-0.2, 1),
-                        Speed = self.Random:NextNumber(0.025, 0.105),
-                        Drift = self.Random:NextNumber(-22, 22),
-                        Spin = self.Random:NextNumber(-35, 35),
-                        Phase = self.Random:NextNumber(0, 6.28),
+                        LeftPercent = LeftPercent,
+                        Duration = Duration,
+                        Delay = Delay,
+                        Drift = Drift,
+                        Spin = Spin,
                     })
                 end
 
@@ -2008,22 +2041,15 @@ do
                     return
                 end
 
-                local Now = os.clock()
+                self.Elapsed += Delta
 
                 for _, Flake in ipairs(self.Flakes)do
-                    Flake.Y += Flake.Speed * Delta * 60
-
-                    if Flake.Y > 1.08 then
-                        Flake.Y = -0.08
-                        Flake.X = self.Random:NextNumber(0, 1)
-                    end
-
-                    local X = Flake.X * Size.X + math.sin(Now + Flake.Phase) * Flake.Drift
-                    local Y = Flake.Y * Size.Y
+                    local Phase = ((self.Elapsed + Flake.Delay) % Flake.Duration) / Flake.Duration
+                    local X = (Flake.LeftPercent / 100) * Size.X + Phase * Flake.Drift
+                    local Y = (TopY + Phase * (BottomY - TopY)) * Size.Y
 
                     Flake.Node.Position = UDim2.fromOffset(X, Y)
-
-                    Flake.Node.Rotation += Flake.Spin * Delta
+                    Flake.Node.Rotation = Phase * Flake.Spin
                 end
             end
             function SnowLayer:SetVisible(Value)
@@ -2375,7 +2401,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 10, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 self.Title = Title
@@ -2388,7 +2414,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 self.Hint = Hint
@@ -2397,7 +2423,7 @@ do
                     Name = 'Track',
                     AnchorPoint = Vector2.new(1, 0),
                     Position = UDim2.new(1, -1, 0, 5),
-                    Size = UDim2.fromOffset(29, 16),
+                    Size = UDim2.fromOffset(26, 16),
                     BackgroundColor3 = Theme.ToggleOff,
                     BorderSizePixel = 0,
                     ZIndex = 32,
@@ -2438,8 +2464,8 @@ do
                 self:BindTheme(function(NewTheme)
                     Title.TextColor3 = NewTheme.Text
                     Hint.TextColor3 = NewTheme.Hint
-                    Track.BackgroundColor3 = self.Value and NewTheme.Accent or NewTheme.ToggleOff
-                    Knob.BackgroundColor3 = self.Value and NewTheme.Text or NewTheme.ToggleKnobOff
+                    Track.BackgroundColor3 = self.Value and NewTheme.ControlHover or NewTheme.ToggleOff
+                    Knob.BackgroundColor3 = self.Value and NewTheme.Accent or NewTheme.ToggleKnobOff
                 end)
                 self:SetValue(self.Value, false)
 
@@ -2453,11 +2479,11 @@ do
                 local Theme = self.Window.Theme
 
                 Tween.Play(self.Track, 0.12, {
-                    BackgroundColor3 = On and Theme.Accent or Theme.ToggleOff,
+                    BackgroundColor3 = On and Theme.ControlHover or Theme.ToggleOff,
                 })
                 Tween.Play(self.Knob, 0.12, {
-                    BackgroundColor3 = On and Theme.Text or Theme.ToggleKnobOff,
-                    Position = On and UDim2.fromOffset(15, 2) or UDim2.fromOffset(2, 2),
+                    BackgroundColor3 = On and Theme.Accent or Theme.ToggleKnobOff,
+                    Position = On and UDim2.fromOffset(13, 2) or UDim2.fromOffset(2, 2),
                 })
             end
 
@@ -2515,7 +2541,7 @@ do
                 Options.Step = Options.Step or 1
                 Options.Default = Options.Default or Options.Value or Options.Min
 
-                local self = BaseWidget.New(Section, Options, 52)
+                local self = BaseWidget.New(Section, Options, 40)
 
                 setmetatable(self, Slider)
 
@@ -2529,7 +2555,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 10, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 self.Title = Title
@@ -2543,7 +2569,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(ValueLabel, Theme, 12, Theme.Text)
+                Styling.ApplyText(ValueLabel, Theme, 10, Theme.Text)
                 FontLoader.Apply(ValueLabel, self.Library.AssetCache)
 
                 ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
@@ -2751,7 +2777,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 10, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Hint = (Elements.New('TextLabel', {
@@ -2762,7 +2788,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 local Box = (Elements.New('TextButton', {
@@ -2770,8 +2796,8 @@ do
                     AutoButtonColor = false,
                     BackgroundColor3 = Theme.Control,
                     BorderSizePixel = 0,
-                    Position = UDim2.fromOffset(0, 32),
-                    Size = UDim2.new(1, 0, 0, 26),
+                    Position = UDim2.fromOffset(0, 31),
+                    Size = UDim2.new(1, 0, 0, 24),
                     Text = '',
                     ZIndex = 32,
                 }, self.Root))
@@ -2782,28 +2808,28 @@ do
 
                 local Value = (Elements.New('TextLabel', {
                     Name = 'Value',
-                    Position = UDim2.fromOffset(18, 0),
-                    Size = UDim2.new(1, -42, 1, 0),
+                    Position = UDim2.fromOffset(16, 7),
+                    Size = UDim2.new(1, -50, 0, 12),
                     Text = '',
                     ZIndex = 33,
                 }, Box))
 
-                Styling.ApplyText(Value, Theme, 12, Theme.Text)
+                Styling.ApplyText(Value, Theme, 10, Theme.Text)
                 FontLoader.Apply(Value, self.Library.AssetCache)
-                Styling.FitText(Value, 12, 9)
+                Styling.FitText(Value, 10, 8)
 
                 self.ValueLabel = Value
 
                 local Arrow = (Elements.New('TextLabel', {
                     Name = 'Arrow',
                     AnchorPoint = Vector2.new(1, 0),
-                    Position = UDim2.new(1, -14, 0, 0),
-                    Size = UDim2.fromOffset(12, 26),
+                    Position = UDim2.new(1, -18, 0, 10),
+                    Size = UDim2.fromOffset(8, 5),
                     Text = 'v',
                     ZIndex = 33,
                 }, Box))
 
-                Styling.ApplyText(Arrow, Theme, 12, Theme.Muted)
+                Styling.ApplyText(Arrow, Theme, 8, Theme.Muted)
                 FontLoader.Apply(Arrow, self.Library.AssetCache)
 
                 Arrow.TextXAlignment = Enum.TextXAlignment.Center
@@ -2897,15 +2923,15 @@ do
                 local Theme = self.Window.Theme
                 local RootPosition = self.Window.Root.AbsolutePosition
                 local BoxPosition = self.Box.AbsolutePosition
-                local RowHeight = 24
+                local RowHeight = 22
                 local OpenHeight = math.max(RowHeight, math.min(#self.Options.Values, 7) * RowHeight)
                 local Menu = (Elements.New('Frame', {
                     Name = 'DropdownMenu',
-                    BackgroundColor3 = Theme.ControlHover,
+                    BackgroundColor3 = Theme.Control,
                     BackgroundTransparency = 0.15,
                     BorderSizePixel = 0,
                     ClipsDescendants = true,
-                    Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X, BoxPosition.Y - RootPosition.Y + self.Box.AbsoluteSize.Y + 2),
+                    Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X, BoxPosition.Y - RootPosition.Y + self.Box.AbsoluteSize.Y + 1),
                     Size = UDim2.fromOffset(self.Box.AbsoluteSize.X, 0),
                     ZIndex = 210,
                 }, self.Window.Overlay))
@@ -2938,36 +2964,39 @@ do
                     local Row = (Elements.New('TextButton', {
                         Name = 'Option' .. tostring(Index),
                         AutoButtonColor = false,
-                        BackgroundColor3 = Theme.ControlHover,
-                        BackgroundTransparency = 0.08,
+                        BackgroundColor3 = Theme.Control,
+                        BackgroundTransparency = 0,
                         BorderSizePixel = 0,
                         Position = UDim2.fromOffset(0, (Index - 1) * RowHeight),
                         Size = UDim2.new(1, -2, 0, RowHeight),
                         Text = '',
                         ZIndex = 211,
                     }, Scroll))
-                    local Indicator = (Elements.New('Frame', {
-                        Name = 'Indicator',
-                        AnchorPoint = Vector2.new(0, 0.5),
-                        BackgroundColor3 = Theme.Accent,
-                        BackgroundTransparency = 1,
-                        BorderSizePixel = 0,
-                        Position = UDim2.fromOffset(9, 12),
-                        Size = UDim2.fromOffset(5, 5),
-                        ZIndex = 212,
-                    }, Row))
+                    local Indicator = nil
+                    local IndicatorStroke = nil
 
-                    Elements.Corner(Indicator, 4)
+                    if self.Options.Multi then
+                        Indicator = (Elements.New('Frame', {
+                            Name = 'Indicator',
+                            BackgroundColor3 = Theme.Accent,
+                            BackgroundTransparency = 1,
+                            BorderSizePixel = 0,
+                            Position = UDim2.fromOffset(13, 7),
+                            Size = UDim2.fromOffset(7, 7),
+                            ZIndex = 212,
+                        }, Row))
+                        IndicatorStroke = Elements.Stroke(Indicator, Theme.Muted, 0, 1)
+                    end
 
                     local Label = (Elements.New('TextLabel', {
                         Name = 'Label',
-                        Position = UDim2.fromOffset(20, 0),
-                        Size = UDim2.new(1, -30, 1, 0),
+                        Position = UDim2.fromOffset(self.Options.Multi and 30 or 16, 0),
+                        Size = UDim2.new(1, self.Options.Multi and -46 or -32, 1, 0),
                         Text = tostring(Option),
                         ZIndex = 212,
                     }, Row))
 
-                    Styling.ApplyText(Label, Theme, 12, Theme.Text)
+                    Styling.ApplyText(Label, Theme, 10, Theme.Muted)
                     FontLoader.Apply(Label, self.Library.AssetCache)
 
                     self.OptionRows[Index] = {
@@ -2975,17 +3004,22 @@ do
                         Row = Row,
                         Label = Label,
                         Indicator = Indicator,
+                        IndicatorStroke = IndicatorStroke,
                     }
 
                     Row.MouseEnter:Connect(function()
                         Tween.Play(Row, 0.1, {
-                            BackgroundColor3 = Theme.Control,
+                            BackgroundColor3 = Theme.ControlHover,
                         })
                     end)
                     Row.MouseLeave:Connect(function()
-                        Tween.Play(Row, 0.12, {
-                            BackgroundColor3 = self.Window.Theme.ControlHover,
-                        })
+                        local Selected = if self.Options.Multi then Contains(self.Value, Option)else self.Value == Option
+
+                        if not Selected then
+                            Tween.Play(Row, 0.12, {
+                                BackgroundColor3 = self.Window.Theme.Control,
+                            })
+                        end
                     end)
                     Row.MouseButton1Click:Connect(function()
                         Tween.Press(Row, Theme.Control, Theme.ControlHover)
@@ -3066,14 +3100,20 @@ do
                 for _, Record in ipairs(self.OptionRows)do
                     local Selected = if self.Options.Multi then Contains(self.Value, Record.Option)else self.Value == Record.Option
 
-                    Record.Indicator.BackgroundColor3 = Theme.Accent
-                    Record.Indicator.BackgroundTransparency = Selected and 0 or 1
-                    Record.Label.TextColor3 = Selected and Theme.Text or Theme.Muted
-                    Record.Row.BackgroundColor3 = Theme.ControlHover
+                    if Record.Indicator then
+                        Record.Indicator.BackgroundColor3 = Theme.Accent
+                        Record.Indicator.BackgroundTransparency = Selected and 0 or 1
+                    end
+                    if Record.IndicatorStroke then
+                        Record.IndicatorStroke.Color = Selected and Theme.Accent or Theme.Muted
+                    end
+
+                    Record.Label.TextColor3 = Selected and Theme.Accent or Theme.Muted
+                    Record.Row.BackgroundColor3 = Selected and Theme.ControlHover or Theme.Control
                 end
 
                 if self.Menu then
-                    self.Menu.BackgroundColor3 = Theme.ControlHover
+                    self.Menu.BackgroundColor3 = Theme.Control
                 end
             end
             function Dropdown:Destroy()
@@ -3124,7 +3164,7 @@ do
                 setmetatable(self, Button)
 
                 local Theme = self.Window.Theme
-                local Base = Options.Tone == 'danger' and Color3.fromRGB(166, 34, 24) or Theme.Accent
+                local Base = Theme.Accent
                 local Control = (Elements.New('TextButton', {
                     Name = 'Button',
                     AutoButtonColor = false,
@@ -3136,12 +3176,12 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Control, Theme, 12, Theme.Text)
+                Styling.ApplyText(Control, Theme, 10, Theme.Text)
                 FontLoader.Apply(Control, self.Library.AssetCache)
 
                 Control.TextXAlignment = Enum.TextXAlignment.Center
 
-                Styling.FitText(Control, 12, 9)
+                Styling.FitText(Control, 10, 9)
 
                 self.Control = Control
                 self.BaseColor = Base
@@ -3165,11 +3205,8 @@ do
                     self.Library:RunCallback(Options.Text or 'Button', self.Callback)
                 end)
                 self:BindTheme(function(NewTheme)
-                    if Options.Tone ~= 'danger' then
-                        self.BaseColor = NewTheme.Accent
-                        Control.BackgroundColor3 = self.BaseColor
-                    end
-
+                    self.BaseColor = NewTheme.Accent
+                    Control.BackgroundColor3 = self.BaseColor
                     Control.TextColor3 = NewTheme.Text
                 end)
 
@@ -3219,7 +3256,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 10, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Box = (Elements.New('TextBox', {
@@ -3228,12 +3265,12 @@ do
                     BorderSizePixel = 0,
                     ClearTextOnFocus = false,
                     Position = UDim2.fromOffset(0, 22),
-                    Size = UDim2.new(1, 0, 0, 26),
+                    Size = UDim2.new(1, 0, 0, 24),
                     Text = tostring(self.Value),
                     ZIndex = 32,
                 }, self.Root))
 
-                Styling.ApplyText(Box, Theme, 12, Theme.Text)
+                Styling.ApplyText(Box, Theme, 10, Theme.Text)
                 FontLoader.Apply(Box, self.Library.AssetCache)
 
                 Box.TextXAlignment = Enum.TextXAlignment.Left
@@ -3304,23 +3341,23 @@ do
                 local Theme = self.Window.Theme
                 local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
-                    Size = UDim2.new(1, -86, 0, 16),
+                    Size = UDim2.new(1, -92, 0, 16),
                     Text = Options.Text or 'Keybind',
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 10, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Hint = (Elements.New('TextLabel', {
                     Name = 'Hint',
                     Position = UDim2.fromOffset(0, 15),
-                    Size = UDim2.new(1, -86, 0, 14),
+                    Size = UDim2.new(1, -92, 0, 14),
                     Text = Options.Hint or '',
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 local Box = (Elements.New('TextButton', {
@@ -3330,17 +3367,17 @@ do
                     BackgroundColor3 = Theme.Control,
                     BorderSizePixel = 0,
                     Position = UDim2.new(1, 0, 0, 1),
-                    Size = UDim2.fromOffset(84, 26),
+                    Size = UDim2.fromOffset(90, 20),
                     Text = tostring(self.Value),
                     ZIndex = 32,
                 }, self.Root))
 
-                Styling.ApplyText(Box, Theme, 12, Theme.Text)
+                Styling.ApplyText(Box, Theme, 10, Theme.Text)
                 FontLoader.Apply(Box, self.Library.AssetCache)
 
                 Box.TextXAlignment = Enum.TextXAlignment.Center
 
-                Styling.FitText(Box, 12, 9)
+                Styling.FitText(Box, 10, 8)
 
                 self.Box = Box
 
@@ -3377,6 +3414,7 @@ do
 
                 self.Listening = true
                 self.Box.Text = '...'
+                self.Box.BackgroundColor3 = self.Window.Theme.ControlHover
 
                 if self.ListenConnection then
                     self.ListenConnection:Disconnect()
@@ -3391,6 +3429,7 @@ do
 
                     self.ListenConnection = nil
                     self.Listening = false
+                    self.Box.BackgroundColor3 = self.Window.Theme.Control
 
                     self:SetValue(KeybindManager.Normalize(Input))
                 end)
@@ -3444,13 +3483,13 @@ do
             local ColorPickerUtils = {}
 
             ColorPickerUtils.Templates = {
-                '#ff1412',
-                '#5184ec',
-                '#dff852',
-                '#eab423',
-                '#45d2c0',
+                '#ff0000',
+                '#5f90f6',
+                '#d8f368',
+                '#e1ae24',
+                '#3ad4bb',
                 '#fee2eb',
-                '#e852a7',
+                '#f25dab',
                 '#ffffff',
             }
             ColorPickerUtils.HueSequence = ColorSequence.new({
@@ -3563,7 +3602,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 10, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Hint = (Elements.New('TextLabel', {
@@ -3574,7 +3613,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 local Swatch = (Elements.New('TextButton', {
@@ -3670,7 +3709,7 @@ do
                     BackgroundColor3 = Color3.fromHSV(self.Hue, 1, 1),
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(10, 40),
-                    Size = UDim2.fromOffset(170, 118),
+                    Size = UDim2.fromOffset(182, 182),
                     ZIndex = 221,
                 }, Parent))
 
@@ -3704,13 +3743,14 @@ do
 
                 local Cursor = (Elements.New('Frame', {
                     Name = 'Cursor',
-                    BackgroundColor3 = Theme.Text,
+                    BackgroundColor3 = Theme.Accent,
                     BorderSizePixel = 0,
-                    Size = UDim2.fromOffset(8, 8),
+                    Size = UDim2.fromOffset(7, 7),
                     ZIndex = 224,
                 }, Square))
 
                 Elements.Corner(Cursor, 4)
+                Elements.Stroke(Cursor, Theme.Text, 0.4, 1)
 
                 self.SquareCursor = Cursor
 
@@ -3727,8 +3767,8 @@ do
                     Name = 'Hue',
                     BackgroundColor3 = Color3.new(1, 1, 1),
                     BorderSizePixel = 0,
-                    Position = UDim2.fromOffset(10, 168),
-                    Size = UDim2.fromOffset(170, 10),
+                    Position = UDim2.fromOffset(10, 232),
+                    Size = UDim2.fromOffset(182, 10),
                     ZIndex = 221,
                 }, Parent))
 
@@ -3738,13 +3778,14 @@ do
 
                 local Cursor = (Elements.New('Frame', {
                     Name = 'HueCursor',
-                    BackgroundColor3 = Theme.Text,
+                    BackgroundColor3 = Theme.Accent,
                     BorderSizePixel = 0,
-                    Size = UDim2.fromOffset(6, 14),
+                    Size = UDim2.fromOffset(7, 7),
                     ZIndex = 222,
                 }, Bar))
 
-                Elements.Corner(Cursor, 3)
+                Elements.Corner(Cursor, 4)
+                Elements.Stroke(Cursor, Theme.Text, 0.4, 1)
 
                 self.HueCursor = Cursor
 
@@ -3761,8 +3802,8 @@ do
                     Name = 'Alpha',
                     BackgroundColor3 = self.Value,
                     BorderSizePixel = 0,
-                    Position = UDim2.fromOffset(10, 184),
-                    Size = UDim2.fromOffset(170, 10),
+                    Position = UDim2.fromOffset(10, 248),
+                    Size = UDim2.fromOffset(182, 10),
                     ZIndex = 221,
                 }, Parent))
 
@@ -3775,13 +3816,14 @@ do
 
                 local Cursor = (Elements.New('Frame', {
                     Name = 'AlphaCursor',
-                    BackgroundColor3 = Theme.Text,
+                    BackgroundColor3 = Theme.Accent,
                     BorderSizePixel = 0,
-                    Size = UDim2.fromOffset(6, 14),
+                    Size = UDim2.fromOffset(7, 7),
                     ZIndex = 222,
                 }, Bar))
 
-                Elements.Corner(Cursor, 3)
+                Elements.Corner(Cursor, 4)
+                Elements.Stroke(Cursor, Theme.Text, 0.4, 1)
 
                 self.AlphaCursor = Cursor
 
@@ -3794,19 +3836,22 @@ do
                 end))
             end
             function ColorPicker:CreateTemplates(Parent)
+                local Theme = self.Window.Theme
+
                 for Index, Hex in ipairs(Utils.Templates)do
                     local Button = (Elements.New('TextButton', {
                         Name = 'Template' .. tostring(Index),
                         AutoButtonColor = false,
                         BackgroundColor3 = Palette.Hex(Hex),
                         BorderSizePixel = 0,
-                        Position = UDim2.fromOffset(10 + (Index - 1) * 21, 238),
-                        Size = UDim2.fromOffset(15, 15),
+                        Position = UDim2.fromOffset(10 + (Index - 1) * 24, 302),
+                        Size = UDim2.fromOffset(16, 16),
                         Text = '',
                         ZIndex = 221,
                     }, Parent))
 
                     Elements.Corner(Button, 8)
+                    Elements.Stroke(Button, Theme.Text, 0.8, 1)
                     self:Track(Button.MouseButton1Click:Connect(function()
                         self:SetValue(Palette.Hex(Hex))
                     end))
@@ -3820,8 +3865,8 @@ do
                     Name = 'ColorPickerPopup',
                     BackgroundColor3 = Theme.Surface,
                     BorderSizePixel = 0,
-                    Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X - 174, BoxPosition.Y - RootPosition.Y + 22),
-                    Size = UDim2.fromOffset(190, 264),
+                    Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X - 188, BoxPosition.Y - RootPosition.Y + 22),
+                    Size = UDim2.fromOffset(204, 328),
                     ZIndex = 220,
                 }, self.Window.Overlay))
 
@@ -3833,7 +3878,7 @@ do
                     BackgroundColor3 = self.Value,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(10, 10),
-                    Size = UDim2.fromOffset(170, 20),
+                    Size = UDim2.fromOffset(182, 20),
                     ZIndex = 221,
                 }, Popup))
 
@@ -3846,29 +3891,32 @@ do
                     BackgroundColor3 = Theme.Control,
                     BorderSizePixel = 0,
                     ClearTextOnFocus = false,
-                    Position = UDim2.fromOffset(10, 204),
-                    Size = UDim2.fromOffset(104, 24),
+                    Position = UDim2.fromOffset(10, 268),
+                    Size = UDim2.fromOffset(112, 24),
                     Text = Palette.ToRgba(self.Value, self.Alpha),
                     ZIndex = 221,
                 }, Popup))
 
-                Styling.ApplyText(Hex, Theme, 12, Theme.Text)
+                Styling.ApplyText(Hex, Theme, 10, Theme.Text)
                 FontLoader.Apply(Hex, self.Library.AssetCache)
 
+                local HexStroke = Elements.Stroke(Hex, Theme.Border, 0, 1)
+
                 self.Hex = Hex
+                self.HexStroke = HexStroke
 
                 local Apply = (Elements.New('TextButton', {
                     Name = 'Apply',
                     AutoButtonColor = false,
                     BackgroundColor3 = Theme.Accent,
                     BorderSizePixel = 0,
-                    Position = UDim2.fromOffset(122, 204),
-                    Size = UDim2.fromOffset(58, 24),
+                    Position = UDim2.fromOffset(130, 268),
+                    Size = UDim2.fromOffset(62, 24),
                     Text = 'APPLY',
                     ZIndex = 221,
                 }, Popup))
 
-                Styling.ApplyText(Apply, Theme, 12, Theme.Text)
+                Styling.ApplyText(Apply, Theme, 10, Theme.Text)
                 FontLoader.Apply(Apply, self.Library.AssetCache)
 
                 Apply.TextXAlignment = Enum.TextXAlignment.Center
@@ -3877,6 +3925,8 @@ do
                 self:Track(Apply.MouseButton1Click:Connect(function()
                     local Color, Alpha = Palette.ParseWithAlpha(Hex.Text)
 
+                    HexStroke.Color = Color and Theme.Border or Palette.Hex('#ff3f38')
+
                     self:SetValue({
                         Color = Color or self.Value,
                         Alpha = Alpha,
@@ -3884,6 +3934,8 @@ do
                 end))
                 self:Track(Hex.FocusLost:Connect(function()
                     local Color, Alpha = Palette.ParseWithAlpha(Hex.Text)
+
+                    HexStroke.Color = Color and Theme.Border or Palette.Hex('#ff3f38')
 
                     self:SetValue({
                         Color = Color or self.Value,
@@ -3977,13 +4029,13 @@ do
                     self.SquareCursor.Position = UDim2.new(self.Saturation, -4, 1 - self.Brightness, -4)
                 end
                 if self.HueCursor then
-                    self.HueCursor.Position = UDim2.new(self.Hue, -3, 0, -2)
+                    self.HueCursor.Position = UDim2.new(self.Hue, -3, 0, 1)
                 end
                 if self.AlphaBar then
                     self.AlphaBar.BackgroundColor3 = Color
                 end
                 if self.AlphaCursor then
-                    self.AlphaCursor.Position = UDim2.new(self.Alpha, -3, 0, -2)
+                    self.AlphaCursor.Position = UDim2.new(self.Alpha, -3, 0, 1)
                 end
                 if self.Hex then
                     self.Hex.Text = self.Alpha < 0.999 and Palette.ToRgba(Color, self.Alpha) or Palette.ToHex(Color)
@@ -4042,6 +4094,7 @@ do
             local Styling = __DARKLUA_BUNDLE_MODULES.s()
             local FontLoader = __DARKLUA_BUNDLE_MODULES.t()
             local ImageLoader = __DARKLUA_BUNDLE_MODULES.r()
+            local Tween = __DARKLUA_BUNDLE_MODULES.j()
             local HitboxPreview = {}
 
             HitboxPreview.__index = HitboxPreview
@@ -4052,22 +4105,27 @@ do
                 {
                     Id = 'First',
                     Color = Color3.fromRGB(72, 25, 20),
+                    Stroke = Color3.fromRGB(131, 53, 68),
                 },
                 {
                     Id = 'Second',
                     Color = Color3.fromRGB(75, 54, 27),
+                    Stroke = Color3.fromRGB(162, 148, 112),
                 },
                 {
                     Id = 'Third',
                     Color = Color3.fromRGB(35, 61, 23),
+                    Stroke = Color3.fromRGB(101, 149, 94),
                 },
                 {
                     Id = 'Fourth',
                     Color = Color3.fromRGB(12, 62, 90),
+                    Stroke = Color3.fromRGB(50, 115, 145),
                 },
                 {
                     Id = 'Ignore',
                     Color = Color3.fromRGB(29, 30, 36),
+                    Stroke = Color3.fromRGB(69, 71, 77),
                 },
             }
             local Regions = {
@@ -4239,8 +4297,8 @@ do
                     local Overlay = (Elements.New('TextButton', {
                         Name = Region.Id,
                         AutoButtonColor = false,
-                        BackgroundColor3 = Priorities[1].Color,
-                        BackgroundTransparency = 0.66,
+                        BackgroundColor3 = Theme.Accent,
+                        BackgroundTransparency = 1,
                         BorderSizePixel = 0,
                         Position = UDim2.fromOffset(17 + Region.X, 8 + Region.Y),
                         Size = UDim2.fromOffset(Region.W, Region.H),
@@ -4253,6 +4311,24 @@ do
                     Overlay.MouseButton1Click:Connect(function()
                         self:Cycle(Region.Id)
                     end)
+                    Overlay.MouseEnter:Connect(function()
+                        local Priority = self:PriorityFor(Region.Id)
+
+                        if Priority then
+                            Tween.Play(Overlay, 0.12, {
+                                BackgroundColor3 = Priority.Color,
+                                BackgroundTransparency = 0.32,
+                            })
+                        else
+                            Tween.Play(Overlay, 0.12, {
+                                BackgroundColor3 = self.Window.Theme.Accent,
+                                BackgroundTransparency = 0.84,
+                            })
+                        end
+                    end)
+                    Overlay.MouseLeave:Connect(function()
+                        self:Refresh()
+                    end)
                 end
                 for Index, Priority in ipairs(Priorities)do
                     local Row = math.floor((Index - 1) / 2)
@@ -4262,21 +4338,22 @@ do
                         BackgroundColor3 = Priority.Color,
                         BorderSizePixel = 0,
                         Position = UDim2.fromOffset(2 + Col * 94, 304 + Row * 22),
-                        Size = UDim2.fromOffset(15, 15),
+                        Size = UDim2.fromOffset(10, 10),
                         ZIndex = 31,
                     }, self.Root))
 
-                    Elements.Corner(Dot, 8)
+                    Elements.Corner(Dot, 5)
+                    Elements.Stroke(Dot, Priority.Stroke, 0, 1)
 
                     local Label = (Elements.New('TextLabel', {
                         Name = Priority.Id,
-                        Position = UDim2.fromOffset(24 + Col * 94, 300 + Row * 22),
+                        Position = UDim2.fromOffset(19 + Col * 94, 300 + Row * 22),
                         Size = UDim2.fromOffset(70, 20),
                         Text = Priority.Id,
                         ZIndex = 31,
                     }, self.Root))
 
-                    Styling.ApplyText(Label, Theme, 12, Theme.Muted)
+                    Styling.ApplyText(Label, Theme, 10, Theme.Muted)
                     FontLoader.Apply(Label, self.Library.AssetCache)
                 end
 
@@ -4295,15 +4372,19 @@ do
                 return self
             end
             function HitboxPreview:PriorityFor(Region)
-                local Index = self.RegionState[Region] or 1
+                local Index = self.RegionState[Region]
+
+                if not Index then
+                    return nil
+                end
 
                 return Priorities[Index]
             end
             function HitboxPreview:Cycle(Region)
-                local Next = (self.RegionState[Region] or 1) + 1
+                local Next = (self.RegionState[Region] or 0) + 1
 
                 if Next > #Priorities then
-                    Next = 1
+                    Next = nil
                 end
 
                 self.RegionState[Region] = Next
@@ -4314,7 +4395,12 @@ do
                 for Region, Overlay in pairs(self.Overlays)do
                     local Priority = self:PriorityFor(Region)
 
-                    Overlay.BackgroundColor3 = Priority.Color
+                    if Priority then
+                        Overlay.BackgroundColor3 = Priority.Color
+                        Overlay.BackgroundTransparency = 0.46
+                    else
+                        Overlay.BackgroundTransparency = 1
+                    end
                 end
             end
             function HitboxPreview:SetValue(Value, RunCallback)
@@ -4359,11 +4445,21 @@ do
             local function Format(Seconds)
                 Seconds = math.max(0, math.floor(Seconds))
 
-                local Hours = math.floor(Seconds / 3600)
+                local Days = math.floor(Seconds / 86400)
+                local Hours = math.floor((Seconds % 86400) / 3600)
                 local Minutes = math.floor((Seconds % 3600) / 60)
                 local Left = Seconds % 60
 
-                return string.format('%02d:%02d:%02d', Hours, Minutes, Left)
+                return string.format('%d DAYS %d HOURS %d MINS %d SECS', Days, Hours, Minutes, Left)
+            end
+            local function ToneColor(Theme, Tone)
+                if Tone == 'muted' then
+                    return Theme.Muted
+                elseif Tone == 'success' then
+                    return Theme.Success
+                end
+
+                return Theme.Text
             end
 
             function Countdown.New(Section, Options)
@@ -4385,13 +4481,13 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Label, Theme, 12, Theme.Accent)
+                Styling.ApplyText(Label, Theme, 10, ToneColor(Theme, Options.Tone))
                 FontLoader.Apply(Label, self.Library.AssetCache)
 
                 self.Label = Label
 
                 self:BindTheme(function(NewTheme)
-                    Label.TextColor3 = NewTheme.Accent
+                    Label.TextColor3 = ToneColor(NewTheme, Options.Tone)
                 end)
                 task.spawn(function()
                     while self.Running and self.Root and self.Root.Parent do
@@ -4499,8 +4595,18 @@ do
 
             setmetatable(Label, {__index = BaseWidget})
 
+            local function ToneColor(Theme, Tone)
+                if Tone == 'muted' then
+                    return Theme.Muted
+                elseif Tone == 'success' then
+                    return Theme.Success
+                end
+
+                return Theme.Text
+            end
+
             function Label.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 22)
+                local self = BaseWidget.New(Section, Options, Options.Height or 28)
 
                 setmetatable(self, Label)
 
@@ -4512,13 +4618,13 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Text, Theme, 11, Options.Tone == 'muted' and Theme.Muted or Theme.Text)
+                Styling.ApplyText(Text, Theme, 10, ToneColor(Theme, Options.Tone))
                 FontLoader.Apply(Text, self.Library.AssetCache)
 
                 self.Text = Text
 
                 self:BindTheme(function(NewTheme)
-                    Text.TextColor3 = Options.Tone == 'muted' and NewTheme.Muted or NewTheme.Text
+                    Text.TextColor3 = ToneColor(NewTheme, Options.Tone)
                 end)
 
                 return self
@@ -4593,7 +4699,11 @@ do
 
             Section.__index = Section
 
-            function Section.New(Column, Name)
+            function Section.New(Column, Name, Options)
+                Options = Options or {}
+
+                local NoHeader = Options.NoHeader == true
+                local HeaderHeight = NoHeader and 0 or 28
                 local self = setmetatable({
                     Column = Column,
                     Window = Column.Window,
@@ -4612,19 +4722,21 @@ do
 
                 self.Root = Root
 
-                local Header = (Elements.New('TextLabel', {
-                    Name = 'Header',
-                    BackgroundTransparency = 1,
-                    BorderSizePixel = 0,
-                    Size = UDim2.new(1, 0, 0, 28),
-                    Text = string.upper(Name),
-                    ZIndex = 24,
-                }, Root))
+                if not NoHeader then
+                    local Header = (Elements.New('TextLabel', {
+                        Name = 'Header',
+                        BackgroundTransparency = 1,
+                        BorderSizePixel = 0,
+                        Size = UDim2.new(1, 0, 0, HeaderHeight),
+                        Text = string.upper(Name),
+                        ZIndex = 24,
+                    }, Root))
 
-                Styling.ApplyText(Header, Column.Window.Theme, 11, Column.Window.Theme.Muted)
-                FontLoader.Apply(Header, Column.Window.Library.AssetCache)
+                    Styling.ApplyText(Header, Column.Window.Theme, 10, Column.Window.Theme.Muted)
+                    FontLoader.Apply(Header, Column.Window.Library.AssetCache)
 
-                self.Header = Header
+                    self.Header = Header
+                end
 
                 local Body = (Elements.New('Frame', {
                     Name = 'Body',
@@ -4635,7 +4747,7 @@ do
                     ZIndex = 24,
                 }, Root))
 
-                Body.Position = UDim2.fromOffset(0, 28)
+                Body.Position = UDim2.fromOffset(0, HeaderHeight)
                 self.Body = Body
 
                 local RootLayout = AutoLayout.Vertical(Root, 0)
@@ -4790,8 +4902,8 @@ do
                 self.Root.Position = UDim2.fromOffset(X, Tokens.PanelTop)
                 self.Root.Size = UDim2.fromOffset(Width, Tokens.PanelHeightFor(WindowHeight))
             end
-            function Column:AddSection(Name)
-                local NewSection = Section.New(self, Name)
+            function Column:AddSection(Name, Options)
+                local NewSection = Section.New(self, Name, Options)
 
                 table.insert(self.Sections, NewSection)
 
