@@ -22,21 +22,21 @@ function Keybind.New(Section: any, Options: { [string]: any })
 
     local Title = Elements.New("TextLabel", {
         Name = "Title",
-        Size = UDim2.new(1, -86, 0, 16),
+        Size = UDim2.new(1, -92, 0, 16),
         Text = Options.Text or "Keybind",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 10, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Hint = Elements.New("TextLabel", {
         Name = "Hint",
         Position = UDim2.fromOffset(0, 15),
-        Size = UDim2.new(1, -86, 0, 14),
+        Size = UDim2.new(1, -92, 0, 14),
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
 
     local Box = Elements.New("TextButton", {
@@ -46,14 +46,14 @@ function Keybind.New(Section: any, Options: { [string]: any })
         BackgroundColor3 = Theme.Control,
         BorderSizePixel = 0,
         Position = UDim2.new(1, 0, 0, 1),
-        Size = UDim2.fromOffset(84, 26),
+        Size = UDim2.fromOffset(90, 20),
         Text = tostring(self.Value),
         ZIndex = 32,
     }, self.Root) :: TextButton
-    Styling.ApplyText(Box, Theme, 12, Theme.Text)
+    Styling.ApplyText(Box, Theme, 10, Theme.Text)
     FontLoader.Apply(Box, self.Library.AssetCache)
     Box.TextXAlignment = Enum.TextXAlignment.Center
-    Styling.FitText(Box, 12, 9)
+    Styling.FitText(Box, 10, 8)
     self.Box = Box
 
     Box.MouseButton1Click:Connect(function()
@@ -88,6 +88,7 @@ function Keybind:Listen()
     end
     self.Listening = true
     self.Box.Text = "..."
+    self.Box.BackgroundColor3 = self.Window.Theme.ControlHover
     if self.ListenConnection then
         self.ListenConnection:Disconnect()
     end
@@ -98,6 +99,7 @@ function Keybind:Listen()
         self.ListenConnection:Disconnect()
         self.ListenConnection = nil
         self.Listening = false
+        self.Box.BackgroundColor3 = self.Window.Theme.Control
         self:SetValue(KeybindManager.Normalize(Input))
     end)
 end
