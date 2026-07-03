@@ -32,7 +32,7 @@ function Slider.New(Section: any, Options: { [string]: any })
     Options.Max = Options.Max or 100
     Options.Step = Options.Step or 1
     Options.Default = Options.Default or Options.Value or Options.Min
-    local self = BaseWidget.New(Section, Options, 40)
+    local self = BaseWidget.New(Section, Options, 70)
     setmetatable(self, Slider)
     self.Connections = {}
     local Theme = self.Window.Theme
