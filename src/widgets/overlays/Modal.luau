@@ -26,7 +26,7 @@ function Modal.New(Window: any, Options: { [string]: any })
         Text = Options.Title or "Fecurity",
         ZIndex = 301,
     }, Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 13, Theme.Text)
+    Styling.ApplyText(Title, Theme, 17, Theme.Text)
     FontLoader.Apply(Title, Window.Library.AssetCache)
 
     local Body = Elements.New("TextLabel", {
@@ -37,7 +37,7 @@ function Modal.New(Window: any, Options: { [string]: any })
         TextWrapped = true,
         ZIndex = 301,
     }, Root) :: TextLabel
-    Styling.ApplyText(Body, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Body, Theme, 15, Theme.Hint)
     FontLoader.Apply(Body, Window.Library.AssetCache)
 
     return Root
