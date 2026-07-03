@@ -41,8 +41,8 @@ function Sidebar.New(Window: any)
     local Logo = Elements.New("ImageLabel", {
         Name = "Logo",
         BackgroundTransparency = 1,
-        Position = UDim2.fromOffset(6, 12),
-        Size = UDim2.fromOffset(47, 45),
+        Position = UDim2.fromOffset(7, 14),
+        Size = UDim2.fromOffset(54, 52),
         ImageColor3 = Window.Theme.Accent,
         ZIndex = 24,
     }, Root) :: ImageLabel
