@@ -1244,15 +1244,15 @@ do
     do
         local function __modImpl()
             local Tokens = {
-                WindowSize = Vector2.new(720, 840),
-                SidebarWidth = 62,
-                PanelTop = 30,
-                PanelHeight = 779,
-                PanelWidth = 197,
-                PanelGap = 17,
-                PanelLeft = 79,
-                PanelRight = 16,
-                PanelBottom = 31,
+                WindowSize = Vector2.new(840, 720),
+                SidebarWidth = 73,
+                PanelTop = 25,
+                PanelHeight = 668,
+                PanelWidth = 230,
+                PanelGap = 20,
+                PanelLeft = 93,
+                PanelRight = 17,
+                PanelBottom = 27,
                 Radius = 0,
             }
 
@@ -1890,8 +1890,8 @@ do
                 local Logo = (Elements.New('ImageLabel', {
                     Name = 'Logo',
                     BackgroundTransparency = 1,
-                    Position = UDim2.fromOffset(6, 12),
-                    Size = UDim2.fromOffset(47, 45),
+                    Position = UDim2.fromOffset(7, 14),
+                    Size = UDim2.fromOffset(54, 52),
                     ImageColor3 = Window.Theme.Accent,
                     ZIndex = 24,
                 }, Root))
@@ -2391,7 +2391,7 @@ do
             function Toggle.New(Section, Options)
                 Options.Default = Options.Default == true
 
-                local self = BaseWidget.New(Section, Options, 70)
+                local self = BaseWidget.New(Section, Options, 60)
 
                 setmetatable(self, Toggle)
 
@@ -2544,7 +2544,7 @@ do
                 Options.Step = Options.Step or 1
                 Options.Default = Options.Default or Options.Value or Options.Min
 
-                local self = BaseWidget.New(Section, Options, 70)
+                local self = BaseWidget.New(Section, Options, 60)
 
                 setmetatable(self, Slider)
 
@@ -2768,7 +2768,7 @@ do
                     }
                 end
 
-                local self = BaseWidget.New(Section, Options, 126)
+                local self = BaseWidget.New(Section, Options, 108)
 
                 setmetatable(self, Dropdown)
 
@@ -3162,7 +3162,7 @@ do
             setmetatable(Button, {__index = BaseWidget})
 
             function Button.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 70)
+                local self = BaseWidget.New(Section, Options, Options.Height or 60)
 
                 setmetatable(self, Button)
 
@@ -3247,7 +3247,7 @@ do
             function Textbox.New(Section, Options)
                 Options.Default = Options.Default or ''
 
-                local self = BaseWidget.New(Section, Options, 91)
+                local self = BaseWidget.New(Section, Options, 78)
 
                 setmetatable(self, Textbox)
 
@@ -3335,7 +3335,7 @@ do
 
                 Options.Callback = Options.Changed or Options.OnChanged
 
-                local self = BaseWidget.New(Section, Options, 70)
+                local self = BaseWidget.New(Section, Options, 60)
 
                 setmetatable(self, Keybind)
 
@@ -3571,7 +3571,7 @@ do
             function ColorPicker.New(Section, Options)
                 Options.Default = Options.Default or Options.Value or Color3.new(1, 1, 1)
 
-                local self = BaseWidget.New(Section, Options, 70)
+                local self = BaseWidget.New(Section, Options, 60)
 
                 setmetatable(self, ColorPicker)
 
@@ -4270,7 +4270,7 @@ do
             function HitboxPreview.New(Section, Options)
                 Options.Default = Options.Default or {}
 
-                local self = BaseWidget.New(Section, Options, 681)
+                local self = BaseWidget.New(Section, Options, 584)
 
                 setmetatable(self, HitboxPreview)
 
@@ -4493,7 +4493,7 @@ do
             function Countdown.New(Section, Options)
                 Options.Default = Options.Seconds or 0
 
-                local self = BaseWidget.New(Section, Options, Options.Height or 49)
+                local self = BaseWidget.New(Section, Options, Options.Height or 42)
 
                 setmetatable(self, Countdown)
 
@@ -4634,7 +4634,7 @@ do
             end
 
             function Label.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 49)
+                local self = BaseWidget.New(Section, Options, Options.Height or 42)
 
                 setmetatable(self, Label)
 
