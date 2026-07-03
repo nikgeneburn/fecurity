@@ -149,7 +149,7 @@ try {
     $HostedDemoPath = $Downloaded["examples/FecurityHosted.luau"]
     if ($HostedDemoPath) {
         $HostedDemo = Get-Content -LiteralPath $HostedDemoPath -Raw
-        if ($HostedDemo -notmatch [regex]::Escape($RepoRawBase + "dist/Fecurity.lua")) {
+        if ($HostedDemo -notmatch 'game:HttpGet\(RawBase \.\. "dist/Fecurity\.lua"\)') {
             Add-Failure "examples/FecurityHosted.luau does not load the hosted dist URL"
         }
     }
@@ -165,7 +165,7 @@ try {
     $HostedSmokePath = $Downloaded["examples/FecurityHostedSmoke.luau"]
     if ($HostedSmokePath) {
         $HostedSmoke = Get-Content -LiteralPath $HostedSmokePath -Raw
-        if ($HostedSmoke -notmatch [regex]::Escape($RepoRawBase + "dist/Fecurity.lua")) {
+        if ($HostedSmoke -notmatch 'game:HttpGet\(RawBase \.\. "dist/Fecurity\.lua"\)') {
             Add-Failure "examples/FecurityHostedSmoke.luau does not load the hosted dist URL"
         }
         foreach ($Needle in @("SaveConfig", "LoadConfig", "SetAssetBaseUrl", "AddHitboxPreview", "AddConfigList")) {
