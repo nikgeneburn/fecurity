@@ -23,7 +23,7 @@ function Toggle.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Toggle",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 10, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
     self.Title = Title
 
@@ -34,7 +34,7 @@ function Toggle.New(Section: any, Options: { [string]: any })
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
     self.Hint = Hint
 
@@ -42,7 +42,7 @@ function Toggle.New(Section: any, Options: { [string]: any })
         Name = "Track",
         AnchorPoint = Vector2.new(1, 0),
         Position = UDim2.new(1, -1, 0, 5),
-        Size = UDim2.fromOffset(29, 16),
+        Size = UDim2.fromOffset(26, 16),
         BackgroundColor3 = Theme.ToggleOff,
         BorderSizePixel = 0,
         ZIndex = 32,
@@ -77,8 +77,8 @@ function Toggle.New(Section: any, Options: { [string]: any })
     self:BindTheme(function(NewTheme)
         Title.TextColor3 = NewTheme.Text
         Hint.TextColor3 = NewTheme.Hint
-        Track.BackgroundColor3 = self.Value and NewTheme.Accent or NewTheme.ToggleOff
-        Knob.BackgroundColor3 = self.Value and NewTheme.Text or NewTheme.ToggleKnobOff
+        Track.BackgroundColor3 = self.Value and NewTheme.ControlHover or NewTheme.ToggleOff
+        Knob.BackgroundColor3 = self.Value and NewTheme.Accent or NewTheme.ToggleKnobOff
     end)
     self:SetValue(self.Value, false)
     return self
@@ -88,10 +88,10 @@ function Toggle:SetValue(Value: any, RunCallback: boolean?)
     local On = Value == true
     self:Commit(On, RunCallback)
     local Theme = self.Window.Theme
-    Tween.Play(self.Track, 0.12, { BackgroundColor3 = On and Theme.Accent or Theme.ToggleOff })
+    Tween.Play(self.Track, 0.12, { BackgroundColor3 = On and Theme.ControlHover or Theme.ToggleOff })
     Tween.Play(self.Knob, 0.12, {
-        BackgroundColor3 = On and Theme.Text or Theme.ToggleKnobOff,
-        Position = On and UDim2.fromOffset(15, 2) or UDim2.fromOffset(2, 2),
+        BackgroundColor3 = On and Theme.Accent or Theme.ToggleKnobOff,
+        Position = On and UDim2.fromOffset(13, 2) or UDim2.fromOffset(2, 2),
     })
 end
 
