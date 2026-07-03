@@ -83,7 +83,7 @@ ControlHover=b.Hex('#282831'),ToggleOff=b.Hex('#1b1b20'),ToggleKnobOff=b.Hex('#7
 in pairs(c.Default)do e[f]=d[f]or g end return e end function c.Clone(d)local e=CopyFrom(c.Default)if d then e.Accent=d end return e end function c.Resolve(d,e)local f=c.Default if type(d)=='string'
 then f=c.Presets[d]or c.Presets[string.lower(d)]or c.Default elseif type(d)=='table'then f=d end local g=CopyFrom(f)if e then g.Accent=e end return g end function c.Apply(d,e)for f in pairs(c.Default)
 do d[f]=e[f]or c.Default[f]end end return c end function a.l()local b=a.cache.l if not b then b={c=__modImpl()}a.cache.l=b end return b.c end end do local __modImpl=function()local b={WindowSize=
-Vector2.new(840,720),SidebarWidth=73,PanelTop=25,PanelHeight=668,PanelWidth=230,PanelGap=20,PanelLeft=93,PanelRight=17,PanelBottom=27,Radius=0}function b.PanelX(c)return b.PanelLeft+(c-1)*(b.
+Vector2.new(840,480),SidebarWidth=73,PanelTop=17,PanelHeight=445,PanelWidth=230,PanelGap=20,PanelLeft=93,PanelRight=17,PanelBottom=18,Radius=0}function b.PanelX(c)return b.PanelLeft+(c-1)*(b.
 PanelWidth+b.PanelGap)end function b.PanelHeightFor(c)local d=c or b.WindowSize.Y if d==b.WindowSize.Y then return b.PanelHeight end return math.max(80,d-b.PanelTop-b.PanelBottom)end function b.
 PanelLayout(c,d,e)local f=e or b.WindowSize.X if d==3 and f==b.WindowSize.X then return b.PanelX(c),b.PanelWidth end local g=math.max(1,f-b.PanelLeft-b.PanelRight)local h=b.PanelGap*math.max(d-1,0)
 local i=math.max(1,g-h)local j=math.floor(i/math.max(d,1))local k=i-j*math.max(d,1)local l=j+(c==d and k or 0)local m=b.PanelLeft+(c-1)*(j+b.PanelGap)return m,l end return b end function a.m()local b=
