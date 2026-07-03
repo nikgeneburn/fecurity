@@ -89,7 +89,7 @@ function Window.New(Library: any, Options: { [string]: any })
     Elements.List(self.Notifications, Enum.FillDirection.Vertical, 8)
 
     self.Sidebar = Sidebar.New(self)
-    self.UnbindDrag = DragController.Attach(Root, Root)
+    self.UnbindDrag = DragController.Attach(self.Topbar.Handle, Root)
 
     self.InsertConnection = UserInputService.InputBegan:Connect(function(Input, Processed)
         if Processed then
