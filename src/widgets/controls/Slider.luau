@@ -39,7 +39,7 @@ function Slider.New(Section: any, Options: { [string]: any })
 
     local Title = Elements.New("TextLabel", {
         Name = "Title",
-        Size = UDim2.new(0.68, 0, 0, 16),
+        Size = UDim2.new(0.78, 0, 0, 16),
         Text = Options.Text or "Slider",
         ZIndex = 31,
     }, self.Root) :: TextLabel
@@ -51,7 +51,7 @@ function Slider.New(Section: any, Options: { [string]: any })
         Name = "Value",
         AnchorPoint = Vector2.new(1, 0),
         Position = UDim2.new(1, 0, 0, 0),
-        Size = UDim2.new(0.35, 0, 0, 16),
+        Size = UDim2.new(0.25, 0, 0, 16),
         Text = "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
