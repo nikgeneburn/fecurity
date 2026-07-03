@@ -2,13 +2,13 @@ local a={cache={}}do do local __modImpl=function()local b={}b.Prefix='[Fecurity]
 select('#',...)do table.insert(c,tostring(select(d,...)))end return table.concat(c,' ')end local EnsureLogFolder=function()if type(isfolder)~='function'or type(makefolder)~='function'then return false
 end local FolderExists=function(c)local d,e=pcall(isfolder,c)return d and e==true end local EnsureFolder=function(c)if FolderExists(c)then return true end local d=pcall(makefolder,c)return d and
 FolderExists(c)end if not EnsureFolder('Fecurity')then return false end if not EnsureFolder('Fecurity/Logs')then return false end return true end local Append=function(c,...)if type(writefile)~=
-'function'or type(readfile)~='function'or type(isfile)~='function'then return end pcall(function()if not EnsureLogFolder()then return end local d=''if isfile(b.LogFile)then local e,f=pcall(readfile,b.
-LogFile)if e and type(f)=='string'then d=f end end local e=os.date('%Y-%m-%d %H:%M:%S')local f=('%s %s %s %s\n'):format(e,b.Prefix,c,Join(...))local g=d..f if#g>b.MaxLogBytes then g=string.sub(g,#g-b.
-MaxLogBytes+1)end pcall(writefile,b.LogFile,g)end)end function b.SetVerbose(c)b.Verbose=c end function b.Info(...)Append('[Info]',...)print(b.Prefix,...)end function b.Warn(...)Append('[Warn]',...)
-warn(b.Prefix,...)end function b.Debug(...)if b.Verbose then Append('[Debug]',...)print(b.Prefix,'[Debug]',...)end end function b.Error(c,d)Append('[Error]',c,'->',tostring(d))warn(b.Prefix,'[Error]',
-c,'->',tostring(d))end return b end function a.a()local b=a.cache.a if not b then b={c=__modImpl()}a.cache.a=b end return b.c end end do local __modImpl=function()local b=a.a()local c={}local d=
-'__FECURITY_UI__'local Environment=function()if getgenv then local e,f=pcall(getgenv)if e and type(f)=='table'then return f end end return _G end function c.Get()return Environment()[d]end function c.
-Set(e)Environment()[d]=e end function c.Clear(e)local f=Environment()if e==nil or f[d]==e then f[d]=nil end end function c.Claim(e,f)local g=c.Get()if g and g.Unload then b.Info((
+'function'or type(readfile)~='function'or type(isfile)~='function'then return end local d=Join(...)pcall(function()if not EnsureLogFolder()then return end local e=''if isfile(b.LogFile)then local f,g=
+pcall(readfile,b.LogFile)if f and type(g)=='string'then e=g end end local f=os.date('%Y-%m-%d %H:%M:%S')local g=('%s %s %s %s\n'):format(f,b.Prefix,c,d)local h=e..g if#h>b.MaxLogBytes then h=string.
+sub(h,#h-b.MaxLogBytes+1)end pcall(writefile,b.LogFile,h)end)end function b.SetVerbose(c)b.Verbose=c end function b.Info(...)Append('[Info]',...)print(b.Prefix,...)end function b.Warn(...)Append(
+'[Warn]',...)warn(b.Prefix,...)end function b.Debug(...)if b.Verbose then Append('[Debug]',...)print(b.Prefix,'[Debug]',...)end end function b.Error(c,d)Append('[Error]',c,'->',tostring(d))warn(b.
+Prefix,'[Error]',c,'->',tostring(d))end return b end function a.a()local b=a.cache.a if not b then b={c=__modImpl()}a.cache.a=b end return b.c end end do local __modImpl=function()local b=a.a()local c
+={}local d='__FECURITY_UI__'local Environment=function()if getgenv then local e,f=pcall(getgenv)if e and type(f)=='table'then return f end end return _G end function c.Get()return Environment()[d]end
+function c.Set(e)Environment()[d]=e end function c.Clear(e)local f=Environment()if e==nil or f[d]==e then f[d]=nil end end function c.Claim(e,f)local g=c.Get()if g and g.Unload then b.Info((
 'Reloading previous Fecurity session %s'):format(tostring(g.Version)))pcall(function()g:Unload()end)elseif g and g.Teardown then pcall(g.Teardown)end local h={Version=e,Teardown=f}c.Set(h)return h end
 return c end function a.b()local b=a.cache.b if not b then b={c=__modImpl()}a.cache.b=b end return b.c end end do local __modImpl=function()local b=a.a()local c={}function c.Try(d,e,...)local f=table.
 pack(pcall(e,...))if not f[1]then b.Error(d,f[2])return false end return true,table.unpack(f,2,f.n)end function c.Callback(d,e,...)if not e then return end local f,g=pcall(e,...)if not f then b.Error(
@@ -18,14 +18,14 @@ return b.GetPlayerGui()end function b.AttachGui(c)local d=pcall(function()c.Pare
 function b.FileApi()return{IsFolder=isfolder,MakeFolder=makefolder,IsFile=isfile,WriteFile=writefile,ReadFile=readfile,DeleteFile=delfile,ListFiles=listfiles,GetCustomAsset=getcustomasset}end function
 b.HasFileApi()return type(isfolder)=='function'and type(makefolder)=='function'and type(isfile)=='function'and type(writefile)=='function'and type(readfile)=='function'and type(delfile)=='function'end
 return b end function a.d()local b=a.cache.d if not b then b={c=__modImpl()}a.cache.d=b end return b.c end end do local __modImpl=function()local b={}local c=
-'https://raw.githubusercontent.com/nikgeneburn/fecurity/main/'local NormalizeBaseUrl=function(d)if string.sub(d,-1)~='/'then return d..'/'end return d end local ReadOverrideBaseUrl=function()local d=_G if
-getgenv then local e,f=pcall(getgenv)if e and type(f)=='table'then d=f end end local e=d.FecurityAssetBaseUrl if type(e)=='string'and e~=''then return NormalizeBaseUrl(e)end return NormalizeBaseUrl(c)
-end b.BaseUrl=ReadOverrideBaseUrl()b.CacheRoot='Fecurity'b.Folders={'Fecurity','Fecurity/Assets','Fecurity/Assets/Fonts','Fecurity/Assets/Icons','Fecurity/Assets/Images','Fecurity/Configs',
-'Fecurity/Logs'}b.Fonts={Main={Url=b.BaseUrl..'assets/fonts/ProximaNova-Semibold.ttf',File='Fecurity/Assets/Fonts/ProximaNova-Semibold.ttf',Bytes=53740,Fallback=Enum.Font.GothamBold}}b.Icons={assist={
-Url=b.BaseUrl..'assets/icons/assist.png',File='Fecurity/Assets/Icons/assist.png',Bytes=1982,Fallback='A'},visuals={Url=b.BaseUrl..'assets/icons/visuals.png',File='Fecurity/Assets/Icons/visuals.png',
-Bytes=2131,Fallback='V'},misc={Url=b.BaseUrl..'assets/icons/misc.png',File='Fecurity/Assets/Icons/misc.png',Bytes=1770,Fallback='M'},colors={Url=b.BaseUrl..'assets/icons/colors.png',File=
-'Fecurity/Assets/Icons/colors.png',Bytes=1234,Fallback='C'},trial={Url=b.BaseUrl..'assets/icons/trial.png',File='Fecurity/Assets/Icons/trial.png',Bytes=1030,Fallback='T'}}b.Images={Logo={Url=b.BaseUrl
-..'assets/images/logo.png',File='Fecurity/Assets/Images/logo.png',Bytes=1650,Fallback=nil},HitboxPreview={Url=b.BaseUrl..'assets/images/hitbox-preview.png',File=
+[[https://raw.githubusercontent.com/nikgeneburn/fecurity/main/]]local NormalizeBaseUrl=function(d)if string.sub(d,-1)~='/'then return d..'/'end return d end local ReadOverrideBaseUrl=function()local d
+=_G if getgenv then local e,f=pcall(getgenv)if e and type(f)=='table'then d=f end end local e=d.FecurityAssetBaseUrl if type(e)=='string'and e~=''then return NormalizeBaseUrl(e)end return
+NormalizeBaseUrl(c)end b.BaseUrl=ReadOverrideBaseUrl()b.CacheRoot='Fecurity'b.Folders={'Fecurity','Fecurity/Assets','Fecurity/Assets/Fonts','Fecurity/Assets/Icons','Fecurity/Assets/Images',
+'Fecurity/Configs','Fecurity/Logs'}b.Fonts={Main={Url=b.BaseUrl..'assets/fonts/ProximaNova-Semibold.ttf',File='Fecurity/Assets/Fonts/ProximaNova-Semibold.ttf',Bytes=53740,Fallback=Enum.Font.GothamBold
+}}b.Icons={assist={Url=b.BaseUrl..'assets/icons/assist.png',File='Fecurity/Assets/Icons/assist.png',Bytes=1982,Fallback='A'},visuals={Url=b.BaseUrl..'assets/icons/visuals.png',File=
+'Fecurity/Assets/Icons/visuals.png',Bytes=2131,Fallback='V'},misc={Url=b.BaseUrl..'assets/icons/misc.png',File='Fecurity/Assets/Icons/misc.png',Bytes=1770,Fallback='M'},colors={Url=b.BaseUrl..
+'assets/icons/colors.png',File='Fecurity/Assets/Icons/colors.png',Bytes=1234,Fallback='C'},trial={Url=b.BaseUrl..'assets/icons/trial.png',File='Fecurity/Assets/Icons/trial.png',Bytes=1030,Fallback='T'
+}}b.Images={Logo={Url=b.BaseUrl..'assets/images/logo.png',File='Fecurity/Assets/Images/logo.png',Bytes=1650,Fallback=nil},HitboxPreview={Url=b.BaseUrl..'assets/images/hitbox-preview.png',File=
 'Fecurity/Assets/Images/hitbox-preview.png',Bytes=211220,Fallback=nil}}function b.SetBaseUrl(d)d=NormalizeBaseUrl(d)b.BaseUrl=d b.Fonts.Main.Url=d..'assets/fonts/ProximaNova-Semibold.ttf'for e,f in
 pairs(b.Icons)do f.Url=d..'assets/icons/'..e..'.png'end b.Images.Logo.Url=d..'assets/images/logo.png'b.Images.HitboxPreview.Url=d..'assets/images/hitbox-preview.png'end return b end function a.e()
 local b=a.cache.e if not b then b={c=__modImpl()}a.cache.e=b end return b.c end end do local __modImpl=function()local b=a.a()local c=a.d()local d=a.e()local e={}e.__index=e function e.New()return
