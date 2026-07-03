@@ -9,8 +9,17 @@ local Label = {}
 Label.__index = Label
 setmetatable(Label, { __index = BaseWidget })
 
+local function ToneColor(Theme: { [string]: any }, Tone: string?): Color3
+    if Tone == "muted" then
+        return Theme.Muted
+    elseif Tone == "success" then
+        return Theme.Success
+    end
+    return Theme.Text
+end
+
 function Label.New(Section: any, Options: { [string]: any })
-    local self = BaseWidget.New(Section, Options, Options.Height or 22)
+    local self = BaseWidget.New(Section, Options, Options.Height or 28)
     setmetatable(self, Label)
     local Theme = self.Window.Theme
     local Text = Elements.New("TextLabel", {
@@ -19,11 +28,11 @@ function Label.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Text, Theme, 11, Options.Tone == "muted" and Theme.Muted or Theme.Text)
+    Styling.ApplyText(Text, Theme, 10, ToneColor(Theme, Options.Tone))
     FontLoader.Apply(Text, self.Library.AssetCache)
     self.Text = Text
     self:BindTheme(function(NewTheme)
-        Text.TextColor3 = Options.Tone == "muted" and NewTheme.Muted or NewTheme.Text
+        Text.TextColor3 = ToneColor(NewTheme, Options.Tone)
     end)
     return self
 end
