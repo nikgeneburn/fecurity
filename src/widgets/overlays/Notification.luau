@@ -25,7 +25,7 @@ function Notification.New(Window: any, Options: { [string]: any })
         Text = Options.Title or "Fecurity",
         ZIndex = 402,
     }, Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 16, Theme.Text)
     FontLoader.Apply(Title, Window.Library.AssetCache)
 
     local Body = Elements.New("TextLabel", {
@@ -36,7 +36,7 @@ function Notification.New(Window: any, Options: { [string]: any })
         TextWrapped = true,
         ZIndex = 402,
     }, Root) :: TextLabel
-    Styling.ApplyText(Body, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Body, Theme, 15, Theme.Hint)
     FontLoader.Apply(Body, Window.Library.AssetCache)
 
     Root.BackgroundTransparency = 1
