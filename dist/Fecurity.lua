@@ -141,12 +141,13 @@ UDim2.fromOffset(p,p),ZIndex=2},k))c.Corner(v,math.ceil(p/2))table.insert(j.Flak
 )end)return j end function d.Step(h,i)if not h.Visible then return end local j=h.Root.AbsoluteSize if j.X<=0 or j.Y<=0 then return end h.Elapsed+=i for k,l in ipairs(h.Flakes)do local m=((h.Elapsed+l.
 Delay)%l.Duration)/l.Duration local n=(l.LeftPercent/100)*j.X+m*l.Drift local o=(f+m*(g-f))*j.Y l.Node.Position=UDim2.fromOffset(n,o)l.Node.Rotation=m*l.Spin end end function d.SetVisible(h,i)h.
 Visible=i h.Root.Visible=i end function d.Destroy(h)if h.Connection then h.Connection:Disconnect()end if h.Root then h.Root:Destroy()end end return d end function a.x()local b=a.cache.x if not b then
-b={c=__modImpl()}a.cache.x=b end return b.c end end do local __modImpl=function()local b={}b.__index=b b.Height=0 function b.New(c,d,e)local f=setmetatable({Window=c,Root=d,Title=e.Title or'Fecurity',
-Subtitle=e.Subtitle or''},b)f:Apply()return f end function b.Apply(c)c.Root:SetAttribute('FecurityTitle',c.Title)c.Root:SetAttribute('FecuritySubtitle',c.Subtitle)end function b.SetTitle(c,d,e)c.Title
-=d if e~=nil then c.Subtitle=e end c:Apply()end return b end function a.y()local b=a.cache.y if not b then b={c=__modImpl()}a.cache.y=b end return b.c end end do local __modImpl=function()local b=a.j(
-)local c={}function c.FadeIn(d)d.Visible=true d.BackgroundTransparency=1 b.Play(d,0.15,{BackgroundTransparency=0})end function c.FadeOut(d)local e=b.Play(d,0.15,{BackgroundTransparency=1})e.Completed:
-Once(function()if d and d.Parent then d.Visible=false end end)end function c.PanelIn(d,e)local f=d.Position d.Visible=true d.Position=f+UDim2.fromOffset(0,7)d.BackgroundTransparency=1 task.delay(e or
-0,function()if d and d.Parent then b.Play(d,0.16,{Position=f,BackgroundTransparency=0})end end)end function c.PanelOut(d,e)local f=d.Position task.delay(e or 0,function()if not d or not d.Parent then
+b={c=__modImpl()}a.cache.x=b end return b.c end end do local __modImpl=function()local b=a.n()local c={}c.__index=c c.Height=16 function c.New(d,e,f)local g=setmetatable({Window=d,Root=e,Title=f.Title
+or'Fecurity',Subtitle=f.Subtitle or''},c)g.Handle=(b.New('Frame',{Name='DragHandle',BackgroundTransparency=1,BorderSizePixel=0,Active=true,Position=UDim2.fromOffset(0,0),Size=UDim2.new(1,0,0,c.Height)
+,ZIndex=15},e))g:Apply()return g end function c.Apply(d)d.Root:SetAttribute('FecurityTitle',d.Title)d.Root:SetAttribute('FecuritySubtitle',d.Subtitle)end function c.SetTitle(d,e,f)d.Title=e if f~=nil
+then d.Subtitle=f end d:Apply()end return c end function a.y()local b=a.cache.y if not b then b={c=__modImpl()}a.cache.y=b end return b.c end end do local __modImpl=function()local b=a.j()local c={}
+function c.FadeIn(d)d.Visible=true d.BackgroundTransparency=1 b.Play(d,0.15,{BackgroundTransparency=0})end function c.FadeOut(d)local e=b.Play(d,0.15,{BackgroundTransparency=1})e.Completed:Once(
+function()if d and d.Parent then d.Visible=false end end)end function c.PanelIn(d,e)local f=d.Position d.Visible=true d.Position=f+UDim2.fromOffset(0,7)d.BackgroundTransparency=1 task.delay(e or 0,
+function()if d and d.Parent then b.Play(d,0.16,{Position=f,BackgroundTransparency=0})end end)end function c.PanelOut(d,e)local f=d.Position task.delay(e or 0,function()if not d or not d.Parent then
 return end local g=b.Play(d,0.12,{Position=f+UDim2.fromOffset(0,7),BackgroundTransparency=1},Enum.EasingStyle.Quad,Enum.EasingDirection.In)g.Completed:Once(function()if d and d.Parent then d.Visible=
 false d.Position=f d.BackgroundTransparency=0 end end)end)end return c end function a.z()local b=a.cache.z if not b then b={c=__modImpl()}a.cache.z=b end return b.c end end do local __modImpl=function
 ()local b=a.n()local c={}function c.Vertical(d,e)local f=b.List(d,Enum.FillDirection.Vertical,e or 0)f.HorizontalAlignment=Enum.HorizontalAlignment.Left return f end function c.Horizontal(d,e)local f=
@@ -384,29 +385,29 @@ Sibling d.AttachGui(u)t.Gui=u local v=(g.New('Frame',{Name='Canvas',BackgroundTr
 'Frame',{Name='Window',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=t.TargetSize,BackgroundColor3=t.Theme.Surface,BorderSizePixel=0,ZIndex=10},v))t.RootStroke=g.Stroke(w,t.
 Theme.Border,0,1)t.Root=w t.Topbar=l.New(t,w,s)t.TabContainer=n.New(w)t.Content=t.TabContainer.Content t.Overlay=t.TabContainer.Overlay t.Notifications=(g.New('Frame',{Name='Notifications',
 BackgroundTransparency=1,BorderSizePixel=0,AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-16,0,16),Size=UDim2.fromOffset(250,400),ZIndex=400},v))g.List(t.Notifications,Enum.FillDirection.Vertical,
-8)t.Sidebar=j.New(t)t.UnbindDrag=h.Attach(w,w)t.InsertConnection=b.InputBegan:Connect(function(x,y)if y then return end if i.IsActivation(x,t.MenuKey)then t:Toggle()end end)t:RegisterThemeBinding(
-function(x)w.BackgroundColor3=x.Surface t.RootStroke.Color=x.Border end)return t end function q.AddTab(r,s,t)local u=m.New(r,s,t or{},#r.Tabs+1)table.insert(r.Tabs,u)if not r.ActiveTab then r:
-SetActiveTab(u)else u:SetActive(false)end return u end function q.SetActiveTab(r,s)if r.Destroyed then return end if r.ActiveTab==s then return end if r.ActiveTab then r.ActiveTab:SetActive(false)end
-r.ActiveTab=s r.ActiveTab:SetActive(true)end function q.SetAccent(r,s)if r.Destroyed then return false end r.Theme.Accent=s r:RefreshTheme()return true end function q.SetTheme(r,s)if r.Destroyed then
-return false end local t=r.Theme.Accent if type(s)=='table'and s.Accent then t=s.Accent end local u=e.Resolve(s,t)e.Apply(r.Theme,u)r:RefreshTheme()return true end function q.RefreshTheme(r)if r.
-Destroyed then return end if r.Sidebar then r.Sidebar:RefreshTheme()end for s,t in ipairs(r.Tabs)do t:RefreshTheme()end for s,t in ipairs(r.ThemeBindings)do pcall(t,r.Theme)end end function q.
-RegisterThemeBinding(r,s)table.insert(r.ThemeBindings,s)s(r.Theme)local t=true return function()if not t then return end t=false for u=#r.ThemeBindings,1,-1 do if r.ThemeBindings[u]==s then table.
-remove(r.ThemeBindings,u)return end end end end function q.SetMenuKey(r,s)if r.Destroyed then return r end r.MenuKey=i.Normalize(s or Enum.KeyCode.Insert)return r end function q.Open(r)if r.Destroyed
-or not r.Root then return false end r.Visible=true if r.SnowLayer then r.SnowLayer:SetVisible(true)end r.Root.Visible=true r.Root.Size=ScaleSize(r.TargetSize,0.94)c.Play(r.Root,0.18,{Size=r.TargetSize
-})return true end function q.Close(r)if r.Destroyed or not r.Root then return false end r.Visible=false if r.SnowLayer then r.SnowLayer:SetVisible(false)end local s=c.Play(r.Root,0.18,{Size=ScaleSize(
-r.TargetSize,0.94)})s.Completed:Once(function()if not r.Visible and r.Root then r.Root.Visible=false end end)return true end function q.Toggle(r)if r.Visible then return r:Close()else return r:Open()
-end end function q.Notify(r,s)return o.New(r,s)end function q.AddWarning(r,s)return p.New(r,s)end function q.Destroy(r)if r.Destroyed then return end r.Destroyed=true if r.Dropdown and r.Dropdown.
-CloseMenu then pcall(function()r.Dropdown:CloseMenu(true)end)r.Dropdown=nil end if r.InsertConnection then r.InsertConnection:Disconnect()r.InsertConnection=nil end if r.UnbindDrag then pcall(r.
-UnbindDrag)r.UnbindDrag=nil end if r.SnowLayer then r.SnowLayer:Destroy()r.SnowLayer=nil end if r.Gui then r.Gui:Destroy()r.Gui=nil end table.clear(r.ThemeBindings)table.clear(r.Tabs)r.ActiveTab=nil r
-.Sidebar=nil r.Root=nil r.Canvas=nil r.Content=nil r.Overlay=nil r.Notifications=nil r.Topbar=nil end return q end function a.W()local b=a.cache.W if not b then b={c=__modImpl()}a.cache.W=b end return
-b.c end end do local __modImpl=function()local b=a.b()local c=a.c()local d=a.f()local e=a.e()local f=a.g()local g=a.i()local h=a.W()local i={}i.__index=i function i.New()local j=setmetatable({Version=
-'0.1.0',Windows={},ConfigWidgets={},AssetCache=d.New(),AssetRegistry=e,FlagManager=f.New()},i)j.Flags=j.FlagManager.Values j.ConfigManager=g.New(j.FlagManager)j.AssetCache:EnsureAll()j.RegistryEntry=b
-.Claim(j.Version,function()j:Unload()end)return j end function i.RunCallback(j,k,l,...)c.Callback(k,l,...)end function i.CreateWindow(j,k)local l=h.New(j,k or{})table.insert(j.Windows,l)return l end
-function i.Notify(j,k)local l=j.Windows[1]if l then return l:Notify(k)end return nil end function i.AddWarning(j,k)local l=j.Windows[1]if l then return l:AddWarning(k)end return nil end function i.
-SaveConfig(j,k)local l=j.ConfigManager:Save(k)if l then j:RefreshConfigLists(k)end return l end function i.LoadConfig(j,k,l)local m=j.ConfigManager:Load(k,l)if m then j:RefreshConfigLists(k)end return
-m end function i.GetConfigs(j)return j.ConfigManager:GetConfigs()end function i.RegisterConfigList(j,k)table.insert(j.ConfigWidgets,k)end function i.RefreshConfigLists(j,k)for l=#j.ConfigWidgets,1,-1
-do local m=j.ConfigWidgets[l]if not m.Root or not m.Root.Parent then table.remove(j.ConfigWidgets,l)elseif m.RefreshConfigs then m:RefreshConfigs(k)end end end function i.SetAccent(j,k)for l,m in
-ipairs(j.Windows)do m:SetAccent(k)end end function i.SetAssetBaseUrl(j,k)j.AssetRegistry.SetBaseUrl(k)return j.AssetCache:EnsureAll()end function i.SetTheme(j,k)for l,m in ipairs(j.Windows)do m:
-SetTheme(k)end return true end function i.Toggle(j)for k,l in ipairs(j.Windows)do l:Toggle()end end function i.Open(j)for k,l in ipairs(j.Windows)do l:Open()end end function i.Close(j)for k,l in
-ipairs(j.Windows)do l:Close()end end function i.Unload(j)for k,l in ipairs(j.Windows)do l:Destroy()end table.clear(j.Windows)table.clear(j.ConfigWidgets)b.Clear(j.RegistryEntry)end return i end
-function a.X()local b=a.cache.X if not b then b={c=__modImpl()}a.cache.X=b end return b.c end end end local b=a.X()return b.New()
+8)t.Sidebar=j.New(t)t.UnbindDrag=h.Attach(t.Topbar.Handle,w)t.InsertConnection=b.InputBegan:Connect(function(x,y)if y then return end if i.IsActivation(x,t.MenuKey)then t:Toggle()end end)t:
+RegisterThemeBinding(function(x)w.BackgroundColor3=x.Surface t.RootStroke.Color=x.Border end)return t end function q.AddTab(r,s,t)local u=m.New(r,s,t or{},#r.Tabs+1)table.insert(r.Tabs,u)if not r.
+ActiveTab then r:SetActiveTab(u)else u:SetActive(false)end return u end function q.SetActiveTab(r,s)if r.Destroyed then return end if r.ActiveTab==s then return end if r.ActiveTab then r.ActiveTab:
+SetActive(false)end r.ActiveTab=s r.ActiveTab:SetActive(true)end function q.SetAccent(r,s)if r.Destroyed then return false end r.Theme.Accent=s r:RefreshTheme()return true end function q.SetTheme(r,s)
+if r.Destroyed then return false end local t=r.Theme.Accent if type(s)=='table'and s.Accent then t=s.Accent end local u=e.Resolve(s,t)e.Apply(r.Theme,u)r:RefreshTheme()return true end function q.
+RefreshTheme(r)if r.Destroyed then return end if r.Sidebar then r.Sidebar:RefreshTheme()end for s,t in ipairs(r.Tabs)do t:RefreshTheme()end for s,t in ipairs(r.ThemeBindings)do pcall(t,r.Theme)end end
+function q.RegisterThemeBinding(r,s)table.insert(r.ThemeBindings,s)s(r.Theme)local t=true return function()if not t then return end t=false for u=#r.ThemeBindings,1,-1 do if r.ThemeBindings[u]==s then
+table.remove(r.ThemeBindings,u)return end end end end function q.SetMenuKey(r,s)if r.Destroyed then return r end r.MenuKey=i.Normalize(s or Enum.KeyCode.Insert)return r end function q.Open(r)if r.
+Destroyed or not r.Root then return false end r.Visible=true if r.SnowLayer then r.SnowLayer:SetVisible(true)end r.Root.Visible=true r.Root.Size=ScaleSize(r.TargetSize,0.94)c.Play(r.Root,0.18,{Size=r.
+TargetSize})return true end function q.Close(r)if r.Destroyed or not r.Root then return false end r.Visible=false if r.SnowLayer then r.SnowLayer:SetVisible(false)end local s=c.Play(r.Root,0.18,{Size=
+ScaleSize(r.TargetSize,0.94)})s.Completed:Once(function()if not r.Visible and r.Root then r.Root.Visible=false end end)return true end function q.Toggle(r)if r.Visible then return r:Close()else return
+r:Open()end end function q.Notify(r,s)return o.New(r,s)end function q.AddWarning(r,s)return p.New(r,s)end function q.Destroy(r)if r.Destroyed then return end r.Destroyed=true if r.Dropdown and r.
+Dropdown.CloseMenu then pcall(function()r.Dropdown:CloseMenu(true)end)r.Dropdown=nil end if r.InsertConnection then r.InsertConnection:Disconnect()r.InsertConnection=nil end if r.UnbindDrag then
+pcall(r.UnbindDrag)r.UnbindDrag=nil end if r.SnowLayer then r.SnowLayer:Destroy()r.SnowLayer=nil end if r.Gui then r.Gui:Destroy()r.Gui=nil end table.clear(r.ThemeBindings)table.clear(r.Tabs)r.
+ActiveTab=nil r.Sidebar=nil r.Root=nil r.Canvas=nil r.Content=nil r.Overlay=nil r.Notifications=nil r.Topbar=nil end return q end function a.W()local b=a.cache.W if not b then b={c=__modImpl()}a.cache
+.W=b end return b.c end end do local __modImpl=function()local b=a.b()local c=a.c()local d=a.f()local e=a.e()local f=a.g()local g=a.i()local h=a.W()local i={}i.__index=i function i.New()local j=
+setmetatable({Version='0.1.0',Windows={},ConfigWidgets={},AssetCache=d.New(),AssetRegistry=e,FlagManager=f.New()},i)j.Flags=j.FlagManager.Values j.ConfigManager=g.New(j.FlagManager)j.AssetCache:
+EnsureAll()j.RegistryEntry=b.Claim(j.Version,function()j:Unload()end)return j end function i.RunCallback(j,k,l,...)c.Callback(k,l,...)end function i.CreateWindow(j,k)local l=h.New(j,k or{})table.
+insert(j.Windows,l)return l end function i.Notify(j,k)local l=j.Windows[1]if l then return l:Notify(k)end return nil end function i.AddWarning(j,k)local l=j.Windows[1]if l then return l:AddWarning(k)
+end return nil end function i.SaveConfig(j,k)local l=j.ConfigManager:Save(k)if l then j:RefreshConfigLists(k)end return l end function i.LoadConfig(j,k,l)local m=j.ConfigManager:Load(k,l)if m then j:
+RefreshConfigLists(k)end return m end function i.GetConfigs(j)return j.ConfigManager:GetConfigs()end function i.RegisterConfigList(j,k)table.insert(j.ConfigWidgets,k)end function i.RefreshConfigLists(
+j,k)for l=#j.ConfigWidgets,1,-1 do local m=j.ConfigWidgets[l]if not m.Root or not m.Root.Parent then table.remove(j.ConfigWidgets,l)elseif m.RefreshConfigs then m:RefreshConfigs(k)end end end function
+i.SetAccent(j,k)for l,m in ipairs(j.Windows)do m:SetAccent(k)end end function i.SetAssetBaseUrl(j,k)j.AssetRegistry.SetBaseUrl(k)return j.AssetCache:EnsureAll()end function i.SetTheme(j,k)for l,m in
+ipairs(j.Windows)do m:SetTheme(k)end return true end function i.Toggle(j)for k,l in ipairs(j.Windows)do l:Toggle()end end function i.Open(j)for k,l in ipairs(j.Windows)do l:Open()end end function i.
+Close(j)for k,l in ipairs(j.Windows)do l:Close()end end function i.Unload(j)for k,l in ipairs(j.Windows)do l:Destroy()end table.clear(j.Windows)table.clear(j.ConfigWidgets)b.Clear(j.RegistryEntry)end
+return i end function a.X()local b=a.cache.X if not b then b={c=__modImpl()}a.cache.X=b end return b.c end end end local b=a.X()return b.New()
