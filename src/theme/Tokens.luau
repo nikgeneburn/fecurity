@@ -1,15 +1,15 @@
 --!strict
 
 local Tokens = {
-    WindowSize = Vector2.new(980, 520),
-    SidebarWidth = 67,
-    PanelTop = 17,
-    PanelHeight = 485,
-    PanelWidth = 281,
-    PanelGap = 18,
-    PanelLeft = 85,
+    WindowSize = Vector2.new(720, 840),
+    SidebarWidth = 62,
+    PanelTop = 30,
+    PanelHeight = 779,
+    PanelWidth = 197,
+    PanelGap = 17,
+    PanelLeft = 79,
     PanelRight = 16,
-    PanelBottom = 18,
+    PanelBottom = 31,
     Radius = 0,
 }
 
