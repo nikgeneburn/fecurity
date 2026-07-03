@@ -24,7 +24,7 @@ function IconLoader.Apply(Parent: Instance, Name: string, Theme: { [string]: any
     Label.Name = "IconFallback"
     Label.Size = UDim2.fromOffset(16, 16)
     Label.Text = Icon and Icon.Fallback or string.sub(Name, 1, 1)
-    Styling.ApplyText(Label, Theme, 11, Theme.Muted)
+    Styling.ApplyText(Label, Theme, 15, Theme.Muted)
     Label.TextXAlignment = Enum.TextXAlignment.Center
     Label.Parent = Parent
     return Label
