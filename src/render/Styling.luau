@@ -21,8 +21,12 @@ function Styling.FitText(Object: TextLabel | TextButton | TextBox, MaxSize: numb
     local function Resize()
         local Width = math.max(Object.AbsoluteSize.X - 6, 4)
         local Best = BottomSize
+        local MeasureFont = Object.Font
+        if MeasureFont == Enum.Font.Unknown then
+            MeasureFont = Enum.Font.GothamBold
+        end
         for Size = TopSize, BottomSize, -1 do
-            local Bounds = TextService:GetTextSize(Object.Text, Size, Object.Font, Vector2.new(math.huge, math.huge))
+            local Bounds = TextService:GetTextSize(Object.Text, Size, MeasureFont, Vector2.new(math.huge, math.huge))
             if Bounds.X <= Width then
                 Best = Size
                 break
