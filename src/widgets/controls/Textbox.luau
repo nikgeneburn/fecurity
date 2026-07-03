@@ -11,7 +11,7 @@ setmetatable(Textbox, { __index = BaseWidget })
 
 function Textbox.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Default or ""
-    local self = BaseWidget.New(Section, Options, 78)
+    local self = BaseWidget.New(Section, Options, 52)
     setmetatable(self, Textbox)
     local Theme = self.Window.Theme
 
