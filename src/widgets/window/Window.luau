@@ -15,6 +15,7 @@ local Tab = require("@fec/widgets/tab/Tab")
 local TabContainer = require("@fec/widgets/tab/TabContainer")
 local Notification = require("@fec/widgets/overlays/Notification")
 local Warning = require("@fec/widgets/overlays/Warning")
+local FOVCircle = require("@fec/widgets/overlays/FOVCircle")
 
 local Window = {}
 Window.__index = Window
@@ -40,6 +41,7 @@ function Window.New(Library: any, Options: { [string]: any })
         MenuKey = KeybindManager.Normalize(Options.MenuKey or Options.ToggleKey or Enum.KeyCode.Insert),
         Dropdown = nil,
         ThemeBindings = {},
+        FOVCircles = {},
     }, Window)
 
     local Gui = Instance.new("ScreenGui")
@@ -244,6 +246,12 @@ function Window:AddWarning(Options: { [string]: any })
     return Warning.New(self, Options)
 end
 
+function Window:CreateFOVCircle()
+    local Circle = FOVCircle.New(self.Canvas)
+    table.insert(self.FOVCircles, Circle)
+    return Circle
+end
+
 function Window:Destroy()
     if self.Destroyed then
         return
@@ -267,6 +275,12 @@ function Window:Destroy()
         self.SnowLayer:Destroy()
         self.SnowLayer = nil
     end
+    for _, Circle in ipairs(self.FOVCircles) do
+        pcall(function()
+            Circle:Destroy()
+        end)
+    end
+    table.clear(self.FOVCircles)
     if self.Gui then
         self.Gui:Destroy()
         self.Gui = nil
