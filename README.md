@@ -12,7 +12,7 @@ local Fecurity = loadstring(game:HttpGet("https://raw.githubusercontent.com/nikg
 local Window = Fecurity:CreateWindow({
     Title = "Fecurity",
     Subtitle = "Private UI Library",
-    Size = UDim2.fromOffset(980, 520),
+    Size = UDim2.fromOffset(720, 840),
     Accent = Color3.fromRGB(106, 98, 198),
     Theme = "Dark",
 })
