@@ -29,7 +29,7 @@ end
 
 function Countdown.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Seconds or 0
-    local self = BaseWidget.New(Section, Options, Options.Height or 42)
+    local self = BaseWidget.New(Section, Options, Options.Height or 28)
     setmetatable(self, Countdown)
     local Theme = self.Window.Theme
     self.EndsAt = os.clock() + (Options.Seconds or 0)
