@@ -12,7 +12,7 @@ setmetatable(Toggle, { __index = BaseWidget })
 
 function Toggle.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Default == true
-    local self = BaseWidget.New(Section, Options, 60)
+    local self = BaseWidget.New(Section, Options, 40)
     setmetatable(self, Toggle)
     local Theme = self.Window.Theme
 
