@@ -40,7 +40,7 @@ function ColorPicker.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Color",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 10, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Hint = Elements.New("TextLabel", {
@@ -50,7 +50,7 @@ function ColorPicker.New(Section: any, Options: { [string]: any })
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
 
     local Swatch = Elements.New("TextButton", {
@@ -141,7 +141,7 @@ function ColorPicker:CreateColorSquare(Parent: Instance, Theme: { [string]: any 
         BackgroundColor3 = Color3.fromHSV(self.Hue, 1, 1),
         BorderSizePixel = 0,
         Position = UDim2.fromOffset(10, 40),
-        Size = UDim2.fromOffset(170, 118),
+        Size = UDim2.fromOffset(182, 182),
         ZIndex = 221,
     }, Parent) :: Frame
     self.Square = Square
@@ -172,12 +172,13 @@ function ColorPicker:CreateColorSquare(Parent: Instance, Theme: { [string]: any 
 
     local Cursor = Elements.New("Frame", {
         Name = "Cursor",
-        BackgroundColor3 = Theme.Text,
+        BackgroundColor3 = Theme.Accent,
         BorderSizePixel = 0,
-        Size = UDim2.fromOffset(8, 8),
+        Size = UDim2.fromOffset(7, 7),
         ZIndex = 224,
     }, Square) :: Frame
     Elements.Corner(Cursor, 4)
+    Elements.Stroke(Cursor, Theme.Text, 0.4, 1)
     self.SquareCursor = Cursor
 
     self:Track(Square.InputBegan:Connect(function(Input)
@@ -193,8 +194,8 @@ function ColorPicker:CreateHueBar(Parent: Instance, Theme: { [string]: any })
         Name = "Hue",
         BackgroundColor3 = Color3.new(1, 1, 1),
         BorderSizePixel = 0,
-        Position = UDim2.fromOffset(10, 168),
-        Size = UDim2.fromOffset(170, 10),
+        Position = UDim2.fromOffset(10, 232),
+        Size = UDim2.fromOffset(182, 10),
         ZIndex = 221,
     }, Parent) :: Frame
     Utils.AddGradient(Bar, Utils.HueSequence)
@@ -202,12 +203,13 @@ function ColorPicker:CreateHueBar(Parent: Instance, Theme: { [string]: any })
 
     local Cursor = Elements.New("Frame", {
         Name = "HueCursor",
-        BackgroundColor3 = Theme.Text,
+        BackgroundColor3 = Theme.Accent,
         BorderSizePixel = 0,
-        Size = UDim2.fromOffset(6, 14),
+        Size = UDim2.fromOffset(7, 7),
         ZIndex = 222,
     }, Bar) :: Frame
-    Elements.Corner(Cursor, 3)
+    Elements.Corner(Cursor, 4)
+    Elements.Stroke(Cursor, Theme.Text, 0.4, 1)
     self.HueCursor = Cursor
 
     self:Track(Bar.InputBegan:Connect(function(Input)
@@ -223,8 +225,8 @@ function ColorPicker:CreateAlphaBar(Parent: Instance, Theme: { [string]: any })
         Name = "Alpha",
         BackgroundColor3 = self.Value,
         BorderSizePixel = 0,
-        Position = UDim2.fromOffset(10, 184),
-        Size = UDim2.fromOffset(170, 10),
+        Position = UDim2.fromOffset(10, 248),
+        Size = UDim2.fromOffset(182, 10),
         ZIndex = 221,
     }, Parent) :: Frame
     Utils.AddGradient(Bar, ColorSequence.new(Color3.new(1, 1, 1)), NumberSequence.new({
@@ -235,12 +237,13 @@ function ColorPicker:CreateAlphaBar(Parent: Instance, Theme: { [string]: any })
 
     local Cursor = Elements.New("Frame", {
         Name = "AlphaCursor",
-        BackgroundColor3 = Theme.Text,
+        BackgroundColor3 = Theme.Accent,
         BorderSizePixel = 0,
-        Size = UDim2.fromOffset(6, 14),
+        Size = UDim2.fromOffset(7, 7),
         ZIndex = 222,
     }, Bar) :: Frame
-    Elements.Corner(Cursor, 3)
+    Elements.Corner(Cursor, 4)
+    Elements.Stroke(Cursor, Theme.Text, 0.4, 1)
     self.AlphaCursor = Cursor
 
     self:Track(Bar.InputBegan:Connect(function(Input)
@@ -252,18 +255,20 @@ function ColorPicker:CreateAlphaBar(Parent: Instance, Theme: { [string]: any })
 end
 
 function ColorPicker:CreateTemplates(Parent: Instance)
+    local Theme = self.Window.Theme
     for Index, Hex in ipairs(Utils.Templates) do
         local Button = Elements.New("TextButton", {
             Name = "Template" .. tostring(Index),
             AutoButtonColor = false,
             BackgroundColor3 = Palette.Hex(Hex),
             BorderSizePixel = 0,
-            Position = UDim2.fromOffset(10 + (Index - 1) * 21, 238),
-            Size = UDim2.fromOffset(15, 15),
+            Position = UDim2.fromOffset(10 + (Index - 1) * 24, 302),
+            Size = UDim2.fromOffset(16, 16),
             Text = "",
             ZIndex = 221,
         }, Parent) :: TextButton
         Elements.Corner(Button, 8)
+        Elements.Stroke(Button, Theme.Text, 0.8, 1)
         self:Track(Button.MouseButton1Click:Connect(function()
             self:SetValue(Palette.Hex(Hex))
         end))
@@ -278,8 +283,8 @@ function ColorPicker:OpenPicker()
         Name = "ColorPickerPopup",
         BackgroundColor3 = Theme.Surface,
         BorderSizePixel = 0,
-        Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X - 174, BoxPosition.Y - RootPosition.Y + 22),
-        Size = UDim2.fromOffset(190, 264),
+        Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X - 188, BoxPosition.Y - RootPosition.Y + 22),
+        Size = UDim2.fromOffset(204, 328),
         ZIndex = 220,
     }, self.Window.Overlay) :: Frame
     Elements.Stroke(Popup, Theme.Border, 0, 1)
@@ -290,7 +295,7 @@ function ColorPicker:OpenPicker()
         BackgroundColor3 = self.Value,
         BorderSizePixel = 0,
         Position = UDim2.fromOffset(10, 10),
-        Size = UDim2.fromOffset(170, 20),
+        Size = UDim2.fromOffset(182, 20),
         ZIndex = 221,
     }, Popup) :: Frame
 
@@ -303,36 +308,40 @@ function ColorPicker:OpenPicker()
         BackgroundColor3 = Theme.Control,
         BorderSizePixel = 0,
         ClearTextOnFocus = false,
-        Position = UDim2.fromOffset(10, 204),
-        Size = UDim2.fromOffset(104, 24),
+        Position = UDim2.fromOffset(10, 268),
+        Size = UDim2.fromOffset(112, 24),
         Text = Palette.ToRgba(self.Value, self.Alpha),
         ZIndex = 221,
     }, Popup) :: TextBox
-    Styling.ApplyText(Hex, Theme, 12, Theme.Text)
+    Styling.ApplyText(Hex, Theme, 10, Theme.Text)
     FontLoader.Apply(Hex, self.Library.AssetCache)
+    local HexStroke = Elements.Stroke(Hex, Theme.Border, 0, 1)
     self.Hex = Hex
+    self.HexStroke = HexStroke
 
     local Apply = Elements.New("TextButton", {
         Name = "Apply",
         AutoButtonColor = false,
         BackgroundColor3 = Theme.Accent,
         BorderSizePixel = 0,
-        Position = UDim2.fromOffset(122, 204),
-        Size = UDim2.fromOffset(58, 24),
+        Position = UDim2.fromOffset(130, 268),
+        Size = UDim2.fromOffset(62, 24),
         Text = "APPLY",
         ZIndex = 221,
     }, Popup) :: TextButton
-    Styling.ApplyText(Apply, Theme, 12, Theme.Text)
+    Styling.ApplyText(Apply, Theme, 10, Theme.Text)
     FontLoader.Apply(Apply, self.Library.AssetCache)
     Apply.TextXAlignment = Enum.TextXAlignment.Center
     self.Apply = Apply
 
     self:Track(Apply.MouseButton1Click:Connect(function()
         local Color, Alpha = Palette.ParseWithAlpha(Hex.Text)
+        HexStroke.Color = Color and Theme.Border or Palette.Hex("#ff3f38")
         self:SetValue({ Color = Color or self.Value, Alpha = Alpha })
     end))
     self:Track(Hex.FocusLost:Connect(function()
         local Color, Alpha = Palette.ParseWithAlpha(Hex.Text)
+        HexStroke.Color = Color and Theme.Border or Palette.Hex("#ff3f38")
         self:SetValue({ Color = Color or self.Value, Alpha = Alpha })
     end))
     self:Track(UserInputService.InputChanged:Connect(function(Input)
@@ -416,13 +425,13 @@ function ColorPicker:UpdateVisuals()
         self.SquareCursor.Position = UDim2.new(self.Saturation, -4, 1 - self.Brightness, -4)
     end
     if self.HueCursor then
-        self.HueCursor.Position = UDim2.new(self.Hue, -3, 0, -2)
+        self.HueCursor.Position = UDim2.new(self.Hue, -3, 0, 1)
     end
     if self.AlphaBar then
         self.AlphaBar.BackgroundColor3 = Color
     end
     if self.AlphaCursor then
-        self.AlphaCursor.Position = UDim2.new(self.Alpha, -3, 0, -2)
+        self.AlphaCursor.Position = UDim2.new(self.Alpha, -3, 0, 1)
     end
     if self.Hex then
         self.Hex.Text = self.Alpha < 0.999 and Palette.ToRgba(Color, self.Alpha) or Palette.ToHex(Color)
