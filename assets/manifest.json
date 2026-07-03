@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "assets": [
+    {
+      "path": "assets/fonts/ProximaNova-Semibold.ttf",
+      "bytes": 53740,
+      "sha256": "f99d7fe3689ab74d846db92981e901cf7c6711dcb755bd56901e855e7b9a3917"
+    },
+    {
+      "path": "assets/icons/assist.png",
+      "bytes": 1982,
+      "sha256": "78174292c64103d5498ac1263dade1dc8a36797c6a60c02b5f828e7ef5f8ed72"
+    },
+    {
+      "path": "assets/icons/assist.svg",
+      "bytes": 984,
+      "sha256": "fadf7995642e139e5e1856dcb4055f0c85b894a114e8cb270f31b2d2ccbb1a4a"
+    },
+    {
+      "path": "assets/icons/colors.png",
+      "bytes": 1234,
+      "sha256": "a997c42f3c5e2691e3dbf977f588ea8f2e28ecbf7947168b0c735f36e82773bf"
+    },
+    {
+      "path": "assets/icons/colors.svg",
+      "bytes": 405,
+      "sha256": "e4de005e6c9483e98bbf8ac13ca8088b7d37ea1d97ddba6b928a1eb5a11e3cfb"
+    },
+    {
+      "path": "assets/icons/misc.png",
+      "bytes": 1770,
+      "sha256": "95916bb96a1a0e2c67265a150330b205291d3baaa842e7ea32bdfaf5385af429"
+    },
+    {
+      "path": "assets/icons/misc.svg",
+      "bytes": 914,
+      "sha256": "501dde049f808aac807a1a6b9f9b3008f0c55a7f4e61c9916ebcd8594a81ed29"
+    },
+    {
+      "path": "assets/icons/trial.png",
+      "bytes": 1030,
+      "sha256": "cf5f060918d7c7227469dd65713da29fdb9fe255ca0de2e73e52b9083e8d4929"
+    },
+    {
+      "path": "assets/icons/trial.svg",
+      "bytes": 275,
+      "sha256": "91903d7b3c01f448576036018a3a54d94784ee9fda99bd1f2b7d3504ae365853"
+    },
+    {
+      "path": "assets/icons/visuals.png",
+      "bytes": 2131,
+      "sha256": "fdcf966413584fc186827bf5cba13712121926b684bfbc4ceb1355920f1cbe06"
+    },
+    {
+      "path": "assets/icons/visuals.svg",
+      "bytes": 507,
+      "sha256": "fc1ef69a2e4290c2c35403207ac28d20f2aabbb54e2854efe1ef464e37a4be1b"
+    },
+    {
+      "path": "assets/images/hitbox-preview.png",
+      "bytes": 211220,
+      "sha256": "08cdca5f26739732103b197f09aac7f055af7212e21440103f14b0acca3fd5f4"
+    },
+    {
+      "path": "assets/images/logo.png",
+      "bytes": 1650,
+      "sha256": "88175de754ee61265f76c811376b45960749539a4c58399fb6f9d8298889686c"
+    },
+    {
+      "path": "assets/images/logo.svg",
+      "bytes": 994,
+      "sha256": "59d693509594a7f6bc8c6d4a85bc338bff199eda0bb76169ee22b6b622d8e72a"
+    }
+  ]
+}
