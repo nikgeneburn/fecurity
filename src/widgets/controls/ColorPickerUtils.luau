@@ -5,13 +5,13 @@ local Palette = require("@fec/theme/Palette")
 local ColorPickerUtils = {}
 
 ColorPickerUtils.Templates = {
-    "#ff1412",
-    "#5184ec",
-    "#dff852",
-    "#eab423",
-    "#45d2c0",
+    "#ff0000",
+    "#5f90f6",
+    "#d8f368",
+    "#e1ae24",
+    "#3ad4bb",
     "#fee2eb",
-    "#e852a7",
+    "#f25dab",
     "#ffffff",
 }
 
