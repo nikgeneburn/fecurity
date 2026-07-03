@@ -2391,7 +2391,7 @@ do
             function Toggle.New(Section, Options)
                 Options.Default = Options.Default == true
 
-                local self = BaseWidget.New(Section, Options, 60)
+                local self = BaseWidget.New(Section, Options, 40)
 
                 setmetatable(self, Toggle)
 
@@ -2544,7 +2544,7 @@ do
                 Options.Step = Options.Step or 1
                 Options.Default = Options.Default or Options.Value or Options.Min
 
-                local self = BaseWidget.New(Section, Options, 60)
+                local self = BaseWidget.New(Section, Options, 40)
 
                 setmetatable(self, Slider)
 
@@ -2768,7 +2768,7 @@ do
                     }
                 end
 
-                local self = BaseWidget.New(Section, Options, 108)
+                local self = BaseWidget.New(Section, Options, 72)
 
                 setmetatable(self, Dropdown)
 
@@ -3162,7 +3162,7 @@ do
             setmetatable(Button, {__index = BaseWidget})
 
             function Button.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 60)
+                local self = BaseWidget.New(Section, Options, Options.Height or 40)
 
                 setmetatable(self, Button)
 
@@ -3247,7 +3247,7 @@ do
             function Textbox.New(Section, Options)
                 Options.Default = Options.Default or ''
 
-                local self = BaseWidget.New(Section, Options, 78)
+                local self = BaseWidget.New(Section, Options, 52)
 
                 setmetatable(self, Textbox)
 
@@ -3335,7 +3335,7 @@ do
 
                 Options.Callback = Options.Changed or Options.OnChanged
 
-                local self = BaseWidget.New(Section, Options, 60)
+                local self = BaseWidget.New(Section, Options, 40)
 
                 setmetatable(self, Keybind)
 
@@ -3571,7 +3571,7 @@ do
             function ColorPicker.New(Section, Options)
                 Options.Default = Options.Default or Options.Value or Color3.new(1, 1, 1)
 
-                local self = BaseWidget.New(Section, Options, 60)
+                local self = BaseWidget.New(Section, Options, 40)
 
                 setmetatable(self, ColorPicker)
 
@@ -4270,7 +4270,7 @@ do
             function HitboxPreview.New(Section, Options)
                 Options.Default = Options.Default or {}
 
-                local self = BaseWidget.New(Section, Options, 584)
+                local self = BaseWidget.New(Section, Options, 390)
 
                 setmetatable(self, HitboxPreview)
 
@@ -4468,7 +4468,7 @@ do
             function Countdown.New(Section, Options)
                 Options.Default = Options.Seconds or 0
 
-                local self = BaseWidget.New(Section, Options, Options.Height or 42)
+                local self = BaseWidget.New(Section, Options, Options.Height or 28)
 
                 setmetatable(self, Countdown)
 
@@ -4609,7 +4609,7 @@ do
             end
 
             function Label.New(Section, Options)
-                local self = BaseWidget.New(Section, Options, Options.Height or 42)
+                local self = BaseWidget.New(Section, Options, Options.Height or 28)
 
                 setmetatable(self, Label)
 
