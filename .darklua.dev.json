@@ -1,0 +1,20 @@
+{
+    "generator": {
+        "name": "readable",
+        "column_span": 120
+    },
+    "bundle": {
+        "require_mode": {
+            "name": "path",
+            "module_folder_name": "init",
+            "sources": {
+                "@fec": "src",
+                "@include": "include"
+            }
+        },
+        "excludes": []
+    },
+    "rules": [
+        "remove_types"
+    ]
+}
