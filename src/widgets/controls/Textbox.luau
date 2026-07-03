@@ -21,7 +21,7 @@ function Textbox.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Textbox",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 10, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Box = Elements.New("TextBox", {
@@ -30,11 +30,11 @@ function Textbox.New(Section: any, Options: { [string]: any })
         BorderSizePixel = 0,
         ClearTextOnFocus = false,
         Position = UDim2.fromOffset(0, 22),
-        Size = UDim2.new(1, 0, 0, 26),
+        Size = UDim2.new(1, 0, 0, 24),
         Text = tostring(self.Value),
         ZIndex = 32,
     }, self.Root) :: TextBox
-    Styling.ApplyText(Box, Theme, 12, Theme.Text)
+    Styling.ApplyText(Box, Theme, 10, Theme.Text)
     FontLoader.Apply(Box, self.Library.AssetCache)
     Box.TextXAlignment = Enum.TextXAlignment.Left
     self.Box = Box
