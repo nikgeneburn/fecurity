@@ -26,10 +26,10 @@ function Button.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "BUTTON",
         ZIndex = 31,
     }, self.Root) :: TextButton
-    Styling.ApplyText(Control, Theme, 10, Theme.Text)
+    Styling.ApplyText(Control, Theme, 14, Theme.Text)
     FontLoader.Apply(Control, self.Library.AssetCache)
     Control.TextXAlignment = Enum.TextXAlignment.Center
-    Styling.FitText(Control, 10, 9)
+    Styling.FitText(Control, 14, 12)
     self.Control = Control
     self.BaseColor = Base
 
