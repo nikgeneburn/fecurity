@@ -23,7 +23,7 @@ function Toggle.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Toggle",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 10, Theme.Text)
+    Styling.ApplyText(Title, Theme, 14, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
     self.Title = Title
 
@@ -34,7 +34,7 @@ function Toggle.New(Section: any, Options: { [string]: any })
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
     self.Hint = Hint
 
