@@ -12,7 +12,7 @@ Button.__index = Button
 setmetatable(Button, { __index = BaseWidget })
 
 function Button.New(Section: any, Options: { [string]: any })
-    local self = BaseWidget.New(Section, Options, Options.Height or 40)
+    local self = BaseWidget.New(Section, Options, Options.Height or 70)
     setmetatable(self, Button)
     local Theme = self.Window.Theme
     local Base = Theme.Accent
