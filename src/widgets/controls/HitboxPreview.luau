@@ -72,7 +72,7 @@ end
 
 function HitboxPreview.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Default or {}
-    local self = BaseWidget.New(Section, Options, 390)
+    local self = BaseWidget.New(Section, Options, 681)
     setmetatable(self, HitboxPreview)
     local Theme = self.Window.Theme
     self.RegionState = table.clone(self.Value)
@@ -121,9 +121,18 @@ function HitboxPreview.New(Section: any, Options: { [string]: any })
         end)
     end
 
+    local LegendLayout = {
+        [1] = { Row = 0, Col = 0 }, -- First
+        [2] = { Row = 1, Col = 0 }, -- Second
+        [3] = { Row = 2, Col = 0 }, -- Third
+        [4] = { Row = 0, Col = 1 }, -- Fourth
+        [5] = { Row = 1, Col = 1 }, -- Ignore
+    }
+
     for Index, Priority in ipairs(Priorities) do
-        local Row = math.floor((Index - 1) / 2)
-        local Col = (Index - 1) % 2
+        local Slot = LegendLayout[Index]
+        local Row = Slot.Row
+        local Col = Slot.Col
         local Dot = Elements.New("Frame", {
             Name = Priority.Id .. "Dot",
             BackgroundColor3 = Priority.Color,
