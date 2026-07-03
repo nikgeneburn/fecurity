@@ -35,6 +35,7 @@ function Update-HostedTextFile([string]$Path, [string]$RepoSlug, [string]$RawBas
 $RegistryPath = Join-Path $Root "src\assets\AssetRegistry.luau"
 $ReadmePath = Join-Path $Root "README.md"
 $HostedDemoPath = Join-Path $Root "examples\FecurityHosted.luau"
+$HostedFullPath = Join-Path $Root "examples\FecurityHostedFull.luau"
 $HostedRequirePath = Join-Path $Root "examples\FecurityHostedRequire.luau"
 $HostedSmokePath = Join-Path $Root "examples\FecurityHostedSmoke.luau"
 $DistReleasePath = Join-Path $Root "dist\Fecurity.lua"
@@ -49,7 +50,7 @@ $Registry = [regex]::Replace(
 Set-TextFileUtf8NoBom $RegistryPath $Registry
 
 $RepoSlug = "$Owner/$Repo"
-foreach ($Path in @($ReadmePath, $HostedDemoPath, $HostedRequirePath, $HostedSmokePath)) {
+foreach ($Path in @($ReadmePath, $HostedDemoPath, $HostedFullPath, $HostedRequirePath, $HostedSmokePath)) {
     Update-HostedTextFile $Path $RepoSlug $RepoRawBase
 }
 
