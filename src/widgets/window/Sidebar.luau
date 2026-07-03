@@ -21,7 +21,7 @@ function Sidebar.New(Window: any)
         BackgroundColor3 = Window.Theme.Surface,
         BorderSizePixel = 0,
         Position = UDim2.fromOffset(0, 0),
-        Size = UDim2.fromOffset(Tokens.SidebarWidth, 479),
+        Size = UDim2.fromOffset(Tokens.SidebarWidth, Tokens.WindowSize.Y - 2),
         ZIndex = 22,
     }, Window.Root) :: Frame
     self.Stroke = Elements.Stroke(Root, Window.Theme.Border, 0, 1)
