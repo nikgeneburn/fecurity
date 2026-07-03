@@ -43,7 +43,7 @@ function Slider.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Slider",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 10, Theme.Text)
+    Styling.ApplyText(Title, Theme, 14, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
     self.Title = Title
 
@@ -55,7 +55,7 @@ function Slider.New(Section: any, Options: { [string]: any })
         Text = "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(ValueLabel, Theme, 10, Theme.Text)
+    Styling.ApplyText(ValueLabel, Theme, 14, Theme.Text)
     FontLoader.Apply(ValueLabel, self.Library.AssetCache)
     ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     self.ValueLabel = ValueLabel
