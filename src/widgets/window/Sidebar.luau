@@ -41,8 +41,8 @@ function Sidebar.New(Window: any)
     local Logo = Elements.New("ImageLabel", {
         Name = "Logo",
         BackgroundTransparency = 1,
-        Position = UDim2.fromOffset(6, 13),
-        Size = UDim2.fromOffset(50, 48),
+        Position = UDim2.fromOffset(6, 12),
+        Size = UDim2.fromOffset(47, 45),
         ImageColor3 = Window.Theme.Accent,
         ZIndex = 24,
     }, Root) :: ImageLabel
@@ -55,8 +55,8 @@ function Sidebar.New(Window: any)
         local Fallback = Elements.New("TextLabel", {
             Name = "LogoFallback",
             BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(6, 13),
-            Size = UDim2.fromOffset(50, 48),
+            Position = UDim2.fromOffset(6, 12),
+            Size = UDim2.fromOffset(47, 45),
             Text = "F",
             ZIndex = 25,
         }, Root) :: TextLabel
