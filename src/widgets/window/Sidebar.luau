@@ -21,16 +21,27 @@ function Sidebar.New(Window: any)
         BackgroundColor3 = Window.Theme.Surface,
         BorderSizePixel = 0,
         Position = UDim2.fromOffset(0, 0),
-        Size = UDim2.fromOffset(Tokens.SidebarWidth, Tokens.WindowSize.Y),
+        Size = UDim2.fromOffset(Tokens.SidebarWidth, 479),
         ZIndex = 22,
     }, Window.Root) :: Frame
     self.Stroke = Elements.Stroke(Root, Window.Theme.Border, 0, 1)
     self.Root = Root
 
+    local SelectedTab = Elements.New("Frame", {
+        Name = "SelectedTab",
+        BackgroundColor3 = Window.Theme.Selected,
+        BackgroundTransparency = 1,
+        BorderSizePixel = 0,
+        Position = UDim2.fromOffset(0, 72),
+        Size = UDim2.fromOffset(Tokens.SidebarWidth, 64),
+        ZIndex = 23,
+    }, Root) :: Frame
+    self.SelectedTab = SelectedTab
+
     local Logo = Elements.New("ImageLabel", {
         Name = "Logo",
         BackgroundTransparency = 1,
-        Position = UDim2.fromOffset(8, 18),
+        Position = UDim2.fromOffset(6, 13),
         Size = UDim2.fromOffset(50, 48),
         ImageColor3 = Window.Theme.Accent,
         ZIndex = 24,
@@ -44,7 +55,7 @@ function Sidebar.New(Window: any)
         local Fallback = Elements.New("TextLabel", {
             Name = "LogoFallback",
             BackgroundTransparency = 1,
-            Position = UDim2.fromOffset(8, 18),
+            Position = UDim2.fromOffset(6, 13),
             Size = UDim2.fromOffset(50, 48),
             Text = "F",
             ZIndex = 25,
@@ -67,6 +78,7 @@ end
 function Sidebar:RefreshTheme()
     self.Root.BackgroundColor3 = self.Window.Theme.Surface
     self.Stroke.Color = self.Window.Theme.Border
+    self.SelectedTab.BackgroundColor3 = self.Window.Theme.Selected
     self.Logo.ImageColor3 = self.Window.Theme.Accent
     Gradients.SetAccent(self.LogoGradient, self.Window.Theme.Accent)
     if self.LogoFallback then
