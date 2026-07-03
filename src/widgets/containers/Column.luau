@@ -65,8 +65,8 @@ function Column:ApplyLayout(Index: number, Count: number)
     self.Root.Size = UDim2.fromOffset(Width, Tokens.PanelHeightFor(WindowHeight))
 end
 
-function Column:AddSection(Name: string)
-    local NewSection = Section.New(self, Name)
+function Column:AddSection(Name: string, Options: { [string]: any }?)
+    local NewSection = Section.New(self, Name, Options)
     table.insert(self.Sections, NewSection)
     return NewSection
 end
