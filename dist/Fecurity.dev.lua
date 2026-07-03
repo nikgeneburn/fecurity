@@ -1707,7 +1707,7 @@ do
                 Label.Size = UDim2.fromOffset(16, 16)
                 Label.Text = Icon and Icon.Fallback or string.sub(Name, 1, 1)
 
-                Styling.ApplyText(Label, Theme, 11, Theme.Muted)
+                Styling.ApplyText(Label, Theme, 15, Theme.Muted)
 
                 Label.TextXAlignment = Enum.TextXAlignment.Center
                 Label.Parent = Parent
@@ -1795,7 +1795,7 @@ do
                     ZIndex = 26,
                 }, Content))
 
-                Styling.ApplyText(Label, Window.Theme, 10, Window.Theme.Muted)
+                Styling.ApplyText(Label, Window.Theme, 14, Window.Theme.Muted)
                 FontLoader.Apply(Label, Window.Library.AssetCache)
 
                 Label.TextXAlignment = Enum.TextXAlignment.Center
@@ -2398,7 +2398,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 10, Theme.Text)
+                Styling.ApplyText(Title, Theme, 14, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 self.Title = Title
@@ -2411,7 +2411,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 self.Hint = Hint
@@ -2552,7 +2552,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 10, Theme.Text)
+                Styling.ApplyText(Title, Theme, 14, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 self.Title = Title
@@ -2566,7 +2566,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(ValueLabel, Theme, 10, Theme.Text)
+                Styling.ApplyText(ValueLabel, Theme, 14, Theme.Text)
                 FontLoader.Apply(ValueLabel, self.Library.AssetCache)
 
                 ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
@@ -2774,7 +2774,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 10, Theme.Text)
+                Styling.ApplyText(Title, Theme, 14, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Hint = (Elements.New('TextLabel', {
@@ -2785,7 +2785,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 local Box = (Elements.New('TextButton', {
@@ -2811,9 +2811,9 @@ do
                     ZIndex = 33,
                 }, Box))
 
-                Styling.ApplyText(Value, Theme, 10, Theme.Text)
+                Styling.ApplyText(Value, Theme, 14, Theme.Text)
                 FontLoader.Apply(Value, self.Library.AssetCache)
-                Styling.FitText(Value, 10, 8)
+                Styling.FitText(Value, 14, 11)
 
                 self.ValueLabel = Value
 
@@ -2826,7 +2826,7 @@ do
                     ZIndex = 33,
                 }, Box))
 
-                Styling.ApplyText(Arrow, Theme, 8, Theme.Muted)
+                Styling.ApplyText(Arrow, Theme, 10, Theme.Muted)
                 FontLoader.Apply(Arrow, self.Library.AssetCache)
 
                 Arrow.TextXAlignment = Enum.TextXAlignment.Center
@@ -2993,7 +2993,7 @@ do
                         ZIndex = 212,
                     }, Row))
 
-                    Styling.ApplyText(Label, Theme, 10, Theme.Muted)
+                    Styling.ApplyText(Label, Theme, 14, Theme.Muted)
                     FontLoader.Apply(Label, self.Library.AssetCache)
 
                     self.OptionRows[Index] = {
@@ -3173,12 +3173,12 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Control, Theme, 10, Theme.Text)
+                Styling.ApplyText(Control, Theme, 14, Theme.Text)
                 FontLoader.Apply(Control, self.Library.AssetCache)
 
                 Control.TextXAlignment = Enum.TextXAlignment.Center
 
-                Styling.FitText(Control, 10, 9)
+                Styling.FitText(Control, 14, 12)
 
                 self.Control = Control
                 self.BaseColor = Base
@@ -3253,7 +3253,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 10, Theme.Text)
+                Styling.ApplyText(Title, Theme, 14, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Box = (Elements.New('TextBox', {
@@ -3267,7 +3267,7 @@ do
                     ZIndex = 32,
                 }, self.Root))
 
-                Styling.ApplyText(Box, Theme, 10, Theme.Text)
+                Styling.ApplyText(Box, Theme, 14, Theme.Text)
                 FontLoader.Apply(Box, self.Library.AssetCache)
 
                 Box.TextXAlignment = Enum.TextXAlignment.Left
@@ -3343,7 +3343,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 10, Theme.Text)
+                Styling.ApplyText(Title, Theme, 14, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Hint = (Elements.New('TextLabel', {
@@ -3354,7 +3354,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 local Box = (Elements.New('TextButton', {
@@ -3369,12 +3369,12 @@ do
                     ZIndex = 32,
                 }, self.Root))
 
-                Styling.ApplyText(Box, Theme, 10, Theme.Text)
+                Styling.ApplyText(Box, Theme, 14, Theme.Text)
                 FontLoader.Apply(Box, self.Library.AssetCache)
 
                 Box.TextXAlignment = Enum.TextXAlignment.Center
 
-                Styling.FitText(Box, 10, 8)
+                Styling.FitText(Box, 14, 11)
 
                 self.Box = Box
 
@@ -3599,7 +3599,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Title, Theme, 10, Theme.Text)
+                Styling.ApplyText(Title, Theme, 14, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 local Hint = (Elements.New('TextLabel', {
@@ -3610,7 +3610,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
+                Styling.ApplyText(Hint, Theme, 13, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 local Swatch = (Elements.New('TextButton', {
@@ -3894,7 +3894,7 @@ do
                     ZIndex = 221,
                 }, Popup))
 
-                Styling.ApplyText(Hex, Theme, 10, Theme.Text)
+                Styling.ApplyText(Hex, Theme, 14, Theme.Text)
                 FontLoader.Apply(Hex, self.Library.AssetCache)
 
                 local HexStroke = Elements.Stroke(Hex, Theme.Border, 0, 1)
@@ -3913,7 +3913,7 @@ do
                     ZIndex = 221,
                 }, Popup))
 
-                Styling.ApplyText(Apply, Theme, 10, Theme.Text)
+                Styling.ApplyText(Apply, Theme, 14, Theme.Text)
                 FontLoader.Apply(Apply, self.Library.AssetCache)
 
                 Apply.TextXAlignment = Enum.TextXAlignment.Center
@@ -4350,7 +4350,7 @@ do
                         ZIndex = 31,
                     }, self.Root))
 
-                    Styling.ApplyText(Label, Theme, 10, Theme.Muted)
+                    Styling.ApplyText(Label, Theme, 14, Theme.Muted)
                     FontLoader.Apply(Label, self.Library.AssetCache)
                 end
 
@@ -4362,7 +4362,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Help, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Help, Theme, 15, Theme.Hint)
                 FontLoader.Apply(Help, self.Library.AssetCache)
                 self:Refresh()
 
@@ -4478,7 +4478,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Label, Theme, 10, ToneColor(Theme, Options.Tone))
+                Styling.ApplyText(Label, Theme, 14, ToneColor(Theme, Options.Tone))
                 FontLoader.Apply(Label, self.Library.AssetCache)
 
                 self.Label = Label
@@ -4615,7 +4615,7 @@ do
                     ZIndex = 31,
                 }, self.Root))
 
-                Styling.ApplyText(Text, Theme, 10, ToneColor(Theme, Options.Tone))
+                Styling.ApplyText(Text, Theme, 14, ToneColor(Theme, Options.Tone))
                 FontLoader.Apply(Text, self.Library.AssetCache)
 
                 self.Text = Text
@@ -4729,7 +4729,7 @@ do
                         ZIndex = 24,
                     }, Root))
 
-                    Styling.ApplyText(Header, Column.Window.Theme, 10, Column.Window.Theme.Muted)
+                    Styling.ApplyText(Header, Column.Window.Theme, 14, Column.Window.Theme.Muted)
                     FontLoader.Apply(Header, Column.Window.Library.AssetCache)
 
                     self.Header = Header
@@ -5073,7 +5073,7 @@ do
                     ZIndex = 402,
                 }, Root))
 
-                Styling.ApplyText(Title, Theme, 12, Theme.Text)
+                Styling.ApplyText(Title, Theme, 16, Theme.Text)
                 FontLoader.Apply(Title, Window.Library.AssetCache)
 
                 local Body = (Elements.New('TextLabel', {
@@ -5085,7 +5085,7 @@ do
                     ZIndex = 402,
                 }, Root))
 
-                Styling.ApplyText(Body, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Body, Theme, 15, Theme.Hint)
                 FontLoader.Apply(Body, Window.Library.AssetCache)
 
                 Root.BackgroundTransparency = 1
@@ -5151,7 +5151,7 @@ do
                     ZIndex = 301,
                 }, Root))
 
-                Styling.ApplyText(Title, Theme, 13, Theme.Text)
+                Styling.ApplyText(Title, Theme, 17, Theme.Text)
                 FontLoader.Apply(Title, Window.Library.AssetCache)
 
                 local Body = (Elements.New('TextLabel', {
@@ -5163,7 +5163,7 @@ do
                     ZIndex = 301,
                 }, Root))
 
-                Styling.ApplyText(Body, Theme, 11, Theme.Hint)
+                Styling.ApplyText(Body, Theme, 15, Theme.Hint)
                 FontLoader.Apply(Body, Window.Library.AssetCache)
 
                 return Root
