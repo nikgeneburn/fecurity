@@ -52,7 +52,7 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Dropdown",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 12, Theme.Text)
+    Styling.ApplyText(Title, Theme, 10, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Hint = Elements.New("TextLabel", {
@@ -62,7 +62,7 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         Text = Options.Hint or "",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Hint, Theme, 9, Theme.Hint)
     FontLoader.Apply(Hint, self.Library.AssetCache)
 
     local Box = Elements.New("TextButton", {
@@ -70,8 +70,8 @@ function Dropdown.New(Section: any, Options: { [string]: any })
         AutoButtonColor = false,
         BackgroundColor3 = Theme.Control,
         BorderSizePixel = 0,
-        Position = UDim2.fromOffset(0, 32),
-        Size = UDim2.new(1, 0, 0, 26),
+        Position = UDim2.fromOffset(0, 31),
+        Size = UDim2.new(1, 0, 0, 24),
         Text = "",
         ZIndex = 32,
     }, self.Root) :: TextButton
@@ -80,25 +80,25 @@ function Dropdown.New(Section: any, Options: { [string]: any })
 
     local Value = Elements.New("TextLabel", {
         Name = "Value",
-        Position = UDim2.fromOffset(18, 0),
-        Size = UDim2.new(1, -42, 1, 0),
+        Position = UDim2.fromOffset(16, 7),
+        Size = UDim2.new(1, -50, 0, 12),
         Text = "",
         ZIndex = 33,
     }, Box) :: TextLabel
-    Styling.ApplyText(Value, Theme, 12, Theme.Text)
+    Styling.ApplyText(Value, Theme, 10, Theme.Text)
     FontLoader.Apply(Value, self.Library.AssetCache)
-    Styling.FitText(Value, 12, 9)
+    Styling.FitText(Value, 10, 8)
     self.ValueLabel = Value
 
     local Arrow = Elements.New("TextLabel", {
         Name = "Arrow",
         AnchorPoint = Vector2.new(1, 0),
-        Position = UDim2.new(1, -14, 0, 0),
-        Size = UDim2.fromOffset(12, 26),
+        Position = UDim2.new(1, -18, 0, 10),
+        Size = UDim2.fromOffset(8, 5),
         Text = "v",
         ZIndex = 33,
     }, Box) :: TextLabel
-    Styling.ApplyText(Arrow, Theme, 12, Theme.Muted)
+    Styling.ApplyText(Arrow, Theme, 8, Theme.Muted)
     FontLoader.Apply(Arrow, self.Library.AssetCache)
     Arrow.TextXAlignment = Enum.TextXAlignment.Center
     self.Arrow = Arrow
@@ -181,15 +181,15 @@ function Dropdown:OpenMenu()
     local Theme = self.Window.Theme
     local RootPosition = self.Window.Root.AbsolutePosition
     local BoxPosition = self.Box.AbsolutePosition
-    local RowHeight = 24
+    local RowHeight = 22
     local OpenHeight = math.max(RowHeight, math.min(#self.Options.Values, 7) * RowHeight)
     local Menu = Elements.New("Frame", {
         Name = "DropdownMenu",
-        BackgroundColor3 = Theme.ControlHover,
+        BackgroundColor3 = Theme.Control,
         BackgroundTransparency = 0.15,
         BorderSizePixel = 0,
         ClipsDescendants = true,
-        Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X, BoxPosition.Y - RootPosition.Y + self.Box.AbsoluteSize.Y + 2),
+        Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X, BoxPosition.Y - RootPosition.Y + self.Box.AbsoluteSize.Y + 1),
         Size = UDim2.fromOffset(self.Box.AbsoluteSize.X, 0),
         ZIndex = 210,
     }, self.Window.Overlay) :: Frame
@@ -219,45 +219,52 @@ function Dropdown:OpenMenu()
         local Row = Elements.New("TextButton", {
             Name = "Option" .. tostring(Index),
             AutoButtonColor = false,
-            BackgroundColor3 = Theme.ControlHover,
-            BackgroundTransparency = 0.08,
+            BackgroundColor3 = Theme.Control,
+            BackgroundTransparency = 0,
             BorderSizePixel = 0,
             Position = UDim2.fromOffset(0, (Index - 1) * RowHeight),
             Size = UDim2.new(1, -2, 0, RowHeight),
             Text = "",
             ZIndex = 211,
         }, Scroll) :: TextButton
-        local Indicator = Elements.New("Frame", {
-            Name = "Indicator",
-            AnchorPoint = Vector2.new(0, 0.5),
-            BackgroundColor3 = Theme.Accent,
-            BackgroundTransparency = 1,
-            BorderSizePixel = 0,
-            Position = UDim2.fromOffset(9, 12),
-            Size = UDim2.fromOffset(5, 5),
-            ZIndex = 212,
-        }, Row) :: Frame
-        Elements.Corner(Indicator, 4)
+        local Indicator = nil
+        local IndicatorStroke = nil
+        if self.Options.Multi then
+            Indicator = Elements.New("Frame", {
+                Name = "Indicator",
+                BackgroundColor3 = Theme.Accent,
+                BackgroundTransparency = 1,
+                BorderSizePixel = 0,
+                Position = UDim2.fromOffset(13, 7),
+                Size = UDim2.fromOffset(7, 7),
+                ZIndex = 212,
+            }, Row) :: Frame
+            IndicatorStroke = Elements.Stroke(Indicator, Theme.Muted, 0, 1)
+        end
         local Label = Elements.New("TextLabel", {
             Name = "Label",
-            Position = UDim2.fromOffset(20, 0),
-            Size = UDim2.new(1, -30, 1, 0),
+            Position = UDim2.fromOffset(self.Options.Multi and 30 or 16, 0),
+            Size = UDim2.new(1, self.Options.Multi and -46 or -32, 1, 0),
             Text = tostring(Option),
             ZIndex = 212,
         }, Row) :: TextLabel
-        Styling.ApplyText(Label, Theme, 12, Theme.Text)
+        Styling.ApplyText(Label, Theme, 10, Theme.Muted)
         FontLoader.Apply(Label, self.Library.AssetCache)
         self.OptionRows[Index] = {
             Option = Option,
             Row = Row,
             Label = Label,
             Indicator = Indicator,
+            IndicatorStroke = IndicatorStroke,
         }
         Row.MouseEnter:Connect(function()
-            Tween.Play(Row, 0.1, { BackgroundColor3 = Theme.Control })
+            Tween.Play(Row, 0.1, { BackgroundColor3 = Theme.ControlHover })
         end)
         Row.MouseLeave:Connect(function()
-            Tween.Play(Row, 0.12, { BackgroundColor3 = self.Window.Theme.ControlHover })
+            local Selected = if self.Options.Multi then Contains(self.Value, Option) else self.Value == Option
+            if not Selected then
+                Tween.Play(Row, 0.12, { BackgroundColor3 = self.Window.Theme.Control })
+            end
         end)
         Row.MouseButton1Click:Connect(function()
             Tween.Press(Row, Theme.Control, Theme.ControlHover)
@@ -326,13 +333,18 @@ function Dropdown:RefreshRows()
     local Theme = self.Window.Theme
     for _, Record in ipairs(self.OptionRows) do
         local Selected = if self.Options.Multi then Contains(self.Value, Record.Option) else self.Value == Record.Option
-        Record.Indicator.BackgroundColor3 = Theme.Accent
-        Record.Indicator.BackgroundTransparency = Selected and 0 or 1
-        Record.Label.TextColor3 = Selected and Theme.Text or Theme.Muted
-        Record.Row.BackgroundColor3 = Theme.ControlHover
+        if Record.Indicator then
+            Record.Indicator.BackgroundColor3 = Theme.Accent
+            Record.Indicator.BackgroundTransparency = Selected and 0 or 1
+        end
+        if Record.IndicatorStroke then
+            Record.IndicatorStroke.Color = Selected and Theme.Accent or Theme.Muted
+        end
+        Record.Label.TextColor3 = Selected and Theme.Accent or Theme.Muted
+        Record.Row.BackgroundColor3 = Selected and Theme.ControlHover or Theme.Control
     end
     if self.Menu then
-        self.Menu.BackgroundColor3 = Theme.ControlHover
+        self.Menu.BackgroundColor3 = Theme.Control
     end
 end
 
