@@ -53,6 +53,8 @@ do
                     return
                 end
 
+                local Message = Join(...)
+
                 pcall(function()
                     if not EnsureLogFolder() then
                         return
@@ -69,7 +71,7 @@ do
                     end
 
                     local Stamp = os.date('%Y-%m-%d %H:%M:%S')
-                    local Line = ('%s %s %s %s\n'):format(Stamp, Logger.Prefix, Level, Join(...))
+                    local Line = ('%s %s %s %s\n'):format(Stamp, Logger.Prefix, Level, Message)
                     local Next = Existing .. Line
 
                     if #Next > Logger.MaxLogBytes then
@@ -302,7 +304,7 @@ do
     do
         local function __modImpl()
             local AssetRegistry = {}
-            local DefaultBaseUrl = 'https://raw.githubusercontent.com/nikgeneburn/fecurity/main/'
+            local DefaultBaseUrl = [[https://raw.githubusercontent.com/nikgeneburn/fecurity/main/]]
 
             local function NormalizeBaseUrl(BaseUrl)
                 if string.sub(BaseUrl, -1) ~= '/' then
