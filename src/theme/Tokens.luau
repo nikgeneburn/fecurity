@@ -1,21 +1,16 @@
 --!strict
 
 local Tokens = {
-    WindowSize = Vector2.new(774, 481),
+    WindowSize = Vector2.new(980, 520),
     SidebarWidth = 67,
     PanelTop = 17,
-    PanelHeight = 446,
-    PanelWidth = 212,
+    PanelHeight = 485,
+    PanelWidth = 281,
     PanelGap = 18,
     PanelLeft = 85,
     PanelRight = 16,
     PanelBottom = 18,
     Radius = 0,
-    FontSize = 12,
-    HeaderSize = 11,
-    RowHeight = 40,
-    SliderHeight = 52,
-    DropdownHeight = 72,
 }
 
 function Tokens.PanelX(Index: number): number
@@ -34,7 +29,7 @@ end
 function Tokens.PanelLayout(Index: number, Count: number, WindowWidth: number?): (number, number)
     local WidthTarget = WindowWidth or Tokens.WindowSize.X
     if Count == 3 and WidthTarget == Tokens.WindowSize.X then
-        return Tokens.PanelX(Index), Index == 3 and 213 or Tokens.PanelWidth
+        return Tokens.PanelX(Index), Tokens.PanelWidth
     end
 
     local AreaWidth = math.max(1, WidthTarget - Tokens.PanelLeft - Tokens.PanelRight)
