@@ -141,7 +141,7 @@ function HitboxPreview.New(Section: any, Options: { [string]: any })
             Text = Priority.Id,
             ZIndex = 31,
         }, self.Root) :: TextLabel
-        Styling.ApplyText(Label, Theme, 10, Theme.Muted)
+        Styling.ApplyText(Label, Theme, 14, Theme.Muted)
         FontLoader.Apply(Label, self.Library.AssetCache)
     end
 
@@ -152,7 +152,7 @@ function HitboxPreview.New(Section: any, Options: { [string]: any })
         Text = "Edit hitboxes by clicking on a body part.",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Help, Theme, 11, Theme.Hint)
+    Styling.ApplyText(Help, Theme, 15, Theme.Hint)
     FontLoader.Apply(Help, self.Library.AssetCache)
 
     self:Refresh()
