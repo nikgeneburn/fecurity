@@ -15,7 +15,7 @@ function Button.New(Section: any, Options: { [string]: any })
     local self = BaseWidget.New(Section, Options, Options.Height or 40)
     setmetatable(self, Button)
     local Theme = self.Window.Theme
-    local Base = Options.Tone == "danger" and Color3.fromRGB(166, 34, 24) or Theme.Accent
+    local Base = Theme.Accent
     local Control = Elements.New("TextButton", {
         Name = "Button",
         AutoButtonColor = false,
@@ -26,10 +26,10 @@ function Button.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "BUTTON",
         ZIndex = 31,
     }, self.Root) :: TextButton
-    Styling.ApplyText(Control, Theme, 12, Theme.Text)
+    Styling.ApplyText(Control, Theme, 10, Theme.Text)
     FontLoader.Apply(Control, self.Library.AssetCache)
     Control.TextXAlignment = Enum.TextXAlignment.Center
-    Styling.FitText(Control, 12, 9)
+    Styling.FitText(Control, 10, 9)
     self.Control = Control
     self.BaseColor = Base
 
@@ -47,10 +47,8 @@ function Button.New(Section: any, Options: { [string]: any })
     end)
 
     self:BindTheme(function(NewTheme)
-        if Options.Tone ~= "danger" then
-            self.BaseColor = NewTheme.Accent
-            Control.BackgroundColor3 = self.BaseColor
-        end
+        self.BaseColor = NewTheme.Accent
+        Control.BackgroundColor3 = self.BaseColor
         Control.TextColor3 = NewTheme.Text
     end)
     return self
