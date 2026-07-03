@@ -42,7 +42,7 @@ function Dropdown.New(Section: any, Options: { [string]: any })
     if Options.Multi and type(Options.Default) ~= "table" then
         Options.Default = { Options.Default }
     end
-    local self = BaseWidget.New(Section, Options, 72)
+    local self = BaseWidget.New(Section, Options, 126)
     setmetatable(self, Dropdown)
     local Theme = self.Window.Theme
 
