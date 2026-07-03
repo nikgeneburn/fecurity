@@ -19,7 +19,7 @@ local function ToneColor(Theme: { [string]: any }, Tone: string?): Color3
 end
 
 function Label.New(Section: any, Options: { [string]: any })
-    local self = BaseWidget.New(Section, Options, Options.Height or 49)
+    local self = BaseWidget.New(Section, Options, Options.Height or 42)
     setmetatable(self, Label)
     local Theme = self.Window.Theme
     local Text = Elements.New("TextLabel", {
