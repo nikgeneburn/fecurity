@@ -15,7 +15,7 @@ function Keybind.New(Section: any, Options: { [string]: any })
     Options.Default = Options.Default or Options.Value or "None"
     local ActivationCallback = Options.Callback or Options.OnPressed
     Options.Callback = Options.Changed or Options.OnChanged
-    local self = BaseWidget.New(Section, Options, 60)
+    local self = BaseWidget.New(Section, Options, 40)
     setmetatable(self, Keybind)
     self.ActivationCallback = ActivationCallback
     local Theme = self.Window.Theme
