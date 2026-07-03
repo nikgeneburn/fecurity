@@ -1,6 +1,4 @@
-local __DARKLUA_BUNDLE_MODULES = {
-    cache = {}::any,
-}
+local __DARKLUA_BUNDLE_MODULES = {cache = {}}
 
 do
     do
@@ -12,7 +10,7 @@ do
             Logger.LogFile = 'Fecurity/Logs/fecurity.log'
             Logger.MaxLogBytes = 24000
 
-            local function Join(...: any): string
+            local function Join(...)
                 local Parts = {}
 
                 for Index = 1, select('#', ...)do
@@ -21,17 +19,17 @@ do
 
                 return table.concat(Parts, ' ')
             end
-            local function EnsureLogFolder(): boolean
+            local function EnsureLogFolder()
                 if type(isfolder) ~= 'function' or type(makefolder) ~= 'function' then
                     return false
                 end
 
-                local function FolderExists(Folder: string): boolean
+                local function FolderExists(Folder)
                     local Ok, Exists = pcall(isfolder, Folder)
 
                     return Ok and Exists == true
                 end
-                local function EnsureFolder(Folder: string): boolean
+                local function EnsureFolder(Folder)
                     if FolderExists(Folder) then
                         return true
                     end
@@ -50,7 +48,7 @@ do
 
                 return true
             end
-            local function Append(Level: string, ...: any)
+            local function Append(Level, ...)
                 if type(writefile) ~= 'function' or type(readfile) ~= 'function' or type(isfile) ~= 'function' then
                     return
                 end
@@ -82,24 +80,24 @@ do
                 end)
             end
 
-            function Logger.SetVerbose(Value: boolean)
+            function Logger.SetVerbose(Value)
                 Logger.Verbose = Value
             end
-            function Logger.Info(...: any)
+            function Logger.Info(...)
                 Append('[Info]', ...)
                 print(Logger.Prefix, ...)
             end
-            function Logger.Warn(...: any)
+            function Logger.Warn(...)
                 Append('[Warn]', ...)
                 warn(Logger.Prefix, ...)
             end
-            function Logger.Debug(...: any)
+            function Logger.Debug(...)
                 if Logger.Verbose then
                     Append('[Debug]', ...)
                     print(Logger.Prefix, '[Debug]', ...)
                 end
             end
-            function Logger.Error(Scope: string, Err: any)
+            function Logger.Error(Scope, Err)
                 Append('[Error]', Scope, '->', tostring(Err))
                 warn(Logger.Prefix, '[Error]', Scope, '->', tostring(Err))
             end
@@ -107,7 +105,7 @@ do
             return Logger
         end
 
-        function __DARKLUA_BUNDLE_MODULES.a(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.a()
             local v = __DARKLUA_BUNDLE_MODULES.cache.a
 
             if not v then
@@ -126,7 +124,7 @@ do
             local Registry = {}
             local Key = '__FECURITY_UI__'
 
-            local function Environment(): {[any]: any}
+            local function Environment()
                 if getgenv then
                     local Ok, Env = pcall(getgenv)
 
@@ -138,20 +136,20 @@ do
                 return _G
             end
 
-            function Registry.Get(): any?
+            function Registry.Get()
                 return Environment()[Key]
             end
-            function Registry.Set(Value: any)
+            function Registry.Set(Value)
                 Environment()[Key] = Value
             end
-            function Registry.Clear(Owner: any?)
+            function Registry.Clear(Owner)
                 local Env = Environment()
 
                 if Owner == nil or Env[Key] == Owner then
                     Env[Key] = nil
                 end
             end
-            function Registry.Claim(Version: string, Teardown: () -> ()): any
+            function Registry.Claim(Version, Teardown)
                 local Previous = Registry.Get()
 
                 if Previous and Previous.Unload then
@@ -176,7 +174,7 @@ do
             return Registry
         end
 
-        function __DARKLUA_BUNDLE_MODULES.b(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.b()
             local v = __DARKLUA_BUNDLE_MODULES.cache.b
 
             if not v then
@@ -194,7 +192,7 @@ do
             local Logger = __DARKLUA_BUNDLE_MODULES.a()
             local Safety = {}
 
-            function Safety.Try(Scope: string, Fn: (...any) -> ...any, ...): (boolean,...any)
+            function Safety.Try(Scope, Fn, ...)
                 local Result = table.pack(pcall(Fn, ...))
 
                 if not Result[1] then
@@ -205,7 +203,7 @@ do
 
                 return true, table.unpack(Result, 2, Result.n)
             end
-            function Safety.Callback(Scope: string, Fn: ((...any) -> ...any)?, ...)
+            function Safety.Callback(Scope, Fn, ...)
                 if not Fn then
                     return
                 end
@@ -220,7 +218,7 @@ do
             return Safety
         end
 
-        function __DARKLUA_BUNDLE_MODULES.c(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.c()
             local v = __DARKLUA_BUNDLE_MODULES.cache.c
 
             if not v then
@@ -237,13 +235,13 @@ do
         local function __modImpl()
             local Runtime = {}
 
-            function Runtime.GetPlayerGui(): Instance
+            function Runtime.GetPlayerGui()
                 local Players = game:GetService('Players')
                 local LocalPlayer = Players.LocalPlayer
 
                 return LocalPlayer:WaitForChild('PlayerGui')
             end
-            function Runtime.GetGuiParent(): Instance
+            function Runtime.GetGuiParent()
                 local Ok, CoreGui = pcall(function()
                     return game:GetService('CoreGui')
                 end)
@@ -254,7 +252,7 @@ do
 
                 return Runtime.GetPlayerGui()
             end
-            function Runtime.AttachGui(Gui: ScreenGui): boolean
+            function Runtime.AttachGui(Gui)
                 local Ok = pcall(function()
                     Gui.Parent = Runtime.GetGuiParent()
                 end)
@@ -281,14 +279,14 @@ do
                     GetCustomAsset = getcustomasset,
                 }
             end
-            function Runtime.HasFileApi(): boolean
+            function Runtime.HasFileApi()
                 return type(isfolder) == 'function' and type(makefolder) == 'function' and type(isfile) == 'function' and type(writefile) == 'function' and type(readfile) == 'function' and type(delfile) == 'function'
             end
 
             return Runtime
         end
 
-        function __DARKLUA_BUNDLE_MODULES.d(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.d()
             local v = __DARKLUA_BUNDLE_MODULES.cache.d
 
             if not v then
@@ -306,14 +304,14 @@ do
             local AssetRegistry = {}
             local DefaultBaseUrl = 'https://raw.githubusercontent.com/nikgeneburn/fecurity/main/'
 
-            local function NormalizeBaseUrl(BaseUrl: string): string
+            local function NormalizeBaseUrl(BaseUrl)
                 if string.sub(BaseUrl, -1) ~= '/' then
                     return BaseUrl .. '/'
                 end
 
                 return BaseUrl
             end
-            local function ReadOverrideBaseUrl(): string
+            local function ReadOverrideBaseUrl()
                 local Env = _G
 
                 if getgenv then
@@ -399,7 +397,7 @@ do
                 },
             }
 
-            function AssetRegistry.SetBaseUrl(BaseUrl: string)
+            function AssetRegistry.SetBaseUrl(BaseUrl)
                 BaseUrl = NormalizeBaseUrl(BaseUrl)
                 AssetRegistry.BaseUrl = BaseUrl
                 AssetRegistry.Fonts.Main.Url = BaseUrl .. 'assets/fonts/ProximaNova-Semibold.ttf'
@@ -415,7 +413,7 @@ do
             return AssetRegistry
         end
 
-        function __DARKLUA_BUNDLE_MODULES.e(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.e()
             local v = __DARKLUA_BUNDLE_MODULES.cache.e
 
             if not v then
@@ -443,7 +441,7 @@ do
                     Failed = {},
                 }, AssetCache)
             end
-            function AssetCache:FolderExists(Folder: string): boolean
+            function AssetCache:FolderExists(Folder)
                 if type(isfolder) ~= 'function' then
                     return false
                 end
@@ -452,7 +450,7 @@ do
 
                 return Ok and Exists == true
             end
-            function AssetCache:FileExists(Path: string): boolean
+            function AssetCache:FileExists(Path)
                 if type(isfile) ~= 'function' then
                     return false
                 end
@@ -482,7 +480,7 @@ do
 
                 return Ready
             end
-            function AssetCache:Download(Url: string): string?
+            function AssetCache:Download(Url)
                 local Ok, Body = pcall(function()
                     return game:HttpGet(Url)
                 end)
@@ -493,7 +491,7 @@ do
 
                 return nil
             end
-            function AssetCache:IsValidBody(Asset: {Url: string, File: string, Bytes: number?}, Body: string): boolean
+            function AssetCache:IsValidBody(Asset, Body)
                 if #Body <= 0 then
                     return false
                 end
@@ -503,7 +501,7 @@ do
 
                 return true
             end
-            function AssetCache:DeleteBadFile(Path: string)
+            function AssetCache:DeleteBadFile(Path)
                 if type(delfile) == 'function' then
                     local Ok, Err = pcall(delfile, Path)
 
@@ -512,7 +510,7 @@ do
                     end
                 end
             end
-            function AssetCache:EnsureAsset(Asset: {Url: string, File: string, Bytes: number?})
+            function AssetCache:EnsureAsset(Asset)
                 if not Runtime.HasFileApi() then
                     return nil
                 end
@@ -572,7 +570,7 @@ do
 
                 return Ready
             end
-            function AssetCache:GetCustomAsset(Path: string): string?
+            function AssetCache:GetCustomAsset(Path)
                 if type(getcustomasset) ~= 'function' then
                     return nil
                 end
@@ -592,7 +590,7 @@ do
             return AssetCache
         end
 
-        function __DARKLUA_BUNDLE_MODULES.f(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.f()
             local v = __DARKLUA_BUNDLE_MODULES.cache.f
 
             if not v then
@@ -619,7 +617,7 @@ do
                     SkipFlags = {},
                 }, FlagManager)
             end
-            function FlagManager:Register(Flag: string?, Widget: any, Default: any, SkipFlag: boolean?)
+            function FlagManager:Register(Flag, Widget, Default, SkipFlag)
                 if not Flag then
                     return
                 end
@@ -633,7 +631,7 @@ do
                     self.Values[Flag] = Default
                 end
             end
-            function FlagManager:Unregister(Flag: string?, Widget: any?)
+            function FlagManager:Unregister(Flag, Widget)
                 if not Flag then
                     return
                 end
@@ -641,14 +639,14 @@ do
                     self.Widgets[Flag] = nil
                 end
             end
-            function FlagManager:Set(Flag: string?, Value: any)
+            function FlagManager:Set(Flag, Value)
                 if not Flag then
                     return
                 end
 
                 self.Values[Flag] = Value
             end
-            function FlagManager:Get(Flag: string, Default: any?): any
+            function FlagManager:Get(Flag, Default)
                 local Value = self.Values[Flag]
 
                 if Value == nil then
@@ -657,7 +655,7 @@ do
 
                 return Value
             end
-            function FlagManager:Export(): {[string]: any}
+            function FlagManager:Export()
                 local Values = {}
 
                 for Flag, Value in pairs(self.Values)do
@@ -668,7 +666,7 @@ do
 
                 return Values
             end
-            function FlagManager:Load(Values: {[string]: any}, RunCallbacks: boolean?)
+            function FlagManager:Load(Values, RunCallbacks)
                 for Flag, Value in pairs(Values)do
                     if self.SkipFlags[Flag] ~= true then
                         self.Values[Flag] = Value
@@ -687,7 +685,7 @@ do
             return FlagManager
         end
 
-        function __DARKLUA_BUNDLE_MODULES.g(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.g()
             local v = __DARKLUA_BUNDLE_MODULES.cache.g
 
             if not v then
@@ -705,7 +703,7 @@ do
             local HttpService = game:GetService('HttpService')
             local Serializer = {}
 
-            local function Pack(Value: any, Seen: {[any]: boolean}?): any
+            local function Pack(Value, Seen)
                 local ValueType = typeof(Value)
 
                 if ValueType == 'Color3' then
@@ -738,7 +736,7 @@ do
 
                 return Copy
             end
-            local function Unpack(Value: any): any
+            local function Unpack(Value)
                 if type(Value) ~= 'table' then
                     return Value
                 end
@@ -755,10 +753,10 @@ do
                 return Copy
             end
 
-            function Serializer.Encode(Value: any): string
+            function Serializer.Encode(Value)
                 return HttpService:JSONEncode(Pack(Value))
             end
-            function Serializer.Decode(Value: string): any?
+            function Serializer.Decode(Value)
                 local Ok, Result = pcall(function()
                     return HttpService:JSONDecode(Value)
                 end)
@@ -773,7 +771,7 @@ do
             return Serializer
         end
 
-        function __DARKLUA_BUNDLE_MODULES.h(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.h()
             local v = __DARKLUA_BUNDLE_MODULES.cache.h
 
             if not v then
@@ -795,7 +793,7 @@ do
 
             ConfigManager.__index = ConfigManager
 
-            local function CleanName(Name: string): string
+            local function CleanName(Name)
                 local Clean = string.gsub(tostring(Name or ''), '[^%w_%-%s]', '')
 
                 if Clean == '' then
@@ -804,7 +802,7 @@ do
 
                 return Clean
             end
-            local function SortedNames(Names: {[string]: boolean}): {string}
+            local function SortedNames(Names)
                 local Results = {}
 
                 for Name in pairs(Names)do
@@ -816,7 +814,7 @@ do
                 return Results
             end
 
-            function ConfigManager.New(Flags: any)
+            function ConfigManager.New(Flags)
                 return setmetatable({
                     Flags = Flags,
                     Folder = 'Fecurity/Configs',
@@ -825,12 +823,12 @@ do
                     IndexLoaded = false,
                 }, ConfigManager)
             end
-            function ConfigManager:FolderExists(Path: string): boolean
+            function ConfigManager:FolderExists(Path)
                 local Ok, Exists = pcall(isfolder, Path)
 
                 return Ok and Exists == true
             end
-            function ConfigManager:FileExists(Path: string): boolean
+            function ConfigManager:FileExists(Path)
                 local Ok, Exists = pcall(isfile, Path)
 
                 return Ok and Exists == true
@@ -906,7 +904,7 @@ do
 
                 return true
             end
-            function ConfigManager:Remember(Name: string): string
+            function ConfigManager:Remember(Name)
                 local Clean = CleanName(Name)
 
                 self:LoadIndex()
@@ -917,10 +915,10 @@ do
 
                 return Clean
             end
-            function ConfigManager:Path(Name: string): string
+            function ConfigManager:Path(Name)
                 return self.Folder .. '/' .. CleanName(Name) .. '.json'
             end
-            function ConfigManager:Save(Name: string)
+            function ConfigManager:Save(Name)
                 if not Runtime.HasFileApi() then
                     return false
                 end
@@ -942,7 +940,7 @@ do
 
                 return true
             end
-            function ConfigManager:Load(Name: string, RunCallbacks: boolean?)
+            function ConfigManager:Load(Name, RunCallbacks)
                 if not Runtime.HasFileApi() then
                     return false
                 end
@@ -973,7 +971,7 @@ do
 
                 return true
             end
-            function ConfigManager:GetConfigs(): {string}
+            function ConfigManager:GetConfigs()
                 if not Runtime.HasFileApi() then
                     return {}
                 end
@@ -1002,7 +1000,7 @@ do
             return ConfigManager
         end
 
-        function __DARKLUA_BUNDLE_MODULES.i(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.i()
             local v = __DARKLUA_BUNDLE_MODULES.cache.i
 
             if not v then
@@ -1020,13 +1018,7 @@ do
             local TweenService = game:GetService('TweenService')
             local Tween = {}
 
-            function Tween.Play(
-                Object: Instance,
-                Time: number,
-                Props: {[string]: any},
-                Style: Enum.EasingStyle?,
-                Direction: Enum.EasingDirection?
-            )
+            function Tween.Play(Object, Time, Props, Style, Direction)
                 local Info = TweenInfo.new(Time, Style or Enum.EasingStyle.Quad, Direction or Enum.EasingDirection.Out)
                 local Created = TweenService:Create(Object, Info, Props)
 
@@ -1034,7 +1026,7 @@ do
 
                 return Created
             end
-            function Tween.Press(Object: GuiObject, Color: Color3, Base: Color3)
+            function Tween.Press(Object, Color, Base)
                 Tween.Play(Object, 0.08, {BackgroundColor3 = Color})
                 task.delay(0.1, function()
                     if Object and Object.Parent then
@@ -1046,7 +1038,7 @@ do
             return Tween
         end
 
-        function __DARKLUA_BUNDLE_MODULES.j(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.j()
             local v = __DARKLUA_BUNDLE_MODULES.cache.j
 
             if not v then
@@ -1063,7 +1055,7 @@ do
         local function __modImpl()
             local Palette = {}
 
-            function Palette.Hex(Hex: string): Color3
+            function Palette.Hex(Hex)
                 local Clean = string.gsub(Hex, '#', '')
                 local R = tonumber(string.sub(Clean, 1, 2), 16) or 255
                 local G = tonumber(string.sub(Clean, 3, 4), 16) or 255
@@ -1071,16 +1063,16 @@ do
 
                 return Color3.fromRGB(R, G, B)
             end
-            function Palette.Darken(Color: Color3, Amount: number): Color3
+            function Palette.Darken(Color, Amount)
                 return Color3.new(math.clamp(Color.R * (1 - Amount), 0, 1), math.clamp(Color.G * (1 - Amount), 0, 1), math.clamp(Color.B * (1 - Amount), 0, 1))
             end
-            function Palette.Lighten(Color: Color3, Amount: number): Color3
+            function Palette.Lighten(Color, Amount)
                 return Color:Lerp(Color3.new(1, 1, 1), Amount)
             end
-            function Palette.ToHex(Color: Color3): string
+            function Palette.ToHex(Color)
                 return string.format('#%02x%02x%02x', math.floor(Color.R * 255 + 0.5), math.floor(Color.G * 255 + 0.5), math.floor(Color.B * 255 + 0.5))
             end
-            function Palette.ParseWithAlpha(Text: string): (Color3?,number?)
+            function Palette.ParseWithAlpha(Text)
                 local Clean = string.gsub(Text, '%s+', '')
                 local Hex = string.match(Clean, '^#?([%da-fA-F]+)$')
 
@@ -1120,19 +1112,19 @@ do
 
                 return Color3.fromRGB(math.clamp(math.floor(Values[1] + 0.5), 0, 255), math.clamp(math.floor(Values[2] + 0.5), 0, 255), math.clamp(math.floor(Values[3] + 0.5), 0, 255)), Alpha and math.clamp(Alpha, 0, 1) or nil
             end
-            function Palette.Parse(Text: string): Color3?
+            function Palette.Parse(Text)
                 local Color = Palette.ParseWithAlpha(Text)
 
                 return Color
             end
-            function Palette.ToRgba(Color: Color3, Alpha: number): string
+            function Palette.ToRgba(Color, Alpha)
                 return string.format('rgba(%d, %d, %d, %.2f)', math.floor(Color.R * 255 + 0.5), math.floor(Color.G * 255 + 0.5), math.floor(Color.B * 255 + 0.5), math.clamp(Alpha, 0, 1))
             end
 
             return Palette
         end
 
-        function __DARKLUA_BUNDLE_MODULES.k(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.k()
             local v = __DARKLUA_BUNDLE_MODULES.cache.k
 
             if not v then
@@ -1188,7 +1180,7 @@ do
             }
             Theme.Presets.midnight = Theme.Presets.Midnight
 
-            local function CopyFrom(Source: {[string]: any})
+            local function CopyFrom(Source)
                 local Copy = {}
 
                 for Key, DefaultValue in pairs(Theme.Default)do
@@ -1198,7 +1190,7 @@ do
                 return Copy
             end
 
-            function Theme.Clone(Accent: Color3?)
+            function Theme.Clone(Accent)
                 local Copy = CopyFrom(Theme.Default)
 
                 if Accent then
@@ -1207,7 +1199,7 @@ do
 
                 return Copy
             end
-            function Theme.Resolve(Value: any, Accent: Color3?)
+            function Theme.Resolve(Value, Accent)
                 local Base = Theme.Default
 
                 if type(Value) == 'string' then
@@ -1224,7 +1216,7 @@ do
 
                 return Copy
             end
-            function Theme.Apply(Target: {[string]: any}, Source: {[string]: any})
+            function Theme.Apply(Target, Source)
                 for Key in pairs(Theme.Default)do
                     Target[Key] = Source[Key] or Theme.Default[Key]
                 end
@@ -1233,7 +1225,7 @@ do
             return Theme
         end
 
-        function __DARKLUA_BUNDLE_MODULES.l(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.l()
             local v = __DARKLUA_BUNDLE_MODULES.cache.l
 
             if not v then
@@ -1266,10 +1258,10 @@ do
                 DropdownHeight = 72,
             }
 
-            function Tokens.PanelX(Index: number): number
+            function Tokens.PanelX(Index)
                 return Tokens.PanelLeft + (Index - 1) * (Tokens.PanelWidth + Tokens.PanelGap)
             end
-            function Tokens.PanelHeightFor(WindowHeight: number?): number
+            function Tokens.PanelHeightFor(WindowHeight)
                 local Height = WindowHeight or Tokens.WindowSize.Y
 
                 if Height == Tokens.WindowSize.Y then
@@ -1278,7 +1270,7 @@ do
 
                 return math.max(80, Height - Tokens.PanelTop - Tokens.PanelBottom)
             end
-            function Tokens.PanelLayout(Index: number, Count: number, WindowWidth: number?): (number,number)
+            function Tokens.PanelLayout(Index, Count, WindowWidth)
                 local WidthTarget = WindowWidth or Tokens.WindowSize.X
 
                 if Count == 3 and WidthTarget == Tokens.WindowSize.X then
@@ -1299,7 +1291,7 @@ do
             return Tokens
         end
 
-        function __DARKLUA_BUNDLE_MODULES.m(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.m()
             local v = __DARKLUA_BUNDLE_MODULES.cache.m
 
             if not v then
@@ -1316,12 +1308,12 @@ do
         local function __modImpl()
             local Elements = {}
 
-            function Elements.New(ClassName: string, Props: {[string]: any}?, Parent: Instance?): Instance
+            function Elements.New(ClassName, Props, Parent)
                 local Object = Instance.new(ClassName)
 
                 if Props then
                     for Key, Value in pairs(Props)do
-                        (Object::any)[Key] = Value
+                        (Object)[Key] = Value
                     end
                 end
 
@@ -1329,7 +1321,7 @@ do
 
                 return Object
             end
-            function Elements.Corner(Parent: Instance, Radius: number?)
+            function Elements.Corner(Parent, Radius)
                 local Corner = Instance.new('UICorner')
 
                 Corner.CornerRadius = UDim.new(0, Radius or 0)
@@ -1337,7 +1329,7 @@ do
 
                 return Corner
             end
-            function Elements.Stroke(Parent: Instance, Color: Color3, Transparency: number?, Thickness: number?)
+            function Elements.Stroke(Parent, Color, Transparency, Thickness)
                 local Stroke = Instance.new('UIStroke')
 
                 Stroke.Color = Color
@@ -1348,13 +1340,7 @@ do
 
                 return Stroke
             end
-            function Elements.Padding(
-                Parent: Instance,
-                Left: number,
-                Top: number,
-                Right: number,
-                Bottom: number
-            )
+            function Elements.Padding(Parent, Left, Top, Right, Bottom)
                 local Padding = Instance.new('UIPadding')
 
                 Padding.PaddingLeft = UDim.new(0, Left)
@@ -1365,7 +1351,7 @@ do
 
                 return Padding
             end
-            function Elements.List(Parent: Instance, Direction: Enum.FillDirection, Padding: number?)
+            function Elements.List(Parent, Direction, Padding)
                 local Layout = Instance.new('UIListLayout')
 
                 Layout.FillDirection = Direction
@@ -1379,7 +1365,7 @@ do
             return Elements
         end
 
-        function __DARKLUA_BUNDLE_MODULES.n(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.n()
             local v = __DARKLUA_BUNDLE_MODULES.cache.n
 
             if not v then
@@ -1397,7 +1383,7 @@ do
             local UserInputService = game:GetService('UserInputService')
             local DragController = {}
 
-            function DragController.Attach(Handle: GuiObject, Target: GuiObject)
+            function DragController.Attach(Handle, Target)
                 local Dragging = false
                 local StartMouse = Vector2.zero
                 local StartPos = Target.Position
@@ -1437,7 +1423,7 @@ do
             return DragController
         end
 
-        function __DARKLUA_BUNDLE_MODULES.o(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.o()
             local v = __DARKLUA_BUNDLE_MODULES.cache.o
 
             if not v then
@@ -1454,12 +1440,12 @@ do
         local function __modImpl()
             local KeybindManager = {}
 
-            function KeybindManager.Display(Input: InputObject | Enum.KeyCode | string): string
+            function KeybindManager.Display(Input)
                 if typeof(Input) == 'EnumItem' then
-                    return string.gsub((Input::EnumItem).Name, 'Insert', 'INS')
+                    return string.gsub((Input).Name, 'Insert', 'INS')
                 end
                 if typeof(Input) == 'Instance' then
-                    local Object = Input::InputObject
+                    local Object = Input
 
                     if Object.UserInputType == Enum.UserInputType.MouseButton1 then
                         return 'M1'
@@ -1472,7 +1458,7 @@ do
 
                 return tostring(Input)
             end
-            function KeybindManager.Normalize(Value: any): string
+            function KeybindManager.Normalize(Value)
                 local Display = KeybindManager.Display(Value)
 
                 Display = string.gsub(Display, '^Enum%.KeyCode%.', '')
@@ -1484,7 +1470,7 @@ do
 
                 return Display
             end
-            function KeybindManager.IsActivation(Input: InputObject, Value: any): boolean
+            function KeybindManager.IsActivation(Input, Value)
                 local Display = KeybindManager.Display(Input)
 
                 return Display == KeybindManager.Normalize(Value)
@@ -1493,7 +1479,7 @@ do
             return KeybindManager
         end
 
-        function __DARKLUA_BUNDLE_MODULES.p(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.p()
             local v = __DARKLUA_BUNDLE_MODULES.cache.p
 
             if not v then
@@ -1510,7 +1496,7 @@ do
         local function __modImpl()
             local Gradients = {}
 
-            function Gradients.AccentVertical(Parent: Instance, Accent: Color3): UIGradient
+            function Gradients.AccentVertical(Parent, Accent)
                 local Gradient = Instance.new('UIGradient')
 
                 Gradient.Rotation = 90
@@ -1519,20 +1505,20 @@ do
 
                 return Gradient
             end
-            function Gradients.AccentSequence(Accent: Color3): ColorSequence
+            function Gradients.AccentSequence(Accent)
                 return ColorSequence.new({
                     ColorSequenceKeypoint.new(0, Accent:Lerp(Color3.new(1, 1, 1), 0.26)),
                     ColorSequenceKeypoint.new(1, Accent:Lerp(Color3.new(0, 0, 0), 0.46)),
                 })
             end
-            function Gradients.SetAccent(Gradient: UIGradient, Accent: Color3)
+            function Gradients.SetAccent(Gradient, Accent)
                 Gradient.Color = Gradients.AccentSequence(Accent)
             end
 
             return Gradients
         end
 
-        function __DARKLUA_BUNDLE_MODULES.q(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.q()
             local v = __DARKLUA_BUNDLE_MODULES.cache.q
 
             if not v then
@@ -1550,7 +1536,7 @@ do
             local Registry = __DARKLUA_BUNDLE_MODULES.e()
             local ImageLoader = {}
 
-            function ImageLoader.Get(Cache: any?, Name: string): string?
+            function ImageLoader.Get(Cache, Name)
                 local Asset = Registry.Images[Name]
 
                 if not Asset or not Cache then
@@ -1559,7 +1545,7 @@ do
 
                 return Cache:GetCustomAsset(Asset.File)
             end
-            function ImageLoader.Apply(Object: ImageLabel | ImageButton, Cache: any?, Name: string)
+            function ImageLoader.Apply(Object, Cache, Name)
                 local Asset = ImageLoader.Get(Cache, Name)
 
                 if Asset then
@@ -1574,7 +1560,7 @@ do
             return ImageLoader
         end
 
-        function __DARKLUA_BUNDLE_MODULES.r(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.r()
             local v = __DARKLUA_BUNDLE_MODULES.cache.r
 
             if not v then
@@ -1592,7 +1578,7 @@ do
             local TextService = game:GetService('TextService')
             local Styling = {}
 
-            function Styling.ApplyText(Object: TextLabel | TextButton | TextBox, Theme: {[string]: any}, Size: number?, Color: Color3?)
+            function Styling.ApplyText(Object, Theme, Size, Color)
                 Object.Font = Enum.Font.GothamBold
                 Object.TextSize = Size or 12
                 Object.TextColor3 = Color or Theme.Text
@@ -1601,7 +1587,7 @@ do
                 Object.BackgroundTransparency = 1
                 Object.TextTruncate = Enum.TextTruncate.AtEnd
             end
-            function Styling.FitText(Object: TextLabel | TextButton | TextBox, MaxSize: number?, MinSize: number?)
+            function Styling.FitText(Object, MaxSize, MinSize)
                 local TopSize = MaxSize or Object.TextSize
                 local BottomSize = MinSize or 9
 
@@ -1632,7 +1618,7 @@ do
             return Styling
         end
 
-        function __DARKLUA_BUNDLE_MODULES.s(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.s()
             local v = __DARKLUA_BUNDLE_MODULES.cache.s
 
             if not v then
@@ -1650,7 +1636,7 @@ do
             local Registry = __DARKLUA_BUNDLE_MODULES.e()
             local FontLoader = {}
 
-            function FontLoader.Apply(Object: TextLabel | TextButton | TextBox, Cache: any?)
+            function FontLoader.Apply(Object, Cache)
                 Object.Font = Registry.Fonts.Main.Fallback
 
                 if not Cache then
@@ -1671,7 +1657,7 @@ do
             return FontLoader
         end
 
-        function __DARKLUA_BUNDLE_MODULES.t(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.t()
             local v = __DARKLUA_BUNDLE_MODULES.cache.t
 
             if not v then
@@ -1690,7 +1676,7 @@ do
             local Styling = __DARKLUA_BUNDLE_MODULES.s()
             local IconLoader = {}
 
-            function IconLoader.Apply(Parent: Instance, Name: string, Theme: {[string]: any}, Cache: any?): Instance
+            function IconLoader.Apply(Parent, Name, Theme, Cache)
                 local Icon = Registry.Icons[string.lower(Name)]
                 local Asset = Icon and Cache and Cache:GetCustomAsset(Icon.File)
 
@@ -1724,7 +1710,7 @@ do
             return IconLoader
         end
 
-        function __DARKLUA_BUNDLE_MODULES.u(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.u()
             local v = __DARKLUA_BUNDLE_MODULES.cache.u
 
             if not v then
@@ -1756,13 +1742,13 @@ do
                 340,
             }
 
-            function TabButton.New(Window: any, TabObject: any, Index: number)
+            function TabButton.New(Window, TabObject, Index)
                 local self = setmetatable({
                     Window = Window,
                     Tab = TabObject,
                     Active = false,
                 }, TabButton)
-                local Button = Elements.New('TextButton', {
+                local Button = (Elements.New('TextButton', {
                     Name = TabObject.Name .. 'Tab',
                     AutoButtonColor = false,
                     BackgroundColor3 = Window.Theme.Surface,
@@ -1772,35 +1758,35 @@ do
                     Size = UDim2.fromOffset(67, 67),
                     Text = '',
                     ZIndex = 25,
-                }, Window.Sidebar.Root)::TextButton
+                }, Window.Sidebar.Root))
 
                 self.Root = Button
 
-                local Content = Elements.New('Frame', {
+                local Content = (Elements.New('Frame', {
                     Name = 'Content',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 14),
                     Size = UDim2.fromOffset(67, 38),
                     ZIndex = 26,
-                }, Button)::Frame
+                }, Button))
 
                 self.Content = Content
 
                 local Icon = IconLoader.Apply(Content, TabObject.Icon, Window.Theme, Window.Library.AssetCache)
-                local IconObject = Icon::GuiObject
+                local IconObject = Icon
 
                 IconObject.AnchorPoint = Vector2.new(0.5, 0)
                 IconObject.Position = UDim2.new(0.5, 0, 0, 0)
                 self.Icon = Icon
 
-                local Label = Elements.New('TextLabel', {
+                local Label = (Elements.New('TextLabel', {
                     Name = 'Label',
                     Position = UDim2.fromOffset(0, 22),
                     Size = UDim2.fromOffset(67, 16),
                     Text = string.upper(TabObject.Name),
                     ZIndex = 26,
-                }, Content)::TextLabel
+                }, Content))
 
                 Styling.ApplyText(Label, Window.Theme, 12, Window.Theme.Muted)
                 FontLoader.Apply(Label, Window.Library.AssetCache)
@@ -1814,7 +1800,7 @@ do
 
                 return self
             end
-            function TabButton:SetActive(Value: boolean)
+            function TabButton:SetActive(Value)
                 self.Active = Value
 
                 self:RefreshTheme()
@@ -1841,7 +1827,7 @@ do
             return TabButton
         end
 
-        function __DARKLUA_BUNDLE_MODULES.v(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.v()
             local v = __DARKLUA_BUNDLE_MODULES.cache.v
 
             if not v then
@@ -1866,31 +1852,31 @@ do
 
             Sidebar.__index = Sidebar
 
-            function Sidebar.New(Window: any)
+            function Sidebar.New(Window)
                 local self = setmetatable({
                     Window = Window,
                     Buttons = {},
                 }, Sidebar)
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = 'Sidebar',
                     BackgroundColor3 = Window.Theme.Surface,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 0),
                     Size = UDim2.fromOffset(Tokens.SidebarWidth, Tokens.WindowSize.Y),
                     ZIndex = 22,
-                }, Window.Root)::Frame
+                }, Window.Root))
 
                 self.Stroke = Elements.Stroke(Root, Window.Theme.Border, 0, 1)
                 self.Root = Root
 
-                local Logo = Elements.New('ImageLabel', {
+                local Logo = (Elements.New('ImageLabel', {
                     Name = 'Logo',
                     BackgroundTransparency = 1,
                     Position = UDim2.fromOffset(8, 18),
                     Size = UDim2.fromOffset(50, 48),
                     ImageColor3 = Window.Theme.Accent,
                     ZIndex = 24,
-                }, Root)::ImageLabel
+                }, Root))
                 local HasLogo = ImageLoader.Apply(Logo, Window.Library.AssetCache, 'Logo')
                 local Gradient = Gradients.AccentVertical(Logo, Window.Theme.Accent)
 
@@ -1898,14 +1884,14 @@ do
                 self.LogoGradient = Gradient
 
                 if not HasLogo then
-                    local Fallback = Elements.New('TextLabel', {
+                    local Fallback = (Elements.New('TextLabel', {
                         Name = 'LogoFallback',
                         BackgroundTransparency = 1,
                         Position = UDim2.fromOffset(8, 18),
                         Size = UDim2.fromOffset(50, 48),
                         Text = 'F',
                         ZIndex = 25,
-                    }, Root)::TextLabel
+                    }, Root))
 
                     Styling.ApplyText(Fallback, Window.Theme, 28, Window.Theme.Accent)
                     FontLoader.Apply(Fallback, Window.Library.AssetCache)
@@ -1916,7 +1902,7 @@ do
 
                 return self
             end
-            function Sidebar:AddButton(TabObject: any)
+            function Sidebar:AddButton(TabObject)
                 local Button = __DARKLUA_BUNDLE_MODULES.v().New(self.Window, TabObject, #self.Buttons + 1)
 
                 table.insert(self.Buttons, Button)
@@ -1938,7 +1924,7 @@ do
             return Sidebar
         end
 
-        function __DARKLUA_BUNDLE_MODULES.w(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.w()
             local v = __DARKLUA_BUNDLE_MODULES.cache.w
 
             if not v then
@@ -1959,27 +1945,27 @@ do
 
             SnowLayer.__index = SnowLayer
 
-            function SnowLayer.New(Window: any, Parent: Instance)
+            function SnowLayer.New(Window, Parent)
                 local self = setmetatable({
                     Window = Window,
                     Flakes = {},
                     Random = Random.new(6206),
                     Visible = true,
                 }, SnowLayer)
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = 'SnowLayer',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 0),
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 2,
-                }, Parent)::Frame
+                }, Parent))
 
                 self.Root = Root
 
                 for Index = 1, 70 do
                     local Size = self.Random:NextInteger(5, 14)
-                    local Label = Elements.New('TextLabel', {
+                    local Label = (Elements.New('TextLabel', {
                         Name = 'Flake' .. tostring(Index),
                         BackgroundTransparency = 1,
                         BorderSizePixel = 0,
@@ -1990,7 +1976,7 @@ do
                         TextSize = Size,
                         Font = Enum.Font.GothamBold,
                         ZIndex = 2,
-                    }, Root)::TextLabel
+                    }, Root))
 
                     table.insert(self.Flakes, {
                         Node = Label,
@@ -2009,7 +1995,7 @@ do
 
                 return self
             end
-            function SnowLayer:Step(Delta: number)
+            function SnowLayer:Step(Delta)
                 if not self.Visible then
                     return
                 end
@@ -2038,7 +2024,7 @@ do
                     Flake.Node.Rotation += Flake.Spin * Delta
                 end
             end
-            function SnowLayer:SetVisible(Value: boolean)
+            function SnowLayer:SetVisible(Value)
                 self.Visible = Value
                 self.Root.Visible = Value
             end
@@ -2054,7 +2040,7 @@ do
             return SnowLayer
         end
 
-        function __DARKLUA_BUNDLE_MODULES.x(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.x()
             local v = __DARKLUA_BUNDLE_MODULES.cache.x
 
             if not v then
@@ -2074,7 +2060,7 @@ do
             Topbar.__index = Topbar
             Topbar.Height = 0
 
-            function Topbar.New(Window: any, Root: Frame, Options: {[string]: any})
+            function Topbar.New(Window, Root, Options)
                 local self = setmetatable({
                     Window = Window,
                     Root = Root,
@@ -2090,7 +2076,7 @@ do
                 self.Root:SetAttribute('FecurityTitle', self.Title)
                 self.Root:SetAttribute('FecuritySubtitle', self.Subtitle)
             end
-            function Topbar:SetTitle(Title: string, Subtitle: string?)
+            function Topbar:SetTitle(Title, Subtitle)
                 self.Title = Title
 
                 if Subtitle ~= nil then
@@ -2103,7 +2089,7 @@ do
             return Topbar
         end
 
-        function __DARKLUA_BUNDLE_MODULES.y(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.y()
             local v = __DARKLUA_BUNDLE_MODULES.cache.y
 
             if not v then
@@ -2121,13 +2107,13 @@ do
             local Tween = __DARKLUA_BUNDLE_MODULES.j()
             local Transitions = {}
 
-            function Transitions.FadeIn(Object: GuiObject)
+            function Transitions.FadeIn(Object)
                 Object.Visible = true
                 Object.BackgroundTransparency = 1
 
                 Tween.Play(Object, 0.15, {BackgroundTransparency = 0})
             end
-            function Transitions.FadeOut(Object: GuiObject)
+            function Transitions.FadeOut(Object)
                 local Created = Tween.Play(Object, 0.15, {BackgroundTransparency = 1})
 
                 Created.Completed:Once(function()
@@ -2136,7 +2122,7 @@ do
                     end
                 end)
             end
-            function Transitions.PanelIn(Object: GuiObject, Delay: number?)
+            function Transitions.PanelIn(Object, Delay)
                 local Target = Object.Position
 
                 Object.Visible = true
@@ -2152,7 +2138,7 @@ do
                     end
                 end)
             end
-            function Transitions.PanelOut(Object: GuiObject, Delay: number?)
+            function Transitions.PanelOut(Object, Delay)
                 local Target = Object.Position
 
                 task.delay(Delay or 0, function()
@@ -2178,7 +2164,7 @@ do
             return Transitions
         end
 
-        function __DARKLUA_BUNDLE_MODULES.z(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.z()
             local v = __DARKLUA_BUNDLE_MODULES.cache.z
 
             if not v then
@@ -2196,21 +2182,21 @@ do
             local Elements = __DARKLUA_BUNDLE_MODULES.n()
             local AutoLayout = {}
 
-            function AutoLayout.Vertical(Parent: Instance, Padding: number?)
+            function AutoLayout.Vertical(Parent, Padding)
                 local Layout = Elements.List(Parent, Enum.FillDirection.Vertical, Padding or 0)
 
                 Layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
 
                 return Layout
             end
-            function AutoLayout.Horizontal(Parent: Instance, Padding: number?)
+            function AutoLayout.Horizontal(Parent, Padding)
                 local Layout = Elements.List(Parent, Enum.FillDirection.Horizontal, Padding or 0)
 
                 Layout.VerticalAlignment = Enum.VerticalAlignment.Center
 
                 return Layout
             end
-            function AutoLayout.ResizeToContent(Frame: GuiObject, Layout: UIListLayout, Extra: number?)
+            function AutoLayout.ResizeToContent(Frame, Layout, Extra)
                 local function Update()
                     Frame.Size = UDim2.new(Frame.Size.X.Scale, Frame.Size.X.Offset, 0, Layout.AbsoluteContentSize.Y + (Extra or 0))
                 end
@@ -2222,7 +2208,7 @@ do
             return AutoLayout
         end
 
-        function __DARKLUA_BUNDLE_MODULES.A(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.A()
             local v = __DARKLUA_BUNDLE_MODULES.cache.A
 
             if not v then
@@ -2242,7 +2228,7 @@ do
 
             BaseWidget.__index = BaseWidget
 
-            function BaseWidget.New(Section: any, Options: {[string]: any}, Height: number)
+            function BaseWidget.New(Section, Options, Height)
                 local self = setmetatable({
                     Section = Section,
                     Window = Section.Window,
@@ -2255,14 +2241,14 @@ do
                     ThemeUnbinds = {},
                 }, BaseWidget)
 
-                self.Root = Elements.New('Frame', {
+                self.Root = (Elements.New('Frame', {
                     Name = Options.Text or 'Widget',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Size = UDim2.new(1, 0, 0, Height),
                     LayoutOrder = Section:NextOrder(),
                     ZIndex = 30,
-                }, Section.Body)::Frame
+                }, Section.Body))
 
                 if self.Flag then
                     self.Library.FlagManager:Register(self.Flag, self, self.Value, self.SkipFlag)
@@ -2306,7 +2292,7 @@ do
                     self.FlagDestroyConnection = nil
                 end
             end
-            function BaseWidget:Commit(Value: any, RunCallback: boolean?)
+            function BaseWidget:Commit(Value, RunCallback)
                 self.Value = Value
 
                 self.Library.FlagManager:Set(self.Flag, Value)
@@ -2315,7 +2301,7 @@ do
                     self.Library:RunCallback(self.Options.Text or 'Widget', self.Callback, Value, self.Alpha)
                 end
             end
-            function BaseWidget:SetValue(Value: any, RunCallback: boolean?)
+            function BaseWidget:SetValue(Value, RunCallback)
                 self:Commit(Value, RunCallback)
             end
             function BaseWidget:Destroy()
@@ -2326,7 +2312,7 @@ do
                     self.Root:Destroy()
                 end
             end
-            function BaseWidget:BindTheme(Binding: (any) -> ())
+            function BaseWidget:BindTheme(Binding)
                 if self.Window and self.Window.RegisterThemeBinding then
                     local Unbind = self.Window:RegisterThemeBinding(Binding)
 
@@ -2335,17 +2321,17 @@ do
                     end
                 end
             end
-            function BaseWidget:AddColor(Options: {[string]: any})
+            function BaseWidget:AddColor(Options)
                 return self.Section:AddColor(Options)
             end
-            function BaseWidget:AddBind(Options: {[string]: any})
+            function BaseWidget:AddBind(Options)
                 return self.Section:AddBind(Options)
             end
 
             return BaseWidget
         end
 
-        function __DARKLUA_BUNDLE_MODULES.B(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.B()
             local v = __DARKLUA_BUNDLE_MODULES.cache.B
 
             if not v then
@@ -2371,7 +2357,7 @@ do
 
             setmetatable(Toggle, {__index = BaseWidget})
 
-            function Toggle.New(Section: any, Options: {[string]: any})
+            function Toggle.New(Section, Options)
                 Options.Default = Options.Default == true
 
                 local self = BaseWidget.New(Section, Options, 40)
@@ -2379,33 +2365,33 @@ do
                 setmetatable(self, Toggle)
 
                 local Theme = self.Window.Theme
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Position = UDim2.fromOffset(0, 0),
                     Size = UDim2.new(1, -44, 0, 16),
                     Text = Options.Text or 'Toggle',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 self.Title = Title
 
-                local Hint = Elements.New('TextLabel', {
+                local Hint = (Elements.New('TextLabel', {
                     Name = 'Hint',
                     Position = UDim2.fromOffset(0, 15),
                     Size = UDim2.new(1, -44, 0, 14),
                     Text = Options.Hint or '',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
                 self.Hint = Hint
 
-                local Track = Elements.New('Frame', {
+                local Track = (Elements.New('Frame', {
                     Name = 'Track',
                     AnchorPoint = Vector2.new(1, 0),
                     Position = UDim2.new(1, -1, 0, 5),
@@ -2413,33 +2399,33 @@ do
                     BackgroundColor3 = Theme.ToggleOff,
                     BorderSizePixel = 0,
                     ZIndex = 32,
-                }, self.Root)::Frame
+                }, self.Root))
 
                 Elements.Corner(Track, 8)
 
                 self.Track = Track
 
-                local Knob = Elements.New('Frame', {
+                local Knob = (Elements.New('Frame', {
                     Name = 'Knob',
                     Position = UDim2.fromOffset(2, 2),
                     Size = UDim2.fromOffset(12, 12),
                     BackgroundColor3 = Theme.ToggleKnobOff,
                     BorderSizePixel = 0,
                     ZIndex = 33,
-                }, Track)::Frame
+                }, Track))
 
                 Elements.Corner(Knob, 6)
 
                 self.Knob = Knob
 
-                local Hit = Elements.New('TextButton', {
+                local Hit = (Elements.New('TextButton', {
                     Name = 'Hitbox',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Size = UDim2.fromScale(1, 1),
                     Text = '',
                     ZIndex = 34,
-                }, self.Root)::TextButton
+                }, self.Root))
 
                 Hit.MouseButton1Click:Connect(function()
                     self:SetValue(not self.Value)
@@ -2457,7 +2443,7 @@ do
 
                 return self
             end
-            function Toggle:SetValue(Value: any, RunCallback: boolean?)
+            function Toggle:SetValue(Value, RunCallback)
                 local On = Value == true
 
                 self:Commit(On, RunCallback)
@@ -2476,7 +2462,7 @@ do
             return Toggle
         end
 
-        function __DARKLUA_BUNDLE_MODULES.C(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.C()
             local v = __DARKLUA_BUNDLE_MODULES.cache.C
 
             if not v then
@@ -2502,7 +2488,7 @@ do
 
             setmetatable(Slider, {__index = BaseWidget})
 
-            local function Format(Options: {[string]: any}, Value: number): string
+            local function Format(Options, Value)
                 if Options.Suffix then
                     local Text = Options.Decimals and string.format('%.' .. tostring(Options.Decimals) .. 'f', Value) or tostring(math.floor(Value + 0.5))
 
@@ -2521,7 +2507,7 @@ do
                 return tostring(math.floor(Value + 0.5))
             end
 
-            function Slider.New(Section: any, Options: {[string]: any})
+            function Slider.New(Section, Options)
                 Options.Min = Options.Min or 0
                 Options.Max = Options.Max or 100
                 Options.Step = Options.Step or 1
@@ -2534,26 +2520,26 @@ do
                 self.Connections = {}
 
                 local Theme = self.Window.Theme
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(0.68, 0, 0, 16),
                     Text = Options.Text or 'Slider',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
                 self.Title = Title
 
-                local ValueLabel = Elements.New('TextLabel', {
+                local ValueLabel = (Elements.New('TextLabel', {
                     Name = 'Value',
                     AnchorPoint = Vector2.new(1, 0),
                     Position = UDim2.new(1, 0, 0, 0),
                     Size = UDim2.new(0.35, 0, 0, 16),
                     Text = '',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(ValueLabel, Theme, 12, Theme.Text)
                 FontLoader.Apply(ValueLabel, self.Library.AssetCache)
@@ -2561,28 +2547,28 @@ do
                 ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
                 self.ValueLabel = ValueLabel
 
-                local Track = Elements.New('Frame', {
+                local Track = (Elements.New('Frame', {
                     Name = 'Track',
                     Position = UDim2.fromOffset(0, 30),
                     Size = UDim2.new(1, 0, 0, 2),
                     BackgroundColor3 = Theme.SliderTrack,
                     BorderSizePixel = 0,
                     ZIndex = 31,
-                }, self.Root)::Frame
+                }, self.Root))
 
                 self.Track = Track
 
-                local Fill = Elements.New('Frame', {
+                local Fill = (Elements.New('Frame', {
                     Name = 'Fill',
                     Size = UDim2.fromOffset(0, 2),
                     BackgroundColor3 = Theme.Accent,
                     BorderSizePixel = 0,
                     ZIndex = 32,
-                }, Track)::Frame
+                }, Track))
 
                 self.Fill = Fill
 
-                local Knob = Elements.New('Frame', {
+                local Knob = (Elements.New('Frame', {
                     Name = 'Knob',
                     AnchorPoint = Vector2.new(0.5, 0.5),
                     Position = UDim2.fromOffset(0, 1),
@@ -2590,7 +2576,7 @@ do
                     BackgroundColor3 = Theme.Accent,
                     BorderSizePixel = 0,
                     ZIndex = 33,
-                }, Track)::Frame
+                }, Track))
 
                 Elements.Corner(Knob, 6)
 
@@ -2645,7 +2631,7 @@ do
 
                 return self
             end
-            function Slider:Track(Connection: RBXScriptConnection)
+            function Slider:Track(Connection)
                 table.insert(self.Connections, Connection)
 
                 return Connection
@@ -2663,7 +2649,7 @@ do
                     self.DestroyConnection = nil
                 end
             end
-            function Slider:SetValue(Value: any, RunCallback: boolean?)
+            function Slider:SetValue(Value, RunCallback)
                 local Number = tonumber(Value) or self.Options.Min
 
                 Number = math.clamp(Number, self.Options.Min, self.Options.Max)
@@ -2684,7 +2670,7 @@ do
             return Slider
         end
 
-        function __DARKLUA_BUNDLE_MODULES.D(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.D()
             local v = __DARKLUA_BUNDLE_MODULES.cache.D
 
             if not v then
@@ -2710,7 +2696,7 @@ do
 
             setmetatable(Dropdown, {__index = BaseWidget})
 
-            local function Contains(List: {any}, Value: any): boolean
+            local function Contains(List, Value)
                 for _, Item in ipairs(List)do
                     if Item == Value then
                         return true
@@ -2719,7 +2705,7 @@ do
 
                 return false
             end
-            local function Display(Value: any): string
+            local function Display(Value)
                 if type(Value) == 'table' then
                     return #Value > 0 and table.concat(Value, ', ') or 'None'
                 end
@@ -2727,7 +2713,7 @@ do
                 return tostring(Value or 'None')
             end
 
-            function Dropdown.New(Section: any, Options: {[string]: any})
+            function Dropdown.New(Section, Options)
                 Options.Values = Options.Values or Options.Options or {}
 
                 local ProvidedDefault = if Options.Default ~= nil then Options.Default else Options.Value
@@ -2756,28 +2742,28 @@ do
                 setmetatable(self, Dropdown)
 
                 local Theme = self.Window.Theme
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(1, 0, 0, 16),
                     Text = Options.Text or 'Dropdown',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
-                local Hint = Elements.New('TextLabel', {
+                local Hint = (Elements.New('TextLabel', {
                     Name = 'Hint',
                     Position = UDim2.fromOffset(0, 15),
                     Size = UDim2.new(1, 0, 0, 14),
                     Text = Options.Hint or '',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
-                local Box = Elements.New('TextButton', {
+                local Box = (Elements.New('TextButton', {
                     Name = 'Box',
                     AutoButtonColor = false,
                     BackgroundColor3 = Theme.Control,
@@ -2786,19 +2772,19 @@ do
                     Size = UDim2.new(1, 0, 0, 26),
                     Text = '',
                     ZIndex = 32,
-                }, self.Root)::TextButton
+                }, self.Root))
 
                 self.Box = Box
 
                 Elements.Stroke(Box, Theme.Border, 0.45, 1)
 
-                local Value = Elements.New('TextLabel', {
+                local Value = (Elements.New('TextLabel', {
                     Name = 'Value',
                     Position = UDim2.fromOffset(18, 0),
                     Size = UDim2.new(1, -42, 1, 0),
                     Text = '',
                     ZIndex = 33,
-                }, Box)::TextLabel
+                }, Box))
 
                 Styling.ApplyText(Value, Theme, 12, Theme.Text)
                 FontLoader.Apply(Value, self.Library.AssetCache)
@@ -2806,14 +2792,14 @@ do
 
                 self.ValueLabel = Value
 
-                local Arrow = Elements.New('TextLabel', {
+                local Arrow = (Elements.New('TextLabel', {
                     Name = 'Arrow',
                     AnchorPoint = Vector2.new(1, 0),
                     Position = UDim2.new(1, -14, 0, 0),
                     Size = UDim2.fromOffset(12, 26),
                     Text = 'v',
                     ZIndex = 33,
-                }, Box)::TextLabel
+                }, Box))
 
                 Styling.ApplyText(Arrow, Theme, 12, Theme.Muted)
                 FontLoader.Apply(Arrow, self.Library.AssetCache)
@@ -2852,7 +2838,7 @@ do
 
                 return self
             end
-            function Dropdown:CloseMenu(Immediate: boolean?)
+            function Dropdown:CloseMenu(Immediate)
                 local Menu = self.Menu
 
                 if Menu then
@@ -2911,7 +2897,7 @@ do
                 local BoxPosition = self.Box.AbsolutePosition
                 local RowHeight = 24
                 local OpenHeight = math.max(RowHeight, math.min(#self.Options.Values, 7) * RowHeight)
-                local Menu = Elements.New('Frame', {
+                local Menu = (Elements.New('Frame', {
                     Name = 'DropdownMenu',
                     BackgroundColor3 = Theme.ControlHover,
                     BackgroundTransparency = 0.15,
@@ -2920,7 +2906,7 @@ do
                     Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X, BoxPosition.Y - RootPosition.Y + self.Box.AbsoluteSize.Y + 2),
                     Size = UDim2.fromOffset(self.Box.AbsoluteSize.X, 0),
                     ZIndex = 210,
-                }, self.Window.Overlay)::Frame
+                }, self.Window.Overlay))
 
                 Elements.Stroke(Menu, Theme.Border, 0, 1)
 
@@ -2933,7 +2919,7 @@ do
                 })
                 Tween.Play(self.Arrow, 0.14, {Rotation = 180})
 
-                local Scroll = Elements.New('ScrollingFrame', {
+                local Scroll = (Elements.New('ScrollingFrame', {
                     Name = 'Options',
                     Active = true,
                     BackgroundTransparency = 1,
@@ -2944,10 +2930,10 @@ do
                     ScrollingDirection = Enum.ScrollingDirection.Y,
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 211,
-                }, Menu)::ScrollingFrame
+                }, Menu))
 
                 for Index, Option in ipairs(self.Options.Values)do
-                    local Row = Elements.New('TextButton', {
+                    local Row = (Elements.New('TextButton', {
                         Name = 'Option' .. tostring(Index),
                         AutoButtonColor = false,
                         BackgroundColor3 = Theme.ControlHover,
@@ -2957,8 +2943,8 @@ do
                         Size = UDim2.new(1, -2, 0, RowHeight),
                         Text = '',
                         ZIndex = 211,
-                    }, Scroll)::TextButton
-                    local Indicator = Elements.New('Frame', {
+                    }, Scroll))
+                    local Indicator = (Elements.New('Frame', {
                         Name = 'Indicator',
                         AnchorPoint = Vector2.new(0, 0.5),
                         BackgroundColor3 = Theme.Accent,
@@ -2967,17 +2953,17 @@ do
                         Position = UDim2.fromOffset(9, 12),
                         Size = UDim2.fromOffset(5, 5),
                         ZIndex = 212,
-                    }, Row)::Frame
+                    }, Row))
 
                     Elements.Corner(Indicator, 4)
 
-                    local Label = Elements.New('TextLabel', {
+                    local Label = (Elements.New('TextLabel', {
                         Name = 'Label',
                         Position = UDim2.fromOffset(20, 0),
                         Size = UDim2.new(1, -30, 1, 0),
                         Text = tostring(Option),
                         ZIndex = 212,
-                    }, Row)::TextLabel
+                    }, Row))
 
                     Styling.ApplyText(Label, Theme, 12, Theme.Text)
                     FontLoader.Apply(Label, self.Library.AssetCache)
@@ -3026,7 +3012,7 @@ do
 
                 self:RefreshRows()
             end
-            function Dropdown:SetValue(Value: any, RunCallback: boolean?)
+            function Dropdown:SetValue(Value, RunCallback)
                 if self.Options.Multi and type(Value) ~= 'table' then
                     Value = {Value}
                 end
@@ -3035,7 +3021,7 @@ do
 
                 self.ValueLabel.Text = Display(Value)
             end
-            function Dropdown:SetValues(Values: {any}, PreferredValue: any?)
+            function Dropdown:SetValues(Values, PreferredValue)
                 self.Options.Values = Values or {}
 
                 local NextValue = PreferredValue or self.Value
@@ -3103,7 +3089,7 @@ do
             return Dropdown
         end
 
-        function __DARKLUA_BUNDLE_MODULES.E(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.E()
             local v = __DARKLUA_BUNDLE_MODULES.cache.E
 
             if not v then
@@ -3130,14 +3116,14 @@ do
 
             setmetatable(Button, {__index = BaseWidget})
 
-            function Button.New(Section: any, Options: {[string]: any})
+            function Button.New(Section, Options)
                 local self = BaseWidget.New(Section, Options, Options.Height or 40)
 
                 setmetatable(self, Button)
 
                 local Theme = self.Window.Theme
                 local Base = Options.Tone == 'danger' and Color3.fromRGB(166, 34, 24) or Theme.Accent
-                local Control = Elements.New('TextButton', {
+                local Control = (Elements.New('TextButton', {
                     Name = 'Button',
                     AutoButtonColor = false,
                     BackgroundColor3 = Base,
@@ -3146,7 +3132,7 @@ do
                     Size = UDim2.new(1, 0, 0, 26),
                     Text = Options.Text or 'BUTTON',
                     ZIndex = 31,
-                }, self.Root)::TextButton
+                }, self.Root))
 
                 Styling.ApplyText(Control, Theme, 12, Theme.Text)
                 FontLoader.Apply(Control, self.Library.AssetCache)
@@ -3191,7 +3177,7 @@ do
             return Button
         end
 
-        function __DARKLUA_BUNDLE_MODULES.F(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.F()
             local v = __DARKLUA_BUNDLE_MODULES.cache.F
 
             if not v then
@@ -3216,7 +3202,7 @@ do
 
             setmetatable(Textbox, {__index = BaseWidget})
 
-            function Textbox.New(Section: any, Options: {[string]: any})
+            function Textbox.New(Section, Options)
                 Options.Default = Options.Default or ''
 
                 local self = BaseWidget.New(Section, Options, 52)
@@ -3224,17 +3210,17 @@ do
                 setmetatable(self, Textbox)
 
                 local Theme = self.Window.Theme
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(1, 0, 0, 16),
                     Text = Options.Text or 'Textbox',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
-                local Box = Elements.New('TextBox', {
+                local Box = (Elements.New('TextBox', {
                     Name = 'Box',
                     BackgroundColor3 = Theme.Control,
                     BorderSizePixel = 0,
@@ -3243,7 +3229,7 @@ do
                     Size = UDim2.new(1, 0, 0, 26),
                     Text = tostring(self.Value),
                     ZIndex = 32,
-                }, self.Root)::TextBox
+                }, self.Root))
 
                 Styling.ApplyText(Box, Theme, 12, Theme.Text)
                 FontLoader.Apply(Box, self.Library.AssetCache)
@@ -3262,7 +3248,7 @@ do
 
                 return self
             end
-            function Textbox:SetValue(Value: any, RunCallback: boolean?)
+            function Textbox:SetValue(Value, RunCallback)
                 self:Commit(tostring(Value or ''), RunCallback)
 
                 if self.Box.Text ~= self.Value then
@@ -3273,7 +3259,7 @@ do
             return Textbox
         end
 
-        function __DARKLUA_BUNDLE_MODULES.G(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.G()
             local v = __DARKLUA_BUNDLE_MODULES.cache.G
 
             if not v then
@@ -3300,7 +3286,7 @@ do
 
             setmetatable(Keybind, {__index = BaseWidget})
 
-            function Keybind.New(Section: any, Options: {[string]: any})
+            function Keybind.New(Section, Options)
                 Options.Default = Options.Default or Options.Value or 'None'
 
                 local ActivationCallback = Options.Callback or Options.OnPressed
@@ -3314,28 +3300,28 @@ do
                 self.ActivationCallback = ActivationCallback
 
                 local Theme = self.Window.Theme
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(1, -86, 0, 16),
                     Text = Options.Text or 'Keybind',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
-                local Hint = Elements.New('TextLabel', {
+                local Hint = (Elements.New('TextLabel', {
                     Name = 'Hint',
                     Position = UDim2.fromOffset(0, 15),
                     Size = UDim2.new(1, -86, 0, 14),
                     Text = Options.Hint or '',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
-                local Box = Elements.New('TextButton', {
+                local Box = (Elements.New('TextButton', {
                     Name = 'Box',
                     AutoButtonColor = false,
                     AnchorPoint = Vector2.new(1, 0),
@@ -3345,7 +3331,7 @@ do
                     Size = UDim2.fromOffset(84, 26),
                     Text = tostring(self.Value),
                     ZIndex = 32,
-                }, self.Root)::TextButton
+                }, self.Root))
 
                 Styling.ApplyText(Box, Theme, 12, Theme.Text)
                 FontLoader.Apply(Box, self.Library.AssetCache)
@@ -3407,7 +3393,7 @@ do
                     self:SetValue(KeybindManager.Normalize(Input))
                 end)
             end
-            function Keybind:SetValue(Value: any, RunCallback: boolean?)
+            function Keybind:SetValue(Value, RunCallback)
                 self:Commit(KeybindManager.Normalize(Value or 'None'), RunCallback)
 
                 self.Box.Text = self.Value
@@ -3437,7 +3423,7 @@ do
             return Keybind
         end
 
-        function __DARKLUA_BUNDLE_MODULES.H(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.H()
             local v = __DARKLUA_BUNDLE_MODULES.cache.H
 
             if not v then
@@ -3475,7 +3461,7 @@ do
                 ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0)),
             })
 
-            function ColorPickerUtils.ToColorAlpha(Value: any): (Color3,number?)
+            function ColorPickerUtils.ToColorAlpha(Value)
                 if typeof(Value) == 'Color3' then
                     return Value, nil
                 end
@@ -3492,12 +3478,7 @@ do
 
                 return Color3.new(1, 1, 1), nil
             end
-            function ColorPickerUtils.AddGradient(
-                Frame: Frame,
-                Color: ColorSequence,
-                Transparency: NumberSequence?,
-                Rotation: number?
-            )
+            function ColorPickerUtils.AddGradient(Frame, Color, Transparency, Rotation)
                 local Gradient = Instance.new('UIGradient')
 
                 Gradient.Color = Color
@@ -3515,7 +3496,7 @@ do
             return ColorPickerUtils
         end
 
-        function __DARKLUA_BUNDLE_MODULES.I(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.I()
             local v = __DARKLUA_BUNDLE_MODULES.cache.I
 
             if not v then
@@ -3543,7 +3524,7 @@ do
 
             setmetatable(ColorPicker, {__index = BaseWidget})
 
-            function ColorPicker.New(Section: any, Options: {[string]: any})
+            function ColorPicker.New(Section, Options)
                 Options.Default = Options.Default or Options.Value or Color3.new(1, 1, 1)
 
                 local self = BaseWidget.New(Section, Options, 40)
@@ -3573,28 +3554,28 @@ do
                     }, self.Alpha, self.SkipFlag)
                 end
 
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(1, -44, 0, 16),
                     Text = Options.Text or 'Color',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, self.Library.AssetCache)
 
-                local Hint = Elements.New('TextLabel', {
+                local Hint = (Elements.New('TextLabel', {
                     Name = 'Hint',
                     Position = UDim2.fromOffset(0, 15),
                     Size = UDim2.new(1, -44, 0, 14),
                     Text = Options.Hint or '',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Hint, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Hint, self.Library.AssetCache)
 
-                local Swatch = Elements.New('TextButton', {
+                local Swatch = (Elements.New('TextButton', {
                     Name = 'Swatch',
                     AutoButtonColor = false,
                     AnchorPoint = Vector2.new(1, 0),
@@ -3604,7 +3585,7 @@ do
                     BorderSizePixel = 0,
                     Text = '',
                     ZIndex = 32,
-                }, self.Root)::TextButton
+                }, self.Root))
 
                 Elements.Corner(Swatch, 8)
                 Elements.Stroke(Swatch, Theme.Border, 0, 1)
@@ -3650,7 +3631,7 @@ do
 
                 table.clear(self.PopupConnections)
             end
-            function ColorPicker:Track(Connection: RBXScriptConnection)
+            function ColorPicker:Track(Connection)
                 table.insert(self.PopupConnections, Connection)
 
                 return Connection
@@ -3681,51 +3662,51 @@ do
                     self:OpenPicker()
                 end
             end
-            function ColorPicker:CreateColorSquare(Parent: Instance, Theme: {[string]: any})
-                local Square = Elements.New('Frame', {
+            function ColorPicker:CreateColorSquare(Parent, Theme)
+                local Square = (Elements.New('Frame', {
                     Name = 'ColorSquare',
                     BackgroundColor3 = Color3.fromHSV(self.Hue, 1, 1),
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(10, 40),
                     Size = UDim2.fromOffset(170, 118),
                     ZIndex = 221,
-                }, Parent)::Frame
+                }, Parent))
 
                 self.Square = Square
 
-                local White = Elements.New('Frame', {
+                local White = (Elements.New('Frame', {
                     Name = 'White',
                     BackgroundColor3 = Color3.new(1, 1, 1),
                     BorderSizePixel = 0,
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 222,
-                }, Square)::Frame
+                }, Square))
 
                 Utils.AddGradient(White, ColorSequence.new(Color3.new(1, 1, 1)), NumberSequence.new({
                     NumberSequenceKeypoint.new(0, 0),
                     NumberSequenceKeypoint.new(1, 1),
                 }))
 
-                local Black = Elements.New('Frame', {
+                local Black = (Elements.New('Frame', {
                     Name = 'Black',
                     BackgroundColor3 = Color3.new(0, 0, 0),
                     BorderSizePixel = 0,
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 223,
-                }, Square)::Frame
+                }, Square))
 
                 Utils.AddGradient(Black, ColorSequence.new(Color3.new(0, 0, 0)), NumberSequence.new({
                     NumberSequenceKeypoint.new(0, 1),
                     NumberSequenceKeypoint.new(1, 0),
                 }), 90)
 
-                local Cursor = Elements.New('Frame', {
+                local Cursor = (Elements.New('Frame', {
                     Name = 'Cursor',
                     BackgroundColor3 = Theme.Text,
                     BorderSizePixel = 0,
                     Size = UDim2.fromOffset(8, 8),
                     ZIndex = 224,
-                }, Square)::Frame
+                }, Square))
 
                 Elements.Corner(Cursor, 4)
 
@@ -3739,27 +3720,27 @@ do
                     end
                 end))
             end
-            function ColorPicker:CreateHueBar(Parent: Instance, Theme: {[string]: any})
-                local Bar = Elements.New('Frame', {
+            function ColorPicker:CreateHueBar(Parent, Theme)
+                local Bar = (Elements.New('Frame', {
                     Name = 'Hue',
                     BackgroundColor3 = Color3.new(1, 1, 1),
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(10, 168),
                     Size = UDim2.fromOffset(170, 10),
                     ZIndex = 221,
-                }, Parent)::Frame
+                }, Parent))
 
                 Utils.AddGradient(Bar, Utils.HueSequence)
 
                 self.HueBar = Bar
 
-                local Cursor = Elements.New('Frame', {
+                local Cursor = (Elements.New('Frame', {
                     Name = 'HueCursor',
                     BackgroundColor3 = Theme.Text,
                     BorderSizePixel = 0,
                     Size = UDim2.fromOffset(6, 14),
                     ZIndex = 222,
-                }, Bar)::Frame
+                }, Bar))
 
                 Elements.Corner(Cursor, 3)
 
@@ -3773,15 +3754,15 @@ do
                     end
                 end))
             end
-            function ColorPicker:CreateAlphaBar(Parent: Instance, Theme: {[string]: any})
-                local Bar = Elements.New('Frame', {
+            function ColorPicker:CreateAlphaBar(Parent, Theme)
+                local Bar = (Elements.New('Frame', {
                     Name = 'Alpha',
                     BackgroundColor3 = self.Value,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(10, 184),
                     Size = UDim2.fromOffset(170, 10),
                     ZIndex = 221,
-                }, Parent)::Frame
+                }, Parent))
 
                 Utils.AddGradient(Bar, ColorSequence.new(Color3.new(1, 1, 1)), NumberSequence.new({
                     NumberSequenceKeypoint.new(0, 1),
@@ -3790,13 +3771,13 @@ do
 
                 self.AlphaBar = Bar
 
-                local Cursor = Elements.New('Frame', {
+                local Cursor = (Elements.New('Frame', {
                     Name = 'AlphaCursor',
                     BackgroundColor3 = Theme.Text,
                     BorderSizePixel = 0,
                     Size = UDim2.fromOffset(6, 14),
                     ZIndex = 222,
-                }, Bar)::Frame
+                }, Bar))
 
                 Elements.Corner(Cursor, 3)
 
@@ -3810,9 +3791,9 @@ do
                     end
                 end))
             end
-            function ColorPicker:CreateTemplates(Parent: Instance)
+            function ColorPicker:CreateTemplates(Parent)
                 for Index, Hex in ipairs(Utils.Templates)do
-                    local Button = Elements.New('TextButton', {
+                    local Button = (Elements.New('TextButton', {
                         Name = 'Template' .. tostring(Index),
                         AutoButtonColor = false,
                         BackgroundColor3 = Palette.Hex(Hex),
@@ -3821,7 +3802,7 @@ do
                         Size = UDim2.fromOffset(15, 15),
                         Text = '',
                         ZIndex = 221,
-                    }, Parent)::TextButton
+                    }, Parent))
 
                     Elements.Corner(Button, 8)
                     self:Track(Button.MouseButton1Click:Connect(function()
@@ -3833,32 +3814,32 @@ do
                 local Theme = self.Window.Theme
                 local RootPosition = self.Window.Root.AbsolutePosition
                 local BoxPosition = self.Swatch.AbsolutePosition
-                local Popup = Elements.New('Frame', {
+                local Popup = (Elements.New('Frame', {
                     Name = 'ColorPickerPopup',
                     BackgroundColor3 = Theme.Surface,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(BoxPosition.X - RootPosition.X - 174, BoxPosition.Y - RootPosition.Y + 22),
                     Size = UDim2.fromOffset(190, 264),
                     ZIndex = 220,
-                }, self.Window.Overlay)::Frame
+                }, self.Window.Overlay))
 
                 Elements.Stroke(Popup, Theme.Border, 0, 1)
 
                 self.Popup = Popup
-                self.Preview = Elements.New('Frame', {
+                self.Preview = (Elements.New('Frame', {
                     Name = 'Preview',
                     BackgroundColor3 = self.Value,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(10, 10),
                     Size = UDim2.fromOffset(170, 20),
                     ZIndex = 221,
-                }, Popup)::Frame
+                }, Popup))
 
                 self:CreateColorSquare(Popup, Theme)
                 self:CreateHueBar(Popup, Theme)
                 self:CreateAlphaBar(Popup, Theme)
 
-                local Hex = Elements.New('TextBox', {
+                local Hex = (Elements.New('TextBox', {
                     Name = 'Hex',
                     BackgroundColor3 = Theme.Control,
                     BorderSizePixel = 0,
@@ -3867,14 +3848,14 @@ do
                     Size = UDim2.fromOffset(104, 24),
                     Text = Palette.ToRgba(self.Value, self.Alpha),
                     ZIndex = 221,
-                }, Popup)::TextBox
+                }, Popup))
 
                 Styling.ApplyText(Hex, Theme, 12, Theme.Text)
                 FontLoader.Apply(Hex, self.Library.AssetCache)
 
                 self.Hex = Hex
 
-                local Apply = Elements.New('TextButton', {
+                local Apply = (Elements.New('TextButton', {
                     Name = 'Apply',
                     AutoButtonColor = false,
                     BackgroundColor3 = Theme.Accent,
@@ -3883,7 +3864,7 @@ do
                     Size = UDim2.fromOffset(58, 24),
                     Text = 'APPLY',
                     ZIndex = 221,
-                }, Popup)::TextButton
+                }, Popup))
 
                 Styling.ApplyText(Apply, Theme, 12, Theme.Text)
                 FontLoader.Apply(Apply, self.Library.AssetCache)
@@ -3965,7 +3946,7 @@ do
 
                 self:SetAlpha((Mouse.X - Position.X) / math.max(Size.X, 1))
             end
-            function ColorPicker:SetAlpha(Value: any, RunCallback: boolean?)
+            function ColorPicker:SetAlpha(Value, RunCallback)
                 self.Alpha = math.clamp(tonumber(Value) or self.Alpha or 1, 0, 1)
 
                 if self.Flag then
@@ -4006,7 +3987,7 @@ do
                     self.Hex.Text = self.Alpha < 0.999 and Palette.ToRgba(Color, self.Alpha) or Palette.ToHex(Color)
                 end
             end
-            function ColorPicker:SetValue(Value: any, RunCallback: boolean?)
+            function ColorPicker:SetValue(Value, RunCallback)
                 local Color, Alpha = Utils.ToColorAlpha(Value)
 
                 if Alpha ~= nil then
@@ -4039,7 +4020,7 @@ do
             return ColorPicker
         end
 
-        function __DARKLUA_BUNDLE_MODULES.J(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.J()
             local v = __DARKLUA_BUNDLE_MODULES.cache.J
 
             if not v then
@@ -4190,20 +4171,20 @@ do
                 },
             }
 
-            function HitboxPreview:CreateImageFallback(Theme: {[string]: any})
-                local Holder = Elements.New('Frame', {
+            function HitboxPreview:CreateImageFallback(Theme)
+                local Holder = (Elements.New('Frame', {
                     Name = 'PreviewFallback',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(17, 8),
                     Size = UDim2.fromOffset(178, 274),
                     ZIndex = 30,
-                }, self.Root)::Frame
+                }, self.Root))
 
                 self.FallbackParts = {}
 
                 for _, Part in ipairs(FallbackParts)do
-                    local Frame = Elements.New('Frame', {
+                    local Frame = (Elements.New('Frame', {
                         Name = Part.Name,
                         BackgroundColor3 = Theme.Muted,
                         BackgroundTransparency = 0.52,
@@ -4211,7 +4192,7 @@ do
                         Position = UDim2.fromOffset(Part.X, Part.Y),
                         Size = UDim2.fromOffset(Part.W, Part.H),
                         ZIndex = 30,
-                    }, Holder)::Frame
+                    }, Holder))
 
                     Elements.Corner(Frame, Part.Round)
                     table.insert(self.FallbackParts, Frame)
@@ -4223,7 +4204,7 @@ do
                     end
                 end)
             end
-            function HitboxPreview.New(Section: any, Options: {[string]: any})
+            function HitboxPreview.New(Section, Options)
                 Options.Default = Options.Default or {}
 
                 local self = BaseWidget.New(Section, Options, 390)
@@ -4235,14 +4216,14 @@ do
                 self.RegionState = table.clone(self.Value)
                 self.Overlays = {}
 
-                local Image = Elements.New('ImageLabel', {
+                local Image = (Elements.New('ImageLabel', {
                     Name = 'PreviewImage',
                     BackgroundTransparency = 1,
                     Position = UDim2.fromOffset(17, 8),
                     Size = UDim2.fromOffset(178, 274),
                     ScaleType = Enum.ScaleType.Fit,
                     ZIndex = 31,
-                }, self.Root)::ImageLabel
+                }, self.Root))
 
                 if not ImageLoader.Apply(Image, self.Library.AssetCache, 'HitboxPreview') then
                     Image.Visible = false
@@ -4253,7 +4234,7 @@ do
                 self.Image = Image
 
                 for _, Region in ipairs(Regions)do
-                    local Overlay = Elements.New('TextButton', {
+                    local Overlay = (Elements.New('TextButton', {
                         Name = Region.Id,
                         AutoButtonColor = false,
                         BackgroundColor3 = Priorities[1].Color,
@@ -4263,7 +4244,7 @@ do
                         Size = UDim2.fromOffset(Region.W, Region.H),
                         Text = '',
                         ZIndex = 34,
-                    }, self.Root)::TextButton
+                    }, self.Root))
 
                     self.Overlays[Region.Id] = Overlay
 
@@ -4274,36 +4255,36 @@ do
                 for Index, Priority in ipairs(Priorities)do
                     local Row = math.floor((Index - 1) / 2)
                     local Col = (Index - 1) % 2
-                    local Dot = Elements.New('Frame', {
+                    local Dot = (Elements.New('Frame', {
                         Name = Priority.Id .. 'Dot',
                         BackgroundColor3 = Priority.Color,
                         BorderSizePixel = 0,
                         Position = UDim2.fromOffset(2 + Col * 94, 304 + Row * 22),
                         Size = UDim2.fromOffset(15, 15),
                         ZIndex = 31,
-                    }, self.Root)::Frame
+                    }, self.Root))
 
                     Elements.Corner(Dot, 8)
 
-                    local Label = Elements.New('TextLabel', {
+                    local Label = (Elements.New('TextLabel', {
                         Name = Priority.Id,
                         Position = UDim2.fromOffset(24 + Col * 94, 300 + Row * 22),
                         Size = UDim2.fromOffset(70, 20),
                         Text = Priority.Id,
                         ZIndex = 31,
-                    }, self.Root)::TextLabel
+                    }, self.Root))
 
                     Styling.ApplyText(Label, Theme, 12, Theme.Muted)
                     FontLoader.Apply(Label, self.Library.AssetCache)
                 end
 
-                local Help = Elements.New('TextLabel', {
+                local Help = (Elements.New('TextLabel', {
                     Name = 'Help',
                     Position = UDim2.fromOffset(2, 358),
                     Size = UDim2.new(1, 0, 0, 18),
                     Text = 'Edit hitboxes by clicking on a body part.',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Help, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Help, self.Library.AssetCache)
@@ -4311,12 +4292,12 @@ do
 
                 return self
             end
-            function HitboxPreview:PriorityFor(Region: string)
+            function HitboxPreview:PriorityFor(Region)
                 local Index = self.RegionState[Region] or 1
 
                 return Priorities[Index]
             end
-            function HitboxPreview:Cycle(Region: string)
+            function HitboxPreview:Cycle(Region)
                 local Next = (self.RegionState[Region] or 1) + 1
 
                 if Next > #Priorities then
@@ -4334,7 +4315,7 @@ do
                     Overlay.BackgroundColor3 = Priority.Color
                 end
             end
-            function HitboxPreview:SetValue(Value: any, RunCallback: boolean?)
+            function HitboxPreview:SetValue(Value, RunCallback)
                 if type(Value) ~= 'table' then
                     Value = {}
                 end
@@ -4348,7 +4329,7 @@ do
             return HitboxPreview
         end
 
-        function __DARKLUA_BUNDLE_MODULES.K(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.K()
             local v = __DARKLUA_BUNDLE_MODULES.cache.K
 
             if not v then
@@ -4373,7 +4354,7 @@ do
 
             setmetatable(Countdown, {__index = BaseWidget})
 
-            local function Format(Seconds: number): string
+            local function Format(Seconds)
                 Seconds = math.max(0, math.floor(Seconds))
 
                 local Hours = math.floor(Seconds / 3600)
@@ -4383,7 +4364,7 @@ do
                 return string.format('%02d:%02d:%02d', Hours, Minutes, Left)
             end
 
-            function Countdown.New(Section: any, Options: {[string]: any})
+            function Countdown.New(Section, Options)
                 Options.Default = Options.Seconds or 0
 
                 local self = BaseWidget.New(Section, Options, Options.Height or 28)
@@ -4395,12 +4376,12 @@ do
                 self.EndsAt = os.clock() + (Options.Seconds or 0)
                 self.Running = true
 
-                local Label = Elements.New('TextLabel', {
+                local Label = (Elements.New('TextLabel', {
                     Name = 'Countdown',
                     Size = UDim2.fromScale(1, 1),
                     Text = Options.Text or Format(Options.Seconds or 0),
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Label, Theme, 12, Theme.Accent)
                 FontLoader.Apply(Label, self.Library.AssetCache)
@@ -4419,7 +4400,7 @@ do
 
                 return self
             end
-            function Countdown:SetValue(Value: any, RunCallback: boolean?)
+            function Countdown:SetValue(Value, RunCallback)
                 local Seconds = tonumber(Value) or 0
 
                 self:Commit(Seconds, RunCallback)
@@ -4435,7 +4416,7 @@ do
             return Countdown
         end
 
-        function __DARKLUA_BUNDLE_MODULES.L(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.L()
             local v = __DARKLUA_BUNDLE_MODULES.cache.L
 
             if not v then
@@ -4453,7 +4434,7 @@ do
             local Dropdown = __DARKLUA_BUNDLE_MODULES.E()
             local ConfigList = {}
 
-            function ConfigList.New(Section: any, Options: {[string]: any})
+            function ConfigList.New(Section, Options)
                 local Library = Section.Window.Library
 
                 local function ReadValues()
@@ -4477,7 +4458,7 @@ do
 
                 local Widget = Dropdown.New(Section, Options)
 
-                function Widget:RefreshConfigs(SelectedName: string?)
+                function Widget:RefreshConfigs(SelectedName)
                     local Values = ReadValues()
 
                     self:SetValues(Values, SelectedName or self.Value)
@@ -4491,7 +4472,7 @@ do
             return ConfigList
         end
 
-        function __DARKLUA_BUNDLE_MODULES.M(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.M()
             local v = __DARKLUA_BUNDLE_MODULES.cache.M
 
             if not v then
@@ -4516,18 +4497,18 @@ do
 
             setmetatable(Label, {__index = BaseWidget})
 
-            function Label.New(Section: any, Options: {[string]: any})
+            function Label.New(Section, Options)
                 local self = BaseWidget.New(Section, Options, Options.Height or 22)
 
                 setmetatable(self, Label)
 
                 local Theme = self.Window.Theme
-                local Text = Elements.New('TextLabel', {
+                local Text = (Elements.New('TextLabel', {
                     Name = 'Text',
                     Size = UDim2.fromScale(1, 1),
                     Text = Options.Text or '',
                     ZIndex = 31,
-                }, self.Root)::TextLabel
+                }, self.Root))
 
                 Styling.ApplyText(Text, Theme, 11, Options.Tone == 'muted' and Theme.Muted or Theme.Text)
                 FontLoader.Apply(Text, self.Library.AssetCache)
@@ -4544,7 +4525,7 @@ do
             return Label
         end
 
-        function __DARKLUA_BUNDLE_MODULES.N(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.N()
             local v = __DARKLUA_BUNDLE_MODULES.cache.N
 
             if not v then
@@ -4575,7 +4556,7 @@ do
                 Label = __DARKLUA_BUNDLE_MODULES.N(),
             }
 
-            function WidgetFactory.Create(Kind: string, Section: any, Options: {[string]: any})
+            function WidgetFactory.Create(Kind, Section, Options)
                 local Control = WidgetFactory.Controls[Kind]
 
                 assert(Control, 'Unknown Fecurity widget: ' .. tostring(Kind))
@@ -4586,7 +4567,7 @@ do
             return WidgetFactory
         end
 
-        function __DARKLUA_BUNDLE_MODULES.O(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.O()
             local v = __DARKLUA_BUNDLE_MODULES.cache.O
 
             if not v then
@@ -4610,14 +4591,14 @@ do
 
             Section.__index = Section
 
-            function Section.New(Column: any, Name: string)
+            function Section.New(Column, Name)
                 local self = setmetatable({
                     Column = Column,
                     Window = Column.Window,
                     Name = Name,
                     Order = 0,
                 }, Section)
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = Name,
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
@@ -4625,32 +4606,32 @@ do
                     LayoutOrder = #Column.Sections + 1,
                     AutomaticSize = Enum.AutomaticSize.Y,
                     ZIndex = 23,
-                }, Column.Scroll)::Frame
+                }, Column.Scroll))
 
                 self.Root = Root
 
-                local Header = Elements.New('TextLabel', {
+                local Header = (Elements.New('TextLabel', {
                     Name = 'Header',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Size = UDim2.new(1, 0, 0, 28),
                     Text = string.upper(Name),
                     ZIndex = 24,
-                }, Root)::TextLabel
+                }, Root))
 
                 Styling.ApplyText(Header, Column.Window.Theme, 11, Column.Window.Theme.Muted)
                 FontLoader.Apply(Header, Column.Window.Library.AssetCache)
 
                 self.Header = Header
 
-                local Body = Elements.New('Frame', {
+                local Body = (Elements.New('Frame', {
                     Name = 'Body',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Size = UDim2.new(1, 0, 0, 0),
                     AutomaticSize = Enum.AutomaticSize.Y,
                     ZIndex = 24,
-                }, Root)::Frame
+                }, Root))
 
                 Body.Position = UDim2.fromOffset(0, 28)
                 self.Body = Body
@@ -4664,12 +4645,12 @@ do
 
                 return self
             end
-            function Section:NextOrder(): number
+            function Section:NextOrder()
                 self.Order += 1
 
                 return self.Order
             end
-            function Section:AddDivider(Text: string)
+            function Section:AddDivider(Text)
                 return WidgetFactory.Create('Label', self, {
                     Text = string.upper(Text),
                     Tone = 'muted',
@@ -4677,53 +4658,53 @@ do
                     SkipFlag = true,
                 })
             end
-            function Section:AddLabel(Options: {[string]: any})
+            function Section:AddLabel(Options)
                 return WidgetFactory.Create('Label', self, Options)
             end
-            function Section:AddToggle(Options: {[string]: any})
+            function Section:AddToggle(Options)
                 return WidgetFactory.Create('Toggle', self, Options)
             end
-            function Section:AddSlider(Options: {[string]: any})
+            function Section:AddSlider(Options)
                 return WidgetFactory.Create('Slider', self, Options)
             end
-            function Section:AddDropdown(Options: {[string]: any})
+            function Section:AddDropdown(Options)
                 return WidgetFactory.Create('Dropdown', self, Options)
             end
-            function Section:AddList(Options: {[string]: any})
+            function Section:AddList(Options)
                 return self:AddDropdown(Options)
             end
-            function Section:AddButton(Options: {[string]: any})
+            function Section:AddButton(Options)
                 return WidgetFactory.Create('Button', self, Options)
             end
-            function Section:AddTextbox(Options: {[string]: any})
+            function Section:AddTextbox(Options)
                 return WidgetFactory.Create('Textbox', self, Options)
             end
-            function Section:AddBox(Options: {[string]: any})
+            function Section:AddBox(Options)
                 return self:AddTextbox(Options)
             end
-            function Section:AddKeybind(Options: {[string]: any})
+            function Section:AddKeybind(Options)
                 return WidgetFactory.Create('Keybind', self, Options)
             end
-            function Section:AddBind(Options: {[string]: any})
+            function Section:AddBind(Options)
                 return self:AddKeybind(Options)
             end
-            function Section:AddColor(Options: {[string]: any})
+            function Section:AddColor(Options)
                 return WidgetFactory.Create('ColorPicker', self, Options)
             end
-            function Section:AddHitboxPreview(Options: {[string]: any})
+            function Section:AddHitboxPreview(Options)
                 return WidgetFactory.Create('HitboxPreview', self, Options)
             end
-            function Section:AddCountdown(Options: {[string]: any})
+            function Section:AddCountdown(Options)
                 return WidgetFactory.Create('Countdown', self, Options)
             end
-            function Section:AddConfigList(Options: {[string]: any})
+            function Section:AddConfigList(Options)
                 return WidgetFactory.Create('ConfigList', self, Options)
             end
 
             return Section
         end
 
-        function __DARKLUA_BUNDLE_MODULES.P(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.P()
             local v = __DARKLUA_BUNDLE_MODULES.cache.P
 
             if not v then
@@ -4746,7 +4727,7 @@ do
 
             Column.__index = Column
 
-            function Column.New(Tab: any, Index: number)
+            function Column.New(Tab, Index)
                 local Window = Tab.Window
                 local self = setmetatable({
                     Tab = Tab,
@@ -4754,19 +4735,19 @@ do
                     Index = Index,
                     Sections = {},
                 }, Column)
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = 'Column' .. tostring(Index),
                     BackgroundColor3 = Window.Theme.Surface,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, Tokens.PanelTop),
                     Size = UDim2.fromOffset(Tokens.PanelWidth, Tokens.PanelHeight),
                     ZIndex = 21,
-                }, Window.Content)::Frame
+                }, Window.Content))
 
                 self.Stroke = Elements.Stroke(Root, Window.Theme.Border, 0, 1)
                 self.Root = Root
 
-                local Scroll = Elements.New('ScrollingFrame', {
+                local Scroll = (Elements.New('ScrollingFrame', {
                     Name = 'Scroll',
                     Active = true,
                     BackgroundTransparency = 1,
@@ -4778,7 +4759,7 @@ do
                     CanvasSize = UDim2.fromOffset(0, 0),
                     AutomaticCanvasSize = Enum.AutomaticSize.Y,
                     ZIndex = 22,
-                }, Root)::ScrollingFrame
+                }, Root))
 
                 Elements.Padding(Scroll, 15, 16, 15, 16)
 
@@ -4796,7 +4777,7 @@ do
 
                 return self
             end
-            function Column:ApplyLayout(Index: number, Count: number)
+            function Column:ApplyLayout(Index, Count)
                 self.Index = Index
 
                 local TargetSize = self.Window.TargetSize or UDim2.fromOffset(Tokens.WindowSize.X, Tokens.WindowSize.Y)
@@ -4807,7 +4788,7 @@ do
                 self.Root.Position = UDim2.fromOffset(X, Tokens.PanelTop)
                 self.Root.Size = UDim2.fromOffset(Width, Tokens.PanelHeightFor(WindowHeight))
             end
-            function Column:AddSection(Name: string)
+            function Column:AddSection(Name)
                 local NewSection = Section.New(self, Name)
 
                 table.insert(self.Sections, NewSection)
@@ -4818,7 +4799,7 @@ do
             return Column
         end
 
-        function __DARKLUA_BUNDLE_MODULES.Q(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.Q()
             local v = __DARKLUA_BUNDLE_MODULES.cache.Q
 
             if not v then
@@ -4839,7 +4820,7 @@ do
 
             Tab.__index = Tab
 
-            function Tab.New(Window: any, Name: string, Options: {[string]: any}, Index: number)
+            function Tab.New(Window, Name, Options, Index)
                 local self = setmetatable({
                     Window = Window,
                     Name = Name,
@@ -4870,7 +4851,7 @@ do
                     ColumnObject:ApplyLayout(Index, Count)
                 end
             end
-            function Tab:SetActive(Value: boolean)
+            function Tab:SetActive(Value)
                 self.Active = Value
 
                 if self.Button then
@@ -4894,7 +4875,7 @@ do
             return Tab
         end
 
-        function __DARKLUA_BUNDLE_MODULES.R(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.R()
             local v = __DARKLUA_BUNDLE_MODULES.cache.R
 
             if not v then
@@ -4914,25 +4895,25 @@ do
 
             TabContainer.__index = TabContainer
 
-            function TabContainer.New(Root: Frame)
+            function TabContainer.New(Root)
                 local self = setmetatable({}, TabContainer)
 
-                self.Content = Elements.New('Frame', {
+                self.Content = (Elements.New('Frame', {
                     Name = 'Content',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 0),
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 20,
-                }, Root)::Frame
-                self.Overlay = Elements.New('Frame', {
+                }, Root))
+                self.Overlay = (Elements.New('Frame', {
                     Name = 'Overlay',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Position = UDim2.fromOffset(0, 0),
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 200,
-                }, Root)::Frame
+                }, Root))
 
                 return self
             end
@@ -4940,7 +4921,7 @@ do
             return TabContainer
         end
 
-        function __DARKLUA_BUNDLE_MODULES.S(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.S()
             local v = __DARKLUA_BUNDLE_MODULES.cache.S
 
             if not v then
@@ -4961,37 +4942,37 @@ do
             local Tween = __DARKLUA_BUNDLE_MODULES.j()
             local Notification = {}
 
-            function Notification.New(Window: any, Options: {[string]: any})
+            function Notification.New(Window, Options)
                 local Theme = Window.Theme
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = 'Notification',
                     BackgroundColor3 = Theme.Surface,
                     BorderSizePixel = 0,
                     Size = UDim2.fromOffset(250, 62),
                     ZIndex = 401,
-                }, Window.Notifications)::Frame
+                }, Window.Notifications))
 
                 Elements.Stroke(Root, Theme.Border, 0, 1)
                 Elements.Padding(Root, 12, 8, 12, 8)
 
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(1, 0, 0, 18),
                     Text = Options.Title or 'Fecurity',
                     ZIndex = 402,
-                }, Root)::TextLabel
+                }, Root))
 
                 Styling.ApplyText(Title, Theme, 12, Theme.Text)
                 FontLoader.Apply(Title, Window.Library.AssetCache)
 
-                local Body = Elements.New('TextLabel', {
+                local Body = (Elements.New('TextLabel', {
                     Name = 'Body',
                     Position = UDim2.fromOffset(0, 20),
                     Size = UDim2.new(1, 0, 0, 28),
                     Text = Options.Text or Options.Message or '',
                     TextWrapped = true,
                     ZIndex = 402,
-                }, Root)::TextLabel
+                }, Root))
 
                 Styling.ApplyText(Body, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Body, Window.Library.AssetCache)
@@ -5017,7 +4998,7 @@ do
             return Notification
         end
 
-        function __DARKLUA_BUNDLE_MODULES.T(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.T()
             local v = __DARKLUA_BUNDLE_MODULES.cache.T
 
             if not v then
@@ -5037,9 +5018,9 @@ do
             local FontLoader = __DARKLUA_BUNDLE_MODULES.t()
             local Modal = {}
 
-            function Modal.New(Window: any, Options: {[string]: any})
+            function Modal.New(Window, Options)
                 local Theme = Window.Theme
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = 'Modal',
                     AnchorPoint = Vector2.new(0.5, 0.5),
                     BackgroundColor3 = Theme.Surface,
@@ -5047,29 +5028,29 @@ do
                     Position = UDim2.fromScale(0.5, 0.5),
                     Size = UDim2.fromOffset(260, 130),
                     ZIndex = 300,
-                }, Window.Overlay)::Frame
+                }, Window.Overlay))
 
                 Elements.Stroke(Root, Theme.Border, 0, 1)
                 Elements.Padding(Root, 14, 14, 14, 14)
 
-                local Title = Elements.New('TextLabel', {
+                local Title = (Elements.New('TextLabel', {
                     Name = 'Title',
                     Size = UDim2.new(1, 0, 0, 22),
                     Text = Options.Title or 'Fecurity',
                     ZIndex = 301,
-                }, Root)::TextLabel
+                }, Root))
 
                 Styling.ApplyText(Title, Theme, 13, Theme.Text)
                 FontLoader.Apply(Title, Window.Library.AssetCache)
 
-                local Body = Elements.New('TextLabel', {
+                local Body = (Elements.New('TextLabel', {
                     Name = 'Body',
                     Position = UDim2.fromOffset(0, 30),
                     Size = UDim2.new(1, 0, 0, 54),
                     Text = Options.Text or Options.Message or '',
                     TextWrapped = true,
                     ZIndex = 301,
-                }, Root)::TextLabel
+                }, Root))
 
                 Styling.ApplyText(Body, Theme, 11, Theme.Hint)
                 FontLoader.Apply(Body, Window.Library.AssetCache)
@@ -5080,7 +5061,7 @@ do
             return Modal
         end
 
-        function __DARKLUA_BUNDLE_MODULES.U(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.U()
             local v = __DARKLUA_BUNDLE_MODULES.cache.U
 
             if not v then
@@ -5098,7 +5079,7 @@ do
             local Modal = __DARKLUA_BUNDLE_MODULES.U()
             local Warning = {}
 
-            function Warning.New(Window: any, Options: {[string]: any})
+            function Warning.New(Window, Options)
                 Options.Title = Options.Title or 'Warning'
 
                 return Modal.New(Window, Options)
@@ -5107,7 +5088,7 @@ do
             return Warning
         end
 
-        function __DARKLUA_BUNDLE_MODULES.V(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.V()
             local v = __DARKLUA_BUNDLE_MODULES.cache.V
 
             if not v then
@@ -5141,11 +5122,11 @@ do
 
             Window.__index = Window
 
-            local function ScaleSize(Size: UDim2, Factor: number): UDim2
+            local function ScaleSize(Size, Factor)
                 return UDim2.new(Size.X.Scale * Factor, math.floor(Size.X.Offset * Factor), Size.Y.Scale * Factor, math.floor(Size.Y.Offset * Factor))
             end
 
-            function Window.New(Library: any, Options: {[string]: any})
+            function Window.New(Library, Options)
                 local self = setmetatable({
                     Library = Library,
                     Options = Options,
@@ -5169,18 +5150,18 @@ do
 
                 self.Gui = Gui
 
-                local Canvas = Elements.New('Frame', {
+                local Canvas = (Elements.New('Frame', {
                     Name = 'Canvas',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
                     Size = UDim2.fromScale(1, 1),
                     ZIndex = 1,
-                }, Gui)::Frame
+                }, Gui))
 
                 self.Canvas = Canvas
                 self.SnowLayer = SnowLayer.New(self, Canvas)
 
-                local Root = Elements.New('Frame', {
+                local Root = (Elements.New('Frame', {
                     Name = 'Window',
                     AnchorPoint = Vector2.new(0.5, 0.5),
                     Position = UDim2.fromScale(0.5, 0.5),
@@ -5188,7 +5169,7 @@ do
                     BackgroundColor3 = self.Theme.Surface,
                     BorderSizePixel = 0,
                     ZIndex = 10,
-                }, Canvas)::Frame
+                }, Canvas))
 
                 self.RootStroke = Elements.Stroke(Root, self.Theme.Border, 0, 1)
                 self.Root = Root
@@ -5196,7 +5177,7 @@ do
                 self.TabContainer = TabContainer.New(Root)
                 self.Content = self.TabContainer.Content
                 self.Overlay = self.TabContainer.Overlay
-                self.Notifications = Elements.New('Frame', {
+                self.Notifications = (Elements.New('Frame', {
                     Name = 'Notifications',
                     BackgroundTransparency = 1,
                     BorderSizePixel = 0,
@@ -5204,7 +5185,7 @@ do
                     Position = UDim2.new(1, -16, 0, 16),
                     Size = UDim2.fromOffset(250, 400),
                     ZIndex = 400,
-                }, Canvas)::Frame
+                }, Canvas))
 
                 Elements.List(self.Notifications, Enum.FillDirection.Vertical, 8)
 
@@ -5226,7 +5207,7 @@ do
 
                 return self
             end
-            function Window:AddTab(Name: string, Options: {[string]: any}?)
+            function Window:AddTab(Name, Options)
                 local NewTab = Tab.New(self, Name, Options or {}, #self.Tabs + 1)
 
                 table.insert(self.Tabs, NewTab)
@@ -5239,7 +5220,7 @@ do
 
                 return NewTab
             end
-            function Window:SetActiveTab(TabObject: any)
+            function Window:SetActiveTab(TabObject)
                 if self.Destroyed then
                     return
                 end
@@ -5254,7 +5235,7 @@ do
 
                 self.ActiveTab:SetActive(true)
             end
-            function Window:SetAccent(Color: Color3)
+            function Window:SetAccent(Color)
                 if self.Destroyed then
                     return false
                 end
@@ -5265,7 +5246,7 @@ do
 
                 return true
             end
-            function Window:SetTheme(ThemeValue: any)
+            function Window:SetTheme(ThemeValue)
                 if self.Destroyed then
                     return false
                 end
@@ -5298,7 +5279,7 @@ do
                     pcall(Binding, self.Theme)
                 end
             end
-            function Window:RegisterThemeBinding(Binding: (any) -> ())
+            function Window:RegisterThemeBinding(Binding)
                 table.insert(self.ThemeBindings, Binding)
                 Binding(self.Theme)
 
@@ -5320,7 +5301,7 @@ do
                     end
                 end
             end
-            function Window:SetMenuKey(Value: any)
+            function Window:SetMenuKey(Value)
                 if self.Destroyed then
                     return self
                 end
@@ -5379,10 +5360,10 @@ do
                     return self:Open()
                 end
             end
-            function Window:Notify(Options: {[string]: any})
+            function Window:Notify(Options)
                 return Notification.New(self, Options)
             end
-            function Window:AddWarning(Options: {[string]: any})
+            function Window:AddWarning(Options)
                 return Warning.New(self, Options)
             end
             function Window:Destroy()
@@ -5436,7 +5417,7 @@ do
             return Window
         end
 
-        function __DARKLUA_BUNDLE_MODULES.W(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.W()
             local v = __DARKLUA_BUNDLE_MODULES.cache.W
 
             if not v then
@@ -5483,17 +5464,17 @@ do
 
                 return self
             end
-            function Library:RunCallback(Scope: string, Callback: ((...any) -> ...any)?, ...)
+            function Library:RunCallback(Scope, Callback, ...)
                 Safety.Callback(Scope, Callback, ...)
             end
-            function Library:CreateWindow(Options: {[string]: any})
+            function Library:CreateWindow(Options)
                 local NewWindow = Window.New(self, Options or {})
 
                 table.insert(self.Windows, NewWindow)
 
                 return NewWindow
             end
-            function Library:Notify(Options: {[string]: any})
+            function Library:Notify(Options)
                 local Target = self.Windows[1]
 
                 if Target then
@@ -5502,7 +5483,7 @@ do
 
                 return nil
             end
-            function Library:AddWarning(Options: {[string]: any})
+            function Library:AddWarning(Options)
                 local Target = self.Windows[1]
 
                 if Target then
@@ -5511,7 +5492,7 @@ do
 
                 return nil
             end
-            function Library:SaveConfig(Name: string)
+            function Library:SaveConfig(Name)
                 local Saved = self.ConfigManager:Save(Name)
 
                 if Saved then
@@ -5520,7 +5501,7 @@ do
 
                 return Saved
             end
-            function Library:LoadConfig(Name: string, RunCallbacks: boolean?)
+            function Library:LoadConfig(Name, RunCallbacks)
                 local Loaded = self.ConfigManager:Load(Name, RunCallbacks)
 
                 if Loaded then
@@ -5532,10 +5513,10 @@ do
             function Library:GetConfigs()
                 return self.ConfigManager:GetConfigs()
             end
-            function Library:RegisterConfigList(Widget: any)
+            function Library:RegisterConfigList(Widget)
                 table.insert(self.ConfigWidgets, Widget)
             end
-            function Library:RefreshConfigLists(SelectedName: string?)
+            function Library:RefreshConfigLists(SelectedName)
                 for Index = #self.ConfigWidgets, 1, -1 do
                     local Widget = self.ConfigWidgets[Index]
 
@@ -5546,17 +5527,17 @@ do
                     end
                 end
             end
-            function Library:SetAccent(Color: Color3)
+            function Library:SetAccent(Color)
                 for _, WindowObject in ipairs(self.Windows)do
                     WindowObject:SetAccent(Color)
                 end
             end
-            function Library:SetAssetBaseUrl(BaseUrl: string)
+            function Library:SetAssetBaseUrl(BaseUrl)
                 self.AssetRegistry.SetBaseUrl(BaseUrl)
 
                 return self.AssetCache:EnsureAll()
             end
-            function Library:SetTheme(NameOrTheme: any)
+            function Library:SetTheme(NameOrTheme)
                 for _, WindowObject in ipairs(self.Windows)do
                     WindowObject:SetTheme(NameOrTheme)
                 end
@@ -5591,7 +5572,7 @@ do
             return Library
         end
 
-        function __DARKLUA_BUNDLE_MODULES.X(): typeof(__modImpl())
+        function __DARKLUA_BUNDLE_MODULES.X()
             local v = __DARKLUA_BUNDLE_MODULES.cache.X
 
             if not v then
