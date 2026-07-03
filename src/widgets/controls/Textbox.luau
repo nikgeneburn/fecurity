@@ -21,7 +21,7 @@ function Textbox.New(Section: any, Options: { [string]: any })
         Text = Options.Text or "Textbox",
         ZIndex = 31,
     }, self.Root) :: TextLabel
-    Styling.ApplyText(Title, Theme, 10, Theme.Text)
+    Styling.ApplyText(Title, Theme, 14, Theme.Text)
     FontLoader.Apply(Title, self.Library.AssetCache)
 
     local Box = Elements.New("TextBox", {
@@ -34,7 +34,7 @@ function Textbox.New(Section: any, Options: { [string]: any })
         Text = tostring(self.Value),
         ZIndex = 32,
     }, self.Root) :: TextBox
-    Styling.ApplyText(Box, Theme, 10, Theme.Text)
+    Styling.ApplyText(Box, Theme, 14, Theme.Text)
     FontLoader.Apply(Box, self.Library.AssetCache)
     Box.TextXAlignment = Enum.TextXAlignment.Left
     self.Box = Box
